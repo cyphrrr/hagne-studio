@@ -1,0 +1,437 @@
+{
+ "format": "hagne-drehbuch/0.2",
+ "episode": {
+  "id": "E02",
+  "titel": "Das Turnierbüro",
+  "dauer": 29.9,
+  "fps": 12,
+  "bild": "16:9"
+ },
+ "kulisse": {
+  "id": "HALLE-VOLL-01",
+  "requisiten": [
+   {
+    "id": "gaming-stuhl",
+    "x": 200,
+    "z": 1
+   },
+   {
+    "id": "tisch-turnierbuero",
+    "x": 256,
+    "z": 3,
+    "bebt": 0.8
+   }
+  ],
+  "licht": "nacht"
+ },
+ "besetzung": [
+  {
+   "id": "pb",
+   "figur": "PoBi",
+   "version": 2,
+   "x": 200,
+   "boden": 420,
+   "z": 2,
+   "haltung": "sitzt",
+   "arme": [6, -14],
+   "blick": [3, 2],
+   "brauen": "muede",
+   "bebt": 0.5
+  },
+  {
+   "id": "rz",
+   "figur": "DrBier-Riese",
+   "version": 1,
+   "x": 500,
+   "boden": 390,
+   "z": 4,
+   "start": "draussen",
+   "kopf_im_bild": false,
+   "pose": "trinkt-oben"
+  },
+  {
+   "id": "cy",
+   "figur": "cypheR",
+   "version": 2,
+   "x": 600,
+   "boden": 390,
+   "z": 5,
+   "start": "draussen",
+   "blick": [-3, 0],
+   "kopf": -1
+  }
+ ],
+ "ton": {
+  "mix": "e02.mp3",
+  "atmo": {
+   "clip": "raum-02",
+   "db": -7,
+   "unter_dialog_db": -12
+  },
+  "clips": [
+   {
+    "t": 0.35,
+    "clip": "tippen",
+    "ausblenden_bis": 3.5
+   },
+   {
+    "t": 5.0,
+    "clip": "01_cypher_gameserver-neuneu",
+    "db": -1.4,
+    "sprecher": "cy"
+   },
+   {
+    "t": 13.0,
+    "clip": "02_pobi_egal",
+    "sprecher": "pb"
+   },
+   {
+    "t": 19.5,
+    "clip": "03_pobi_mund",
+    "sprecher": "pb"
+   },
+   {
+    "t": 22.4,
+    "clip": "moaning_zombie",
+    "sprecher": "rz",
+    "ausblenden_bis": 24.4
+   },
+   {
+    "t": 24.45,
+    "clip": "glass_bottle_falling"
+   },
+   {
+    "t": 26.98,
+    "clip": "klack"
+   },
+   {
+    "t": 27.32,
+    "clip": "klack"
+   }
+  ],
+  "lippen": "aus_ton"
+ },
+ "dialog": [
+  {
+   "von": 5.1,
+   "bis": 6.36,
+   "wer": "cy",
+   "text": "Hallo Turnierbüro!"
+  },
+  {
+   "von": 6.41,
+   "bis": 8.52,
+   "wer": "cy",
+   "text": "Die Gameserver sind bereitgestellt!"
+  },
+  {
+   "von": 8.57,
+   "bis": 11.5,
+   "wer": "cy",
+   "text": "So mögen die großen Spiele nun beginnen!"
+  },
+  {
+   "von": 11.55,
+   "bis": 12.83,
+   "wer": "cy",
+   "text": "HUZZAH!"
+  },
+  {
+   "von": 13.0,
+   "bis": 15.3,
+   "wer": "pb",
+   "text": "Mir doch egal, hihihi"
+  },
+  {
+   "von": 19.5,
+   "bis": 22.5,
+   "wer": "pb",
+   "text": "DrBier, du hast da was am Mund!"
+  }
+ ],
+ "aktionen": [
+  {
+   "von": 0,
+   "bis": 17.8,
+   "wer": "pb",
+   "geste": "tippen"
+  },
+  {
+   "von": 3.0,
+   "bis": 5.0,
+   "wer": "cy",
+   "geste": "reinlaufen",
+   "von_x": 790
+  },
+  {
+   "von": 5.0,
+   "bis": 6.36,
+   "wer": "cy",
+   "geste": "winken",
+   "arm": "rechts"
+  },
+  {
+   "von": 6.36,
+   "bis": 8.57,
+   "wer": "cy",
+   "geste": "daumen-hoch"
+  },
+  {
+   "von": 8.57,
+   "bis": 11.55,
+   "wer": "cy",
+   "geste": "arme-heben",
+   "rampe": 2.71
+  },
+  {
+   "von": 11.55,
+   "bis": 13.2,
+   "wer": "cy",
+   "geste": "huzzah"
+  },
+  {
+   "von": 13.2,
+   "bis": 15.2,
+   "wer": "cy",
+   "geste": "brauen",
+   "wert": "genervt",
+   "pose": {
+    "py": 1
+   }
+  },
+  {
+   "von": 13.0,
+   "bis": 14.2,
+   "wer": "pb",
+   "geste": "brauen",
+   "wert": "locker"
+  },
+  {
+   "von": 14.2,
+   "bis": 15.3,
+   "wer": "pb",
+   "geste": "kichern"
+  },
+  {
+   "von": 15.2,
+   "bis": 17.8,
+   "wer": "rz",
+   "geste": "stapfen",
+   "von_x": 840,
+   "schritte": 6
+  },
+  {
+   "von": 15.2,
+   "bis": 17.8,
+   "wer": "cy",
+   "geste": "blick",
+   "ziel": "rechts",
+   "staerke": 3,
+   "pose": {
+    "head": 1
+   }
+  },
+  {
+   "von": 15.2,
+   "bis": 17.8,
+   "wer": "cy",
+   "geste": "zucken",
+   "brauen": "wach"
+  },
+  {
+   "von": 15.3,
+   "bis": 17.8,
+   "wer": "pb",
+   "geste": "zucken"
+  },
+  {
+   "von": 17.8,
+   "bis": 18.6,
+   "wer": "pb",
+   "geste": "blick",
+   "ziel": "rz",
+   "pose": {
+    "head": 3
+   }
+  },
+  {
+   "von": 17.8,
+   "bis": 18.6,
+   "wer": "cy",
+   "geste": "blick",
+   "ziel": "rz",
+   "pose": {
+    "py": 1
+   }
+  },
+  {
+   "von": 18.6,
+   "bis": 23.9,
+   "wer": "pb",
+   "geste": "blick",
+   "ziel": "oben",
+   "px": 2,
+   "pose": {
+    "head": -2
+   }
+  },
+  {
+   "von": 18.6,
+   "bis": 23.9,
+   "wer": "cy",
+   "geste": "blick",
+   "ziel": "oben",
+   "px": -2
+  },
+  {
+   "von": 22.4,
+   "bis": 23.6,
+   "wer": ["pb", "cy"],
+   "geste": "augen-auf"
+  },
+  {
+   "von": 22.5,
+   "bis": 25.9,
+   "wer": "rz",
+   "geste": "kratzen-mund",
+   "runter_ab": 24.1
+  },
+  {
+   "von": 23.9,
+   "bis": 25.3,
+   "wer": "rz",
+   "geste": "fallen-lassen",
+   "gegenstand": "bierflasche",
+   "landet": 24.45,
+   "x": 497,
+   "boden": 380,
+   "rollt_bis": 468,
+   "vorlauf": 0.1
+  },
+  {
+   "von": 23.9,
+   "bis": 29.9,
+   "wer": ["pb", "cy"],
+   "geste": "nummer:reaktion-fall"
+  }
+ ],
+ "effekte": [
+  {
+   "typ": "stampf",
+   "t": [15.2, 15.63, 16.07, 16.5, 16.93, 17.37, 17.8],
+   "staerke": 5,
+   "schild": {
+    "text": "*STAMPF*",
+    "pos": [[620, 60], [560, 96]],
+    "winkel": [-5, 5],
+    "dauer": 0.36
+   }
+  },
+  {
+   "typ": "stampf",
+   "t": [24.45],
+   "staerke": 3.5
+  }
+ ],
+ "kamera": [
+  {
+   "von": 0,
+   "bis": 3.0,
+   "start": [330, 215, 1.12],
+   "ende": [330, 214, 1.16]
+  },
+  {
+   "von": 3.0,
+   "bis": 7.0,
+   "start": [382, 232, 1.22],
+   "ende": [400, 236, 1.36]
+  },
+  {
+   "von": 7.0,
+   "bis": 10.4,
+   "start": [560, 214, 2.0],
+   "ende": [560, 210, 2.15]
+  },
+  {
+   "von": 10.4,
+   "bis": 12.8,
+   "start": [410, 232, 1.3],
+   "ende": [420, 236, 1.36]
+  },
+  {
+   "von": 12.8,
+   "bis": 15.2,
+   "start": [205, 252, 2.3],
+   "ende": [205, 250, 2.45]
+  },
+  {
+   "von": 15.2,
+   "bis": 18.6,
+   "start": [355, 213, 1.12],
+   "ende": [355, 213, 1.14]
+  },
+  {
+   "von": 18.6,
+   "bis": 23.5,
+   "start": [400, 238, 1.4],
+   "ende": [400, 236, 1.46]
+  },
+  {
+   "von": 23.5,
+   "bis": 25.3,
+   "start": [430, 244, 1.3],
+   "ende": [430, 244, 1.34]
+  },
+  {
+   "von": 25.3,
+   "bis": 29.9,
+   "start": [396, 236, 1.22],
+   "ende": [396, 236, 1.26]
+  }
+ ],
+ "schilder": [
+  {
+   "von": 0.4,
+   "bis": 2.8,
+   "text": "*tipp tipp*",
+   "pos": [396, 232],
+   "winkel": -4
+  },
+  {
+   "von": 10.5,
+   "bis": 12.7,
+   "text": "*tipp tipp*",
+   "pos": [150, 236],
+   "winkel": -4
+  },
+  {
+   "von": 22.9,
+   "bis": 24.1,
+   "text": "*kratz kratz*",
+   "pos": [560, 40],
+   "winkel": 4
+  },
+  {
+   "von": 24.45,
+   "bis": 25.6,
+   "text": "*KLONK!*",
+   "pos": [470, 312],
+   "winkel": 6
+  }
+ ],
+ "analyse": {
+  "pegel": {
+   "cy": {
+    "o": 60,
+    "v": [-81, -18, -20, -17, -21, -17, -19, -16, -18, -15, -21, -20, -28, -39, -66, -85, -46, -18, -19, -23, -16, -20, -18, -16, -17, -19, -18, -17, -20, -21, -15, -17, -19, -27, -16, -20, -16, -23, -32, -29, -55, -86, -38, -19, -16, -17, -19, -17, -15, -19, -17, -17, -17, -22, -16, -17, -21, -20, -18, -17, -24, -16, -17, -16, -18, -16, -18, -19, -20, -15, -17, -16, -20, -25, -33, -42, -71, -74, -16, -14, -20, -17, -14, -15, -18, -21, -27, -35, -34, -47, -74],
+    "null_db": -40
+   },
+   "pb": {
+    "o": 156,
+    "v": [-34, -24, -20, -18, -17, -21, -23, -36, -22, -21, -22, -23, -25, -36, -41, -28, -21, -39, -23, -52, -29, -31, -64, -77, -86, -85, -88, -90, -90, -90, -90, -90, -90, -90, -90, -90, -90, -90, -90, -90, -90, -90, -90, -90, -90, -90, -90, -90, -90, -90, -90, -90, -90, -90, -90, -90, -90, -90, -90, -90, -90, -90, -90, -90, -90, -90, -90, -90, -90, -90, -90, -90, -90, -90, -90, -90, -90, -90, -38, -16, -25, -24, -21, -32, -26, -18, -14, -21, -28, -58, -64, -63, -53, -43, -29, -25, -24, -37, -21, -26, -21, -31, -20, -21, -21, -23, -24, -36, -43, -64],
+    "null_db": -40
+   }
+  },
+  "quelle": "aus den Tonclips je Figur, dB je Bild"
+ }
+}

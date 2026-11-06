@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HAGNE-Studio – Player</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Saira:wght@700&display=swap">
+<style>
+:root{--font-sans:system-ui,-apple-system,"Segoe UI",Arial,sans-serif}
+body{margin:0;background:#1b1b1b;color:#ddd;display:flex;flex-direction:column;align-items:center;font-family:var(--font-sans)}
+svg{width:100%;max-width:1280px;height:auto;display:block;background:#000}
+.bar{display:flex;gap:10px;align-items:center;margin:12px 12px 4px;width:min(1280px,94vw);flex-wrap:wrap}
+.bar input[type=range]{flex:1;min-width:160px}
+button,label.btn{padding:6px 14px;font:inherit;font-size:14px;background:#2c2c2c;color:#ddd;border:1px solid #555;border-radius:6px;cursor:pointer}
+label.btn input{display:none}
+#time{font-variant-numeric:tabular-nums;min-width:110px}
+#status{width:min(1280px,94vw);font-size:13px;color:#9a9a9a;margin:0 12px 12px}
+#status.warn{color:#E8B10A}
+body.render{background:#000} body.render .bar,body.render #status{display:none} body.render svg{max-width:none;width:100vw;height:100vh}
+</style>
+</head>
+<body>
+<!--
+  HAGNE-Studio – Player für Drehbücher (Format hagne-drehbuch/0.2)
+  Diese Seite lädt die Bibliothek aus bibliothek/ und die Folgen aus drehbuecher/ (läuft so auf GitHub Pages
+  oder über einen Webserver). Für eine einzelne Offline-Datei: python3 werkzeuge/buendeln.py
+  renderAt(T) zeichnet deterministisch -> Grundlage für Kontaktbogen und MP4-Export (?render).
+-->
+<svg id="stage" viewBox="0 0 746.67 420" role="img"><title>HAGNE – Player</title>
+<defs><clipPath id="clip"><rect width="746.67" height="420"/></clipPath></defs>
+<g clip-path="url(#clip)">
+<g id="cam"><g id="bg"></g><g id="chars"></g></g>
+<g id="signs"></g><g id="bubble"></g><g id="blenden"></g>
+</g>
+</svg>
+<div class="bar">
+ <select id="folge" style="padding:6px;font:inherit;font-size:14px;background:#2c2c2c;color:#ddd;border:1px solid #555;border-radius:6px"></select>
+ <button id="play">Abspielen</button>
+ <input id="seek" type="range" min="0" max="30" step="0.01" value="0"><span id="time"></span>
+ <label class="btn">Drehbuch laden<input id="loadJson" type="file" accept=".json,application/json"></label>
+ <label class="btn">Ton laden<input id="loadAudio" type="file" accept="audio/*"></label>
+</div>
+<div id="status"></div>
+<audio id="au" preload="auto"></audio>
+
+
+<script src="bibliothek/basis.js"></script>
+<script src="bibliothek/kulissen.js"></script>
+<script src="bibliothek/requisiten.js"></script>
+<script src="bibliothek/figuren-v2.js"></script>
+<script src="bibliothek/figuren-v1.js"></script>
+<script src="bibliothek/gegenstaende.js"></script>
+<script src="bibliothek/gesten.js"></script>
+<script src="player/engine.js"></script>
+</body>
+</html>
