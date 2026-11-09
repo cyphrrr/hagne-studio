@@ -66,7 +66,7 @@ Ohne `szenen` gilt `kulisse` für die ganze Folge. Mit `szenen` wird bei jedem W
 | Feld | Bedeutung |
 |---|---|
 | `id` | kurze ID für dieses Drehbuch (`pb`, `cy`, …) |
-| `figur` | Name in der Bibliothek, alle Version 2: `PoBi`, `cypheR`, `KickASS`, `m0og`, `Deichshaf` (mit Ellbogen), `DocEvel` (mit Ellbogen, Geldscheine), `Spallter` (dünn), `DrBier` (einen Kopf größer), `DrBier-Riese` (Kopf nie im Bild), `Spock`, `Marlec` (Locken, Polo, Badelatschen), `Bierdieb-Sturmhaube`, `Bierdieb-Tarnhut` |
+| `figur` | Name in der Bibliothek, alle Version 2: `PoBi`, `cypheR`, `KickASS`, `m0og`, `Deichshaf` (mit Ellbogen), `DocEvel` (mit Ellbogen, Geldscheine), `Spallter` (dünn), `DrBier` (einen Kopf größer), `DrBier-Riese` (Kopf nie im Bild), `Spock`, `Marlec` (Locken, Polo, Badelatschen), `RamShadow` (Brust-Rig mit Funk, Pose-Feld `funkarm`), `Bierdieb-Sturmhaube`, `Bierdieb-Tarnhut` |
 | `x`, `boden` | Standplatz (Füße) |
 | `z` | Ebene, größer = weiter vorn. Gilt auch für Requisiten und Gegenstände |
 | `start` | `draussen`: unsichtbar bis zur ersten Auftritts-Geste (`reinlaufen`, `stapfen`, `auftauchen`, `schleichen`) |
@@ -199,6 +199,7 @@ Bewährte Armwinkel für Deichshaf [Schulter, Ellbogen]: links Mikro am Kinn [�
 | `flasche-schuetteln` | – | leere Flasche schütteln (DrBier) |
 | `zeigefinger` | – | erhobener Zeigefinger beim Reden (DrBier) |
 | `brille-hochschieben` | `rampe` (0.5) | Zeigefinger schiebt die Brille am Steg hoch, Augen schmal (PoBi). Danach mit `"pose": { "brille_y": -2.5 }` oben halten |
+| Feld `funkarm` (0–1, über `pose`/`uebergang`) | – | rechter Arm angewinkelt, Handsprecher am Mund, Spiralkabel zum Funkgerät; der Handsprecher am Gurt verschwindet so lange (RamShadow). Beispiel: `probe-ramshadow.json` |
 | `hintern-kratzen` | – | Kratz-Arm hinten (Spallter) |
 | `finger-riechen` | – | Finger unter die Nase (Spallter) |
 

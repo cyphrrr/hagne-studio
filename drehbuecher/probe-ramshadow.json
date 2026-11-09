@@ -1,0 +1,44 @@
+{
+ "format": "hagne-drehbuch/0.2",
+ "episode": { "id": "PROBE-RAMSHADOW", "titel": "Figurenprobe: RamShadow am Funk", "dauer": 10.0, "fps": 12, "bild": "16:9", "schleife": true },
+ "kulisse": { "id": "HALLE-AUSSEN-01", "licht": "tag" },
+ "besetzung": [
+  { "id": "rs", "figur": "RamShadow", "x": 340, "boden": 390, "z": 1, "namensschild": true }
+ ],
+ "dialog": [
+  { "von": 2.5, "bis": 4.4, "wer": "rs", "text": "Ja kann man so machen …", "blase": [2.5, 4.6] },
+  { "von": 4.7, "bis": 6.3, "wer": "rs", "text": "… dann isses halt Scheiße.", "blase": [4.7, 6.6] },
+  { "von": 7.3, "bis": 8.2, "wer": "rs", "text": "Oh Gott.", "blase": [7.2, 8.6] }
+ ],
+ "aktionen": [
+  { "von": 0, "bis": 10.0, "wer": "rs", "geste": "wippen", "tempo": 1.2, "weite": 1.2 },
+
+  { "von": 0, "bis": 2.0, "wer": "rs", "geste": "pose", "pose": { "px": -3, "py": 3, "head": 3, "es": 0.7, "br": [3, 14, 3, 14] }, "notiz": "Funk knackt, er schaut genervt auf den Handsprecher" },
+
+  { "von": 2.0, "bis": 2.4, "wer": "rs", "geste": "uebergang", "ab": { "funkarm": 0.01 }, "ziel": { "funkarm": 1 }, "rampe": 0.35 },
+  { "von": 2.0, "bis": 2.4, "wer": "rs", "geste": "pose", "pose": { "px": 1, "py": 1, "es": 0.75, "br": [3, 14, 3, 14] } },
+
+  { "von": 2.4, "bis": 6.6, "wer": "rs", "geste": "pose", "pose": { "funkarm": 1 } },
+  { "von": 2.4, "bis": 4.6, "wer": "rs", "geste": "pose", "pose": { "px": 2, "py": 0, "es": 0.75, "br": [3, 14, 3, 14] }, "notiz": "spricht trocken in den Funk" },
+  { "von": 2.4, "bis": 4.6, "wer": "rs", "geste": "kopf-wiegen", "tempo": 4, "weite": 3 },
+
+  { "von": 4.6, "bis": 5.2, "wer": "rs", "geste": "uebergang", "ab": { "py": 0, "px": 2, "head": 0 }, "ziel": { "py": -4.5, "px": 3, "head": -4 }, "rampe": 0.5, "notiz": "Augen rollen" },
+  { "von": 4.6, "bis": 6.6, "wer": "rs", "geste": "brauen", "wert": [2, 10, 2, 10] },
+  { "von": 5.2, "bis": 6.3, "wer": "rs", "geste": "pose", "pose": { "py": -4.5, "px": 3, "head": -4 } },
+  { "von": 6.3, "bis": 6.6, "wer": "rs", "geste": "pose", "pose": { "py": -2, "px": 2, "head": -2, "m": "s", "mFix": true } },
+
+  { "von": 6.6, "bis": 7.0, "wer": "rs", "geste": "uebergang", "ab": { "funkarm": 1 }, "ziel": { "funkarm": 0.01 }, "rampe": 0.35 },
+  { "von": 6.6, "bis": 7.0, "wer": "rs", "geste": "pose", "pose": { "m": "s", "mFix": true, "br": [3, 14, 3, 14] } },
+  { "von": 7.0, "bis": 8.7, "wer": "rs", "geste": "facepalm", "notiz": "Oh Gott." },
+
+  { "von": 8.7, "bis": 10.0, "wer": "rs", "geste": "pose", "pose": { "px": 0, "py": 0, "es": 0.65, "m": 1.6, "mFix": true, "br": [3, 14, 3, 14] }, "notiz": "genervter Blick in die Kamera" },
+  { "von": 8.7, "bis": 10.0, "wer": "rs", "geste": "kopf-neigen", "von_grad": 0, "nach_grad": 4, "rampe": 0.6 }
+ ],
+ "kamera": [
+  { "von": 0, "bis": 10.0, "start": [350, 250, 1.25], "ende": [350, 249, 1.28] }
+ ],
+ "schilder": [
+  { "von": 0.4, "bis": 1.5, "text": "*krrz*", "pos": [262, 175], "winkel": -6 },
+  { "von": 8.8, "bis": 9.9, "text": "*seufz*", "pos": [440, 140], "winkel": 4 }
+ ]
+}
