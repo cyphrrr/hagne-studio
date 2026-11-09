@@ -45,7 +45,7 @@ Referenzen: `drehbuecher/e02-turnierbuero.json` (ruhig, Sprechblasen, V2-Figuren
 | Feld | Bedeutung |
 |---|---|
 | `id` | kurze ID für dieses Drehbuch (`pb`, `cy`, …) |
-| `figur` | Name in der Bibliothek: `PoBi`, `cypheR`, `DrBier-Riese`, `Spock`, `Bierdieb-Sturmhaube`, `Bierdieb-Tarnhut` |
+| `figur` | Name in der Bibliothek. V2: `PoBi`, `cypheR`, `KickASS`, `m0og`, `Deichshaf` (mit Ellbogen), `Spallter` (dünn), `DrBier-Riese`. V1: `DrBier`, `Spock`, `Bierdieb-Sturmhaube`, `Bierdieb-Tarnhut` |
 | `x`, `boden` | Standplatz (Füße) |
 | `z` | Ebene, größer = weiter vorn. Gilt auch für Requisiten und Gegenstände |
 | `start` | `draussen`: unsichtbar bis zur ersten Auftritts-Geste (`reinlaufen`, `stapfen`, `auftauchen`, `schleichen`) |
@@ -67,7 +67,7 @@ Referenzen: `drehbuecher/e02-turnierbuero.json` (ruhig, Sprechblasen, V2-Figuren
 
 ### dialog
 
-`{ "von", "bis", "wer", "text" }` → Sprechblase + Lippen. Ohne `text` (z. B. `"laut": "lachen"`) bewegen sich nur die Lippen.
+`{ "von", "bis", "wer", "text" }` → Sprechblase + Lippen. Ohne `text` (z. B. `"laut": "lachen"`) bewegen sich nur die Lippen. Gibt es keine Pegeldaten unter `analyse` (Folge ohne Ton), plappern die Münder gleichmäßig.
 
 ### aktionen
 
@@ -147,6 +147,19 @@ Alle Gesten stehen in `bibliothek/gesten.js`. „Alle“ = funktioniert mit jede
 | `fallen-lassen` | `gegenstand`, `art` (`von-oben` / `aus-der-hand`), `vorlauf`, `z` und je nach Art: `x`, `landet`, `boden`, `rollt_bis` bzw. `start` [x,y], `boden`, `rollt`, `drehung` | Gegenstand fällt, Hand ist ab dann leer |
 | `kratzen-mund` | `runter_ab` | Arm zum Mund, kratzen, runter (DrBier-Riese) |
 
+### Figuren mit eigenen Teilen
+
+| Geste | Parameter | Wirkung |
+|---|---|---|
+| `arm-pose` | `arm` (`rechts`/`links`), `schulter`, `ellbogen`, `rampe` | dreht einen Arm in eine feste Pose; mit Ellbogengelenk (Deichshaf) knickt der Unterarm. Bewährt rechts: Prost [−60, −60], Tasse zum Mund [96, 94], Funk am Ohr [−172, 0]; links Daumen-Pose [50, 70] |
+| `faust-schuetteln` | – | Faust schütteln beim Ausraster (m0og) |
+| `rot-werden` | `von`, `wert` (0–1), `rampe` | Wangen werden rot (m0og) |
+| `trinken` | – | setzt die Flasche an, Augen zu (DrBier) |
+| `flasche-schuetteln` | – | leere Flasche schütteln (DrBier) |
+| `zeigefinger` | – | erhobener Zeigefinger beim Reden (DrBier) |
+| `hintern-kratzen` | – | Kratz-Arm hinten (Spallter) |
+| `finger-riechen` | – | Finger unter die Nase (Spallter) |
+
 ### Spock (Gürtel, Brille)
 
 `brillenblitz`, `guertel-zeigen` (Gürtel ab jetzt in den Händen), `guertel-reissen`, `ninja-arme` (`posen` [[links, rechts], …], `bilder_je_pose`), `kranich` (`schleudern`: Zeitpunkt, `mund`), `lachen`, `wirbeln`, `triumph`.
@@ -158,6 +171,6 @@ Eine Geste ist eine Funktion `(o, c) => { … }` in `bibliothek/gesten.js`. Sie 
 - `c.T` Zeit, `c.f` Bildnummer, `c.t` Zeit seit Beginn der Aktion, `c.d` Dauer der Aktion
 - `c.a` die Aktion selbst (alle Parameter), `c.self` die Figur aus der Besetzung, `c.seite` ±1 Richtung zu den anderen, `c.world` Posen aller Figuren
 
-**Pose-Felder:** `x`, `y`, `rot` (V1), `head`, `hy`, `aL`, `aR`, `lL`, `lR` (Beine), `px`, `py` (Pupillen), `br` [4], `m` (Mund: Zahl = Öffnung, bei Spock `s`/`g`/`y`), `eye` (V1) bzw. `es`/`ew` (V2), `shrug`, `thumb` (V2), `glint`, `belts`, `swL`, `swR` (Spock), `hat` (Tarnhut), `mFix` (Lippen nicht vom Ton steuern lassen).
+**Pose-Felder:** `x`, `y`, `rot` (V1, Spallter), `aLf`, `aRf` (Unterarm bei Ellbogen), `wangen` (m0og), `trinkt`, `schuetteln`, `zeigefinger` (DrBier), `spezial` (Spallter: `kratzen`/`riechen`), `head`, `hy`, `aL`, `aR`, `lL`, `lR` (Beine), `px`, `py` (Pupillen), `br` [4], `m` (Mund: Zahl = Öffnung, bei Spock `s`/`g`/`y`), `eye` (V1) bzw. `es`/`ew` (V2), `shrug`, `thumb` (V2), `glint`, `belts`, `swL`, `swR` (Spock), `hat` (Tarnhut), `mFix` (Lippen nicht vom Ton steuern lassen).
 
 Regeln: Parameter mit sinnvollen Vorgaben, Richtung aus `c.seite` oder Start/Ziel ableiten statt fest verdrahten, und die neue Geste hier im Katalog eintragen.

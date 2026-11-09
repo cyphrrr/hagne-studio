@@ -1,0 +1,42 @@
+{
+ "format": "hagne-drehbuch/0.2",
+ "episode": { "id": "PROBE-ORGA", "titel": "Figurenprobe: die Orga vor der Halle", "dauer": 14.5, "fps": 12, "bild": "16:9" },
+ "kulisse": { "id": "HALLE-AUSSEN-01", "licht": "tag" },
+ "besetzung": [
+  { "id": "ka", "figur": "KickASS", "x": 95, "boden": 390, "z": 1, "kopf": -2 },
+  { "id": "db", "figur": "DrBier", "x": 220, "boden": 390, "z": 2 },
+  { "id": "mo", "figur": "m0og", "x": 345, "boden": 390, "z": 3, "kopf": 2, "brauen": [1, 18, 1, 18] },
+  { "id": "ds", "figur": "Deichshaf", "x": 470, "boden": 390, "z": 4, "kopf": 1.5, "arme": [8, -8] },
+  { "id": "sl", "figur": "Spallter", "x": 590, "boden": 390, "z": 5, "brauen": [2, 0, 2, 0] }
+ ],
+ "dialog": [
+  { "von": 1.1, "bis": 3.0, "wer": "ka", "text": "Funk an alle: Ich bin überall!" },
+  { "von": 4.6, "bis": 6.0, "wer": "db", "text": "Bring Bier mit!" },
+  { "von": 6.4, "bis": 8.0, "wer": "mo", "text": "Scheiß Gäste!" },
+  { "von": 8.4, "bis": 10.0, "wer": "ds", "text": "Wir sind die Besten." },
+  { "von": 12.4, "bis": 14.2, "wer": "sl", "text": "Ei fer bübsch!" }
+ ],
+ "aktionen": [
+  { "von": 0, "bis": 14.5, "wer": ["ka", "db", "mo", "ds", "sl"], "geste": "umherschauen", "tempo": 1.3 },
+  { "von": 1.0, "bis": 3.0, "wer": "ka", "geste": "arm-pose", "arm": "rechts", "schulter": -172, "rampe": 0.2, "pose": { "head": 3 } },
+  { "von": 1.0, "bis": 3.0, "wer": "ka", "geste": "brauen", "wert": [-8, -6, -2, 8] },
+  { "von": 3.0, "bis": 4.4, "wer": "db", "geste": "trinken" },
+  { "von": 4.4, "bis": 4.6, "wer": "db", "geste": "flasche-schuetteln" },
+  { "von": 4.6, "bis": 6.0, "wer": "db", "geste": "zeigefinger" },
+  { "von": 5.8, "bis": 8.0, "wer": "mo", "geste": "rot-werden", "wert": 0.65, "rampe": 0.8 },
+  { "von": 6.4, "bis": 8.0, "wer": "mo", "geste": "faust-schuetteln" },
+  { "von": 8.0, "bis": 10.0, "wer": "ds", "geste": "arm-pose", "arm": "rechts", "schulter": -60, "ellbogen": -60, "rampe": 0.35 },
+  { "von": 8.0, "bis": 10.0, "wer": "ds", "geste": "arm-pose", "arm": "links", "schulter": 50, "ellbogen": 70, "rampe": 0.35 },
+  { "von": 10.0, "bis": 11.3, "wer": "sl", "geste": "hintern-kratzen" },
+  { "von": 11.3, "bis": 12.3, "wer": "sl", "geste": "finger-riechen" },
+  { "von": 12.3, "bis": 12.5, "wer": "sl", "geste": "augen-auf" }
+ ],
+ "kamera": [
+  { "von": 0, "bis": 14.5, "start": [345, 215, 1.1], "ende": [345, 214, 1.12] }
+ ],
+ "schilder": [
+  { "von": 3.1, "bis": 4.3, "text": "*gluck gluck*", "pos": [210, 60], "winkel": -4 },
+  { "von": 10.1, "bis": 11.2, "text": "*kratz*", "pos": [600, 300], "winkel": 4 },
+  { "von": 11.4, "bis": 12.2, "text": "*schnüff*", "pos": [600, 60], "winkel": -4 }
+ ]
+}

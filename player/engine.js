@@ -51,7 +51,7 @@ function poseAt(actor,T,f,world){
 
 /* Lippen: Pegel je Bild aus dem Abschnitt "analyse" (je Figur oder für den ganzen Mix) */
 function talking(id,T){return DB.dialog.some(d=>d.wer===id&&T>=d.von&&T<d.bis);}
-function openAt(id,f){const P=(DB.analyse&&DB.analyse.pegel)||{},e=P[id]||P.mix;if(!e)return 0;
+function openAt(id,f){const P=(DB.analyse&&DB.analyse.pegel)||{},e=P[id]||P.mix;if(!e){const h=hs(f*1.7+id.length*13);return h<0.25?0:0.3+h*0.7;}
  const v=e.v[f-(e.o||0)];return clamp(((v===undefined?-999:v)-(e.null_db!==undefined?e.null_db:-40))/(e.spanne||22));}
 
 /* Fallende Gegenstände: "von-oben" (E02) oder "aus-der-hand" (Gürtel) */
@@ -85,7 +85,7 @@ function signSvg(txt,x,y,a,key){seed=700+key*13;const w=Math.round(txt.length*8.
 function allSigns(){const L=(DB.schilder||[]).map(s=>[s.von,s.bis,s.text,s.pos[0],s.pos[1],s.winkel||0]);
  (DB.effekte||[]).forEach(e=>{if(!e.schild)return;const S=e.schild;e.t.forEach((t,i)=>{const p=S.pos[i%S.pos.length];L.push([t,t+(S.dauer||0.36),S.text,p[0],p[1],S.winkel[i%S.winkel.length]]);});});
  return L;}
-function bubbleSvg(c,d,key){const a=ACT[d.wer];const [tx,ty]=toScreen(c,a.x,a.boden-252*0.92);const L=[d.text];seed=500+key*17;
+function bubbleSvg(c,d,key){const a=ACT[d.wer],kh=(FIGUREN[a.figur]&&FIGUREN[a.figur].kopfhoehe)||252;const [tx,ty]=toScreen(c,a.x,a.boden-kh*0.92);const L=[d.text];seed=500+key*17;
  const w=Math.round(Math.max(...L.map(t=>t.length))*7.6+34),h=18+L.length*18;
  const x=Math.min(Math.max(tx-w/2,10),W-10-w),y=Math.max(8,ty-h-26);
  const bx=Math.min(Math.max(tx,x+18),x+w-18);
@@ -111,7 +111,7 @@ function blendenAt(T){(DB.blenden||[]).forEach((b,i)=>{const el=$('bl-'+i);
 function renderAt(Tin){const fps=DB.episode.fps||12,f=Math.floor(Tin*fps),T=f/fps;
  let world={};DB.besetzung.forEach(a=>{world[a.id]=poseAt(a,T,f,{});});
  const pass1=world;world={};DB.besetzung.forEach(a=>{world[a.id]=poseAt(a,T,f,pass1);});
- DB.besetzung.forEach(a=>{const Fg=FIGUREN[a.figur];if(!Fg)return;const o=world[a.id];
+ DB.besetzung.forEach(a=>{const Fg=FIGUREN[a.figur];if(!Fg)return;const o=world[a.id];o._f=f;
    if(Fg.spricht&&!o.mFix&&!o.off&&talking(a.id,T))Fg.lippen(o,openAt(a.id,f));
    Fg.apply(RIGS[a.id],o,a);});
  const amp=stompAmp(T);

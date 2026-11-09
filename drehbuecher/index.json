@@ -7,6 +7,10 @@
   {
    "id": "GUERTEL",
    "datei": "guertel.json"
+  },
+  {
+   "id": "PROBE-ORGA",
+   "datei": "probe-orga.json"
   }
  ]
 }

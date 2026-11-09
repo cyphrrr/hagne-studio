@@ -94,3 +94,18 @@ Object.assign(GESTEN,{
    o.y=-Math.abs(Math.sin(T*8))*5;o.head=Math.sin(T*9)*6;o.br=[4,14,4,14];o.m='g';},
  'triumph':(o,c)=>{const w=Math.sin(c.T*3);o.aL=135+w*4;o.aR=-135+w*4;o.swL=w*8;o.swR=-w*8;o.m='g';o.br=[-5,0,-5,0];}
 });
+
+/* ==== 5c) GESTEN für die Orga-Figuren (KickASS, m0og, Deichshaf, Spallter, DrBier) ==== */
+Object.assign(GESTEN,{
+ /* Arm in eine feste Pose drehen; mit Ellbogengelenk (Deichshaf) auch den Unterarm.
+    Bewährt: Prost [-60,-60] rechts, Tasse zum Mund [96,94] rechts, Funk am Ohr [-172,0] rechts */
+ 'arm-pose':(o,c)=>{const a=c.a,k=ease(c.t/(a.rampe||0.3)),L=a.arm==='links';
+   if(L){o.aL=lerp(o.aL||0,a.schulter||0,k);o.aLf=lerp(0,a.ellbogen||0,k);}else{o.aR=lerp(o.aR||0,a.schulter||0,k);o.aRf=lerp(0,a.ellbogen||0,k);}},
+ 'faust-schuetteln':(o,c)=>{const f=c.f;o.aR=-60+(hs(f)-0.5)*30;o.aL=8;o.head=(o.head||0)+(hs(f+3)-0.5)*4;const j=(hs(f+7)-0.5)*6;o.br=[4,28+j,4,28-j];},
+ 'rot-werden':(o,c)=>{o.wangen=lerp(c.a.von||0,c.a.wert!==undefined?c.a.wert:0.6,c.t/(c.a.rampe||c.d));},
+ 'trinken':(o,c)=>{o.trinkt=true;o.es=0.12;o.head=-4;o.br=[-5,-6,-5,-6];o.mFix=true;o.m=1.6;},
+ 'flasche-schuetteln':(o,c)=>{o.trinkt=true;o.schuetteln=true;o.px=-3;o.py=-2;o.br=[-7,-14,-7,-14];o.m=3;o.mFix=true;},
+ 'zeigefinger':(o,c)=>{o.zeigefinger=true;o.aR=-65+Math.sin(c.T*5)*6;o.head=Math.sin(c.T*3)*4;o.br=[-3,10,-3,10];},
+ 'hintern-kratzen':(o,c)=>{o.spezial='kratzen';o.head=3;o.px=2;o.py=-2;o.br=[-6,-6,2,6];},
+ 'finger-riechen':(o,c)=>{o.spezial='riechen';o.head=Math.floor(c.T*4)%2?-2:0;o.es=0.12;o.br=[-8,-12,-8,-12];o.m=1;o.mFix=true;}
+});

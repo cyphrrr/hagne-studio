@@ -13,7 +13,7 @@ Exit-Code 1, wenn Fehler gefunden wurden.
 import json, sys, subprocess, pathlib, shutil, tempfile
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-MODULE = ['basis', 'kulissen', 'requisiten', 'figuren-v2', 'figuren-v1', 'gegenstaende', 'gesten']
+MODULE = ['basis', 'kulissen', 'requisiten', 'figuren-v2', 'figuren-v1', 'figuren-orga', 'gegenstaende', 'gesten']
 
 def bibliothek():
     """Lädt die Bibliothek in Node (ohne Browser) und liest die Namen aller Bausteine aus."""
@@ -65,7 +65,7 @@ def pruefe(db, lib):
     if kam and kam[-1]['bis'] < dauer: W.append('Kamera: letzte Einstellung endet vor dem Episodenende (bleibt stehen)')
     sprecher = {d['wer'] for d in db.get('dialog', [])}
     pegel = (db.get('analyse') or {}).get('pegel', {})
-    if sprecher and not pegel: W.append("Keine Pegeldaten unter 'analyse' – Münder bleiben beim Sprechen zu")
+    if sprecher and not pegel: W.append("Keine Pegeldaten unter 'analyse' – Münder plappern gleichmäßig statt nach dem Ton")
     return F, W
 
 def kontaktbogen(pfad, db, zeiten, ziel):
