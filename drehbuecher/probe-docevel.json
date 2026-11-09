@@ -1,0 +1,41 @@
+{
+ "format": "hagne-drehbuch/0.2",
+ "episode": { "id": "PROBE-DOCEVEL", "titel": "Figurenprobe: DocEvel zählt Geld", "dauer": 10.0, "fps": 12, "bild": "16:9" },
+ "kulisse": { "id": "FOYER-01", "licht": "tag" },
+ "besetzung": [
+  { "id": "de", "figur": "DocEvel", "x": 340, "boden": 390, "z": 1 }
+ ],
+ "dialog": [
+  { "von": 0.6, "bis": 2.2, "wer": "de", "text": "Nu jaaa …", "blase": [0.6, 3.0] },
+  { "von": 5.9, "bis": 7.2, "wer": "de", "text": "Oaaah Altaaaa!", "blase": [5.9, 7.6] },
+  { "von": 8.2, "bis": 9.3, "wer": "de", "text": "Also wirglich.", "blase": [8.2, 9.9] }
+ ],
+ "aktionen": [
+  { "von": 0, "bis": 10.0, "wer": "de", "geste": "pose", "pose": { "geld": true, "aL": -8, "aLf": -50, "aR": 8, "aRf": 50 } },
+
+  { "von": 0, "bis": 4.0, "wer": "de", "geste": "pose", "pose": { "geldR": true, "py": 2.5, "px": -1 } },
+  { "von": 0, "bis": 4.0, "wer": "de", "geste": "schwingen", "feld": "aRf", "mitte": 48, "weite": 10, "tempo": 10 },
+  { "von": 0, "bis": 4.0, "wer": "de", "geste": "kopf-wiegen", "tempo": 2.5, "weite": 2 },
+
+  { "von": 4.0, "bis": 5.1, "wer": "de", "geste": "uebergang", "ab": { "fallen": 0 }, "ziel": { "fallen": 1 }, "rampe": 1.1 },
+  { "von": 5.1, "bis": 10.0, "wer": "de", "geste": "pose", "pose": { "fallen": 1 } },
+  { "von": 4.0, "bis": 5.1, "wer": "de", "geste": "pose", "pose": { "geldR": true, "py": 4, "px": -2, "ew": 1.15, "br": [-4, 0, -4, 0] } },
+
+  { "von": 5.1, "bis": 7.9, "wer": "de", "geste": "brauen", "wert": [2, 10, 2, 10] },
+  { "von": 5.1, "bis": 5.9, "wer": "de", "geste": "pose", "pose": { "m": "p", "mFix": true } },
+  { "von": 5.1, "bis": 5.9, "wer": "de", "geste": "uebergang", "ab": { "py": 3, "px": -3, "lid": 0, "head": 0 }, "ziel": { "py": -4.5, "px": 3, "lid": 0.3, "head": -4 }, "rampe": 0.6 },
+  { "von": 5.9, "bis": 7.3, "wer": "de", "geste": "pose", "pose": { "py": -4.5, "px": 3, "lid": 0.3 } },
+  { "von": 5.9, "bis": 7.3, "wer": "de", "geste": "kopf-wiegen", "tempo": 7, "weite": 3 },
+  { "von": 7.3, "bis": 7.9, "wer": "de", "geste": "pose", "pose": { "m": "p", "mFix": true, "head": -2 } },
+  { "von": 7.3, "bis": 7.9, "wer": "de", "geste": "uebergang", "ab": { "py": -4.5, "px": 3, "lid": 0.3 }, "ziel": { "py": 0, "px": 0, "lid": 0 }, "rampe": 0.5 },
+
+  { "von": 7.9, "bis": 10.0, "wer": "de", "geste": "kopf-wiegen", "tempo": 2, "weite": 1.5 },
+  { "von": 9.3, "bis": 10.0, "wer": "de", "geste": "pose", "pose": { "py": 2.5, "px": -1 } }
+ ],
+ "kamera": [
+  { "von": 0, "bis": 10.0, "start": [340, 252, 1.3], "ende": [340, 251, 1.33] }
+ ],
+ "schilder": [
+  { "von": 4.1, "bis": 5.1, "text": "*flatter*", "pos": [250, 330], "winkel": -5 }
+ ]
+}

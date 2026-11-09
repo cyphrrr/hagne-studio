@@ -60,7 +60,7 @@ Ohne `szenen` gilt `kulisse` für die ganze Folge. Mit `szenen` wird bei jedem W
 | Feld | Bedeutung |
 |---|---|
 | `id` | kurze ID für dieses Drehbuch (`pb`, `cy`, …) |
-| `figur` | Name in der Bibliothek, alle Version 2: `PoBi`, `cypheR`, `KickASS`, `m0og`, `Deichshaf` (mit Ellbogen), `Spallter` (dünn), `DrBier` (einen Kopf größer), `DrBier-Riese` (Kopf nie im Bild), `Spock`, `Bierdieb-Sturmhaube`, `Bierdieb-Tarnhut` |
+| `figur` | Name in der Bibliothek, alle Version 2: `PoBi`, `cypheR`, `KickASS`, `m0og`, `Deichshaf` (mit Ellbogen), `DocEvel` (mit Ellbogen, Geldscheine), `Spallter` (dünn), `DrBier` (einen Kopf größer), `DrBier-Riese` (Kopf nie im Bild), `Spock`, `Bierdieb-Sturmhaube`, `Bierdieb-Tarnhut` |
 | `x`, `boden` | Standplatz (Füße) |
 | `z` | Ebene, größer = weiter vorn. Gilt auch für Requisiten und Gegenstände |
 | `start` | `draussen`: unsichtbar bis zur ersten Auftritts-Geste (`reinlaufen`, `stapfen`, `auftauchen`, `schleichen`) |
@@ -174,6 +174,8 @@ Damit lassen sich die meisten Bewegungen ohne neue Geste beschreiben (Beispiel: 
 | `kopf-wiegen` | `tempo`, `weite`, `hoch` | Kopf wiegt beim Reden; mit `hoch` hüpft er dabei leicht |
 | `schwingen` | `feld`, `mitte`, `weite`, `tempo` | ein beliebiges Zahlenfeld pendelt (z. B. Flasche beim Schluck) |
 
+Bewährte Armwinkel für DocEvel [Schulter, Ellbogen]: links Scheine vor dem Bauch [−8, −50], rechts zählen [8, 50] (mit `schwingen` auf `aRf`, Mitte 48, Weite 10, Tempo 10); sein Aufdruck sitzt auf Brusthöhe. Augen rollen: `uebergang` nach `py` −4.5, `px` 3, `lid` 0.3. Beispiel: `probe-docevel.json`.
+
 Bewährte Armwinkel für Deichshaf [Schulter, Ellbogen]: links Mikro am Kinn [−24.3, −130.5], Mikro tiefer [−18.8, −118.5], Hand zeigt hin [38, 44], Zeigefinger zur Seite [82, 6], Hand auf dem Tisch [13.8, 96.5], im Schoß [10, −30]; rechts Zettel lesen [−17.6, 107.5], hoch zeigen [−158, −6], Flasche greifen [−29.7, −52.5], trinken [−169.6, −79], Daumen hoch [−46.5, −142.5], im Schoß [−10, 30].
 
 ### Figuren mit eigenen Teilen
@@ -200,6 +202,6 @@ Eine Geste ist eine Funktion `(o, c) => { … }` in `bibliothek/gesten.js`. Sie 
 - `c.T` Zeit, `c.f` Bildnummer, `c.t` Zeit seit Beginn der Aktion, `c.d` Dauer der Aktion
 - `c.a` die Aktion selbst (alle Parameter), `c.self` die Figur aus der Besetzung, `c.seite` ±1 Richtung zu den anderen, `c.world` Posen aller Figuren
 
-**Pose-Felder:** `x`, `y`, Deichshaf: `mikro`, `mikro_kipp` (Handmikro links), `zettel` (rechts), `zeigefinger` (links), `thumb`/`thumbL` (Daumen hoch rechts/links), `flasche` (`"hand"` oder [x, y] im Bild), `flasche_kipp`, `m` auch `n` (gerade) und `o` (Schlürfen), `es` 0.12 = Augen zu, 0.45 = fröhlich;  `rot` (Körper kippt um die Füße), `aLf`, `aRf` (Unterarm bei Ellbogen), `wangen` (m0og), `trinkt`, `schuetteln`, `zeigefinger` (DrBier), `spezial` (Spallter: `kratzen`/`riechen`), `head`, `hy`, `aL`, `aR`, `lL`, `lR` (Beine), `px`, `py` (Pupillen), `br` [4], `m` (Mund: Zahl = Öffnung, `s` schief, `g` grinsen, `y` lachen), `sy` (Höhe des offenen Lachmunds), `es` (Augen zukneifen, < 1), `ew` (Augen weiten, > 1), `shrug`, `thumb`, `handLeer` (Gegenstand in der Hand weg), `glint` (Brillenblitz), `belts`, `swL`, `swR` (Spock), `hat` (Tarnhut), `mFix` (Lippen nicht vom Ton steuern lassen).
+**Pose-Felder:** `x`, `y`, Deichshaf: `mikro`, `mikro_kipp` (Handmikro links), `zettel` (rechts), `zeigefinger` (links), `thumb`/`thumbL` (Daumen hoch rechts/links), `flasche` (`"hand"` oder [x, y] im Bild), `flasche_kipp`, `m` auch `n` (gerade) und `o` (Schlürfen), `es` 0.12 = Augen zu, 0.45 = fröhlich;  DocEvel: `geld` (Fächer Scheine links), `geldR` (ein Schein rechts), `fallen` 0–1 (drei Scheine fallen zu Boden), `lid` 0–1 (Oberlid senkt sich, genervt), `m` auch `n` (neutral, Grundmund) und `p` (Mund zusammengezogen);  `rot` (Körper kippt um die Füße), `aLf`, `aRf` (Unterarm bei Ellbogen), `wangen` (m0og), `trinkt`, `schuetteln`, `zeigefinger` (DrBier), `spezial` (Spallter: `kratzen`/`riechen`), `head`, `hy`, `aL`, `aR`, `lL`, `lR` (Beine), `px`, `py` (Pupillen), `br` [4], `m` (Mund: Zahl = Öffnung, `s` schief, `g` grinsen, `y` lachen), `sy` (Höhe des offenen Lachmunds), `es` (Augen zukneifen, < 1), `ew` (Augen weiten, > 1), `shrug`, `thumb`, `handLeer` (Gegenstand in der Hand weg), `glint` (Brillenblitz), `belts`, `swL`, `swR` (Spock), `hat` (Tarnhut), `mFix` (Lippen nicht vom Ton steuern lassen).
 
 Regeln: Parameter mit sinnvollen Vorgaben, Richtung aus `c.seite` oder Start/Ziel ableiten statt fest verdrahten, und die neue Geste hier im Katalog eintragen.

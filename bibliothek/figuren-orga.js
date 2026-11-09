@@ -1,5 +1,5 @@
 /* HAGNE-Studio · Bibliothek · Orga-Figuren
-   KickASS, m0og, Deichshaf (V2), Spallter (V2-Sonderkörper), DrBier (V2-Sonderkörper, einen Kopf größer).
+   KickASS, m0og, Deichshaf (V2), DocEvel (V2, Ellbogen), Spallter (V2-Sonderkörper), DrBier (V2-Sonderkörper, einen Kopf größer).
    Übernommen aus den Projekt-Dateien FIGUR-KICKASS, FIGUR-M0OG, FOYER-01 und EPISODE-WERBUNK (Deichshaf), FIGUR-SPALLTER, FIGUR-DRBIER.
    Jede Figur steckt in einem eigenen Block, damit sich Hilfsnamen nicht in die Quere kommen. */
 
@@ -267,4 +267,89 @@ FIGUREN['DrBier']={build:a=>build(a.id,a.hand_rechts),spricht:true,lippen:LIPPEN
   const dr=!!o.trinkt;show(c.al,!dr);show(c.ad,dr);
   c.ad.setAttribute('transform',dr&&o.schuetteln?'translate('+((o._f||0)%2?2:-2)+' '+((o._f||0)%2?-2:1)+')':(dr?'translate(0 '+(Math.floor((o._f||0)/2)%2?-1:0)+')':''));
   show(c.fi,!!o.zeigefinger);}};
+})();
+
+/* ==== DocEvel (Version 2): kurze stachelige Haare silbergrau mit schwarzem Rest, graue Stoppeln, mittlerer Hautton,
+   kleine Rundbrille, schwarzes Shirt, Ellbogengelenk, Geldscheine in der Hand.
+   Wirkt gelassen (Grundmund 'n' = neutral), regt er sich auf: Mund zusammenziehen ('p') und Augen rollen (py −4.5, lid).
+   Pose-Felder: geld (Fächer Scheine in der linken Hand), geldR (ein Schein rechts), fallen 0–1 (drei Scheine fallen aus der linken Hand zu Boden),
+   lid 0–1 (Oberlid senkt sich, genervt), aLf/aRf (Unterarme). Münder: 'n' neutral, 'p' zusammengezogen, 's' schief, 'g' Grinsen, Zahl ab 2 = Sprechmund.
+   Bewährte Armwinkel [Schulter, Ellbogen]: Scheine vor dem Bauch links [−8, −50], zählen rechts [8, 50] (Ellbogen schwingt 38–58); der Aufdruck sitzt auf Brusthöhe (y −127) und bleibt frei. */
+(()=>{
+const SKIN='#C68A5E',SH='#1E1E1C',EDGE='#45453F',PANTS='#3A4A62',BROW='#3A3836';
+const HAIR_S='#AEB0B3',HAIR_L='#D4D6D8',HAIR_K='#262527',HAIR_T='#8D8F92';
+const NOTES=['#D98E4A','#6F9CC4','#7FA86E','#C9726A'];
+function note(col){return piece(rr(-12,-6,24,12,1.5),col,0.4)+'<rect x="-10" y="-4" width="20" height="8" rx="1" fill="none" stroke="rgba(255,255,255,0.45)" stroke-width="0.9"/>'+
+ '<circle cx="5" cy="0" r="2.6" fill="rgba(255,255,255,0.4)"/><path d="M-8 -1.5 h7 M-8 1.5 h5" stroke="rgba(40,30,20,0.4)" stroke-width="0.8"/>';}
+/* Fächer aus Scheinen über der Faust; Ursprung = Faust */
+function fan(){let s='';[-24,-9,6,20].forEach((w,i)=>{s+='<g transform="rotate('+w+' 0 4) translate(0 -9)">'+note(NOTES[i])+'</g>';});
+ return s+piece(rr(-7,-4,14,10,4),SKIN,0.5)+'<path d="M-6 0 h12 M-6 3 h12" stroke="rgba(90,45,20,0.45)" stroke-width="0.8"/>';}
+function single(){return '<g transform="rotate(-12) translate(4 -9)">'+note(NOTES[0])+'</g>'+piece(rr(-5,-4,9,8,3.5),SKIN,0.4);}
+function armExtra(id,sx){return '<g transform="translate(0 '+FORE+')">'+(sx<0?'<g id="'+id+'-cL"><g id="'+id+'-fan" style="display:none">'+fan()+'</g></g>'
+ :'<g id="'+id+'-cR"><g id="'+id+'-one" style="display:none">'+single()+'</g></g>')+'</g>';}
+function handPos(sx,th,e){const a=th*Math.PI/180,b=(th+e)*Math.PI/180;return [sx*SHOULDER.x-ELBOW*Math.sin(a)-FORE*Math.sin(b),SHOULDER.y+ELBOW*Math.cos(a)+FORE*Math.cos(b)];}
+function stubble(){let s=flat([[-35,-194],[-26,-185],[-14,-180],[14,-180],[26,-185],[35,-194],[31,-176],[27,-166],[11,-157],[-11,-157],[-27,-166],[-31,-176]],'rgba(60,54,50,0.2)',0.8);
+ const wl=y=>y<=-176?35-(y+194)*0.222:(y<=-166?31-(y+176)*0.4:27-(y+166)*1.78);
+ let n=0,guard=0;while(n<130&&guard<3000){guard++;const x=(R()-.5)*66,y=-193+R()*35;const ax=Math.abs(x);
+  const top=ax>14?-180-(ax-14)*0.667:-180;if(y<top+1||y>-158||ax>wl(y)-2)continue;if(ax<12&&y>-178&&y<-166)continue;
+  s+='<circle cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="'+(0.4+R()*0.25).toFixed(2)+'" fill="'+(R()<0.55?'#8C8884':'#3A3634')+'" opacity="0.6"/>';n++;}
+ return s;}
+/* kurz und leicht stachelig: viele kleine, weiche Spitzen oben, Ansatz flach */
+function hair(){const top=[];for(let i=0;i<=12;i++){const x=-33+i*5.5;top.push([x,(i%2?-250:-255)-Math.round(3*Math.cos(x/40*Math.PI/2))]);}
+ let s=piece(roundPoly([[-39,-214],[-40,-232],[-36,-244],...top,[36,-244],[40,-232],[39,-214],[35,-222],[28,-228],[16,-231],[4,-229],[-8,-232],[-20,-230],[-30,-227],[-35,-221]],1.8),HAIR_S,1.1);
+ s+='<path d="M-24 -240 l-2 -8 M-8 -242 l0 -9 M8 -242 l1 -9 M24 -240 l2 -8" stroke="'+HAIR_L+'" stroke-width="1.4" stroke-linecap="round"/>';
+ s+='<path d="M-16 -238 l-1 -11 M0 -240 l0.5 -12 M16 -238 l1.5 -10 M-30 -234 l-2 -7" stroke="'+HAIR_K+'" stroke-width="2.2" stroke-linecap="round"/>';
+ s+='<path d="M-4 -236 l-1 -7 M30 -235 l2 -6" stroke="'+HAIR_K+'" stroke-width="1.5" stroke-linecap="round" opacity="0.8"/>';return s;}
+function glasses(){return '<g><circle cx="-14" cy="-204" r="8.6" fill="rgba(220,235,245,0.16)" stroke="#2B2B2D" stroke-width="1.9"/><circle cx="14" cy="-204" r="8.6" fill="rgba(220,235,245,0.16)" stroke="#2B2B2D" stroke-width="1.9"/>'+
+ '<path d="M-5.4 -205 Q0 -208 5.4 -205" stroke="#2B2B2D" stroke-width="1.7" fill="none"/><path d="M-22.6 -205 L-37 -208 M22.6 -205 L37 -208" stroke="#2B2B2D" stroke-width="1.7"/>'+
+ '<path d="M-18 -209 l-3 4 M10 -209 l-3 4" stroke="rgba(255,255,255,0.45)" stroke-width="1.3" stroke-linecap="round"/></g>';}
+function mouth(id){return '<g id="'+id+'-mn"><path d="M-9 -172 Q0 -171 9 -172.6" stroke="#2A0E0B" stroke-width="2.3" fill="none" stroke-linecap="round"/></g>'+
+ '<g id="'+id+'-mp" style="display:none"><path d="M-6 -172 Q0 -171 6 -172" stroke="#2A0E0B" stroke-width="2.4" fill="none" stroke-linecap="round"/>'+
+  '<path d="M-8.5 -174.5 l-0.8 4.5 M8.5 -174.5 l0.8 4.5 M-3.5 -166.8 q3.5 1.4 7 0" stroke="#8A4A30" stroke-width="1.1" fill="none" stroke-linecap="round"/></g>'+
+ '<g id="'+id+'-msc" style="display:none"><path d="M-9 -172 Q2 -170 9 -175" stroke="#2A0E0B" stroke-width="2.3" fill="none" stroke-linecap="round"/></g>'+
+ '<g id="'+id+'-mg" style="display:none"><path d="M-13 -176 Q0 -172 13 -176 Q10 -162 0 -162 Q-10 -162 -13 -176Z" fill="#2A0E0B"/><path d="M-11.5 -175.3 Q0 -171.8 11.5 -175.3 L10.7 -172.2 Q0 -169.4 -10.7 -172.2Z" fill="#FFFDF6"/></g>'+
+ '<ellipse id="'+id+'-mt" style="display:none" cx="0" cy="-171.5" rx="7.5" ry="3" fill="#2A0E0B" stroke="#9C6444" stroke-width="1"/>';}
+function build(a){const id=a.id,sk=SKIN;seed=131;let s='';
+ if(a.haltung!=='sitzt'){s+=piece(box(-22,-72,17,66),PANTS)+piece(box(5,-72,17,66),PANTS);
+  s+=piece(shoe(-30,-10,28,11),'#2A2624')+piece(shoe(2,-10,28,11),'#2A2624');}
+ s+=piece(TORSO_V2,SH);
+ s+='<g data-logo="1" data-t="translate(0 -127)" data-size="15" data-max="64"></g>';
+ /* beide Arme vor dem Rumpf, damit die Scheine vor dem Shirt lesbar bleiben */
+ s+=armJ(id+'-al',-1,SH,sk,armExtra(id,-1),EDGE);
+ s+=armJ(id+'-ar',1,SH,sk,armExtra(id,1),EDGE);
+ s+=piece(box(-8,-168,16,16),sk);
+ s+='<g id="'+id+'-h">'+piece(HEAD_V2,sk,2.6);
+ s+=piece(rect(-39,-226,5,15),HAIR_T,0.8)+piece(rect(34,-226,5,15),HAIR_T,0.8);
+ s+='<clipPath id="'+id+'-ec"><circle cx="-14" cy="-204" r="7.6"/><circle cx="14" cy="-204" r="7.6"/></clipPath>';
+ s+='<g id="'+id+'-e">'+piece(circ(-14,-204,7.5),'#FFFDF6',1.2)+piece(circ(14,-204,7.5),'#FFFDF6',1.2)+'<g id="'+id+'-p"><circle cx="-13" cy="-203" r="3" fill="#1F1B18"/><circle cx="15" cy="-203" r="3" fill="#1F1B18"/></g>'+
+  '<g clip-path="url(#'+id+'-ec)"><rect id="'+id+'-lid" x="-24" y="-212" width="48" height="0" fill="'+sk+'"/></g></g>';
+ s+='<g id="'+id+'-bl">'+flat(rect(-8.5,-2.3,17,4.6),BROW,1)+'</g><g id="'+id+'-br">'+flat(rect(-8.5,-2.3,17,4.6),BROW,1)+'</g>';
+ s+=NOSE_V2()+stubble()+mouth(id)+hair()+glasses();
+ s+='</g>';
+ /* lose Scheine, die aus der linken Hand fallen: eigene Lage vor allem */
+ s+='<g id="'+id+'-fall" style="display:none">'+[0,1,2].map(i=>'<g id="'+id+'-fall'+i+'">'+note(NOTES[(i+1)%4])+'</g>').join('')+'</g>';
+ return s;}
+function rig(id){const g=k=>$(id+'-'+k);
+ return {g:$(id),h:g('h'),e:g('e'),p:g('p'),lid:g('lid'),bl:g('bl'),br:g('br'),al:g('al'),ar:g('ar'),alf:g('al-f'),arf:g('ar-f'),cL:g('cL'),cR:g('cR'),fan:g('fan'),one:g('one'),
+  mn:g('mn'),mp:g('mp'),msc:g('msc'),mg:g('mg'),mt:g('mt'),fall:g('fall'),fi:[0,1,2].map(i=>g('fall'+i))};}
+function apply(r,o,a){const aL=o.aL||0,aLf=o.aLf||0,aR=o.aR||0,aRf=o.aRf||0,f=o._f||0;
+ r.g.setAttribute('transform','translate('+o.x.toFixed(1)+','+(a.boden+(o.y||0)).toFixed(1)+') scale(0.92)'+(o.rot?' rotate('+o.rot.toFixed(1)+')':''));
+ r.h.setAttribute('transform','translate(0 '+(o.hy||0)+') rotate('+(o.head||0).toFixed(1)+' 0 -195)');
+ r.al.setAttribute('transform','rotate('+aL.toFixed(1)+')');r.alf.setAttribute('transform','rotate('+aLf.toFixed(1)+')');
+ r.ar.setAttribute('transform','rotate('+aR.toFixed(1)+')');r.arf.setAttribute('transform','rotate('+aRf.toFixed(1)+')');
+ r.cL.setAttribute('transform','rotate('+(-(aL+aLf)).toFixed(1)+')');r.cR.setAttribute('transform','rotate('+(-(aR+aRf)).toFixed(1)+')');
+ show(r.fan,!!o.geld);show(r.one,!!o.geldR);
+ let m=o.m===undefined?'n':o.m;if(typeof m==='number')m=m>=2?'t':'n';else if(m==='y')m='g';
+ show(r.mn,m==='n');show(r.mp,m==='p');show(r.msc,m==='s');show(r.mg,m==='g');show(r.mt,m==='t');if(m==='t')r.mt.setAttribute('ry',o.m.toFixed(1));
+ const b=o.br||[0,0,0,0];r.bl.setAttribute('transform','translate(-15 '+(-218+b[0])+') rotate('+b[1]+')');r.br.setAttribute('transform','translate(15 '+(-218+b[2])+') rotate('+(-b[3])+')');
+ r.p.setAttribute('transform','translate('+(o.px||0)+' '+(o.py||0)+')');
+ r.lid.setAttribute('height',(16*clamp(o.lid||0)).toFixed(1));
+ let es=o.es===undefined?1:o.es;const ew=o.ew||1;if(es===1&&ew===1&&!o.lid&&((f*7919)%67)<2)es=0.12;
+ r.e.setAttribute('transform',(es!==1||ew!==1)?'translate(0 -204) scale('+ew+' '+(es*ew).toFixed(2)+') translate(0 204)':'');
+ const k0=o.fallen||0;show(r.fall,k0>0);
+ if(k0>0){const hp=handPos(-1,aL,aLf);r.fi.forEach((el,i)=>{const k=clamp((k0-i*0.12)/0.76),kk=k*k;
+   const x=hp[0]+[-14,10,26][i]*k+Math.sin(k*Math.PI*3+i*2)*7*(1-k),y=lerp(hp[1]-6,-4-i*1.5,kk);
+   const w=lerp(Math.sin(k*11+i)*40,[8,-6,14][i],k),sy=lerp(1,0.4,clamp((k-0.85)/0.15));
+   el.setAttribute('transform','translate('+x.toFixed(1)+' '+y.toFixed(1)+') rotate('+w.toFixed(1)+') scale(1 '+sy.toFixed(2)+')');});}}
+FIGUREN['DocEvel']={build,rig,apply,spricht:true,lippen:(o,k)=>{if(k>0.12)o.m=2+5*k;},kopfhoehe:262};
 })();
