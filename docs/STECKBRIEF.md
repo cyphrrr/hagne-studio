@@ -28,4 +28,7 @@ Typischer Spruch oder Macke:
 
 ## Im Studio
 
-Eine neue Figur landet als Eintrag in `bibliothek/figuren-v2.js` (Definition wie `PB` oder `CY`, dazu ein Eintrag in `FIGUREN`). Danach kann jedes Drehbuch sie über ihren Namen besetzen.
+Eine neue Figur landet als Eintrag in `FIGUREN` und kann danach in jedem Drehbuch über ihren Namen besetzt werden. Wohin sie gehört:
+
+- **`bibliothek/figuren-v2.js`** – einfache V2-Figur aus dem Grundbaukasten, Definition wie `PB` oder `CY`.
+- **`bibliothek/figuren-orga.js`** – Figur mit Ellbogengelenk, eigenen Händen (Mikro, Flasche …) oder Sonderkörper (sehr dünn, Hüfte, eigene Beine). Vorlage: `V2X({…})` wie KickASS oder m0og; ganz eigene Bauweise wie Deichshaf oder Spallter in einem eigenen Block `(()=>{ … })();`, damit Hilfsnamen nicht kollidieren.
