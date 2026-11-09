@@ -51,6 +51,10 @@
   {
    "id": "PROBE-MARLEC",
    "datei": "probe-marlec.json"
+  },
+  {
+   "id": "PROBE-RAMSHADOW",
+   "datei": "probe-ramshadow.json"
   }
  ]
 }
