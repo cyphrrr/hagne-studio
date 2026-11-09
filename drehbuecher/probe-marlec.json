@@ -1,0 +1,56 @@
+{
+ "format": "hagne-drehbuch/0.2",
+ "episode": { "id": "PROBE-MARLEC", "titel": "Figurenprobe: Marlec und der Bierkasten", "dauer": 10.0, "fps": 12, "bild": "16:9", "schleife": true },
+ "kulisse": { "id": "THEKE-01", "licht": "tag", "requisiten": [ { "id": "tresen", "z": -1 } ] },
+ "besetzung": [
+  { "id": "mc", "figur": "Marlec", "x": 475, "boden": 390, "z": 1, "namensschild": true }
+ ],
+ "gegenstaende": [
+  { "id": "kasten", "art": "orga-bierkasten", "x": 565, "y": 257, "z": 3 }
+ ],
+ "dialog": [],
+ "aktionen": [
+  { "von": 0, "bis": 3.0, "wer": "mc", "geste": "tragen", "gegenstand": "kasten", "notiz": "schleppt den Kasten vor der Theke herum" },
+
+  { "von": 0, "bis": 1.4, "wer": "mc", "geste": "reinlaufen", "von_x": 475, "rampe": 1.4, "tempo": 9, "armschwung": 0, "armbasis": 3, "px": -3 },
+  { "von": 0, "bis": 1.4, "wer": "mc", "geste": "uebergang", "ab": { "x": 475 }, "ziel": { "x": 300 } },
+  { "von": 1.4, "bis": 1.8, "wer": "mc", "geste": "hin-und-her", "tempo": 6, "weite": 3, "notiz": "kurz verpeilt umgucken" },
+  { "von": 1.4, "bis": 1.8, "wer": "mc", "geste": "pose", "pose": { "x": 300 } },
+  { "von": 1.8, "bis": 3.0, "wer": "mc", "geste": "reinlaufen", "von_x": 475, "rampe": 1.2, "tempo": 9, "armschwung": 0, "armbasis": 3, "px": 3 },
+  { "von": 1.8, "bis": 3.0, "wer": "mc", "geste": "uebergang", "ab": { "x": 300 }, "ziel": { "x": 475 } },
+
+  { "von": 3.0, "bis": 3.3, "wer": "mc", "geste": "pose", "pose": { "aL": 28, "aR": -28, "py": -2, "br": [-4, 0, -4, 0] }, "notiz": "Kasten auf den Tresen wuchten" },
+  { "von": 3.3, "bis": 3.8, "wer": "mc", "geste": "reinlaufen", "von_x": 475, "rampe": 0.5, "tempo": 9, "armschwung": 6, "px": -2 },
+  { "von": 3.3, "bis": 3.8, "wer": "mc", "geste": "uebergang", "ab": { "x": 475 }, "ziel": { "x": 400 } },
+
+  { "von": 3.8, "bis": 7.0, "wer": "mc", "geste": "pose", "pose": { "x": 400, "m": "y", "sx": 1.45, "sy": 1.85, "mFix": true, "es": 0.12, "hy": -4, "br": [-7, 0, -7, 0] }, "notiz": "lacht verdammt laut" },
+  { "von": 3.8, "bis": 7.0, "wer": "mc", "geste": "kopf-wiegen", "tempo": 10, "weite": 4 },
+  { "von": 3.8, "bis": 7.0, "wer": "mc", "geste": "wippen", "art": "takt", "tempo": 14, "weite": 3 },
+  { "von": 3.8, "bis": 7.0, "wer": "mc", "geste": "schwingen", "feld": "rot", "weite": 2.5, "tempo": 5 },
+  { "von": 3.8, "bis": 7.0, "wer": "mc", "geste": "schwingen", "feld": "aL", "mitte": 24, "weite": 6, "tempo": 13 },
+  { "von": 3.8, "bis": 7.0, "wer": "mc", "geste": "schwingen", "feld": "aR", "mitte": -24, "weite": 6, "tempo": 13 },
+
+  { "von": 7.0, "bis": 8.7, "wer": "mc", "geste": "pose", "pose": { "x": 400, "m": "s", "mFix": true, "ew": 1.25, "br": [-7, 0, 2, 6] }, "notiz": "glotzt grenzdebil-verpeilt" },
+  { "von": 7.0, "bis": 8.7, "wer": "mc", "geste": "uebergang", "ab": { "schiel": 0 }, "ziel": { "schiel": 1 }, "rampe": 0.4 },
+  { "von": 7.0, "bis": 8.7, "wer": "mc", "geste": "kopf-neigen", "von_grad": 0, "nach_grad": 7, "rampe": 0.6 },
+  { "von": 7.0, "bis": 8.7, "wer": "mc", "geste": "wippen", "tempo": 2, "weite": 1 },
+
+  { "von": 8.7, "bis": 9.4, "wer": "mc", "geste": "reinlaufen", "von_x": 400, "rampe": 0.7, "tempo": 6, "armschwung": 4, "px": 0 },
+  { "von": 8.7, "bis": 9.4, "wer": "mc", "geste": "pose", "pose": { "m": "s", "mFix": true, "schiel": 1, "ew": 1.2, "head": 7, "br": [-7, 0, 2, 6] }, "notiz": "schlurft zurück zum Kasten" },
+
+  { "von": 9.4, "bis": 10.0, "wer": "mc", "geste": "tragen", "gegenstand": "kasten", "aufheben": 0.45 },
+  { "von": 9.4, "bis": 10.0, "wer": "mc", "geste": "uebergang", "ab": { "schiel": 1, "head": 7, "ew": 1.2, "py": 2 }, "ziel": { "schiel": 0, "head": 0, "ew": 1, "py": 0 }, "rampe": 0.6 },
+  { "von": 9.4, "bis": 10.0, "wer": "mc", "geste": "pose", "pose": { "aL": 3, "aR": -3 } }
+ ],
+ "kamera": [
+  { "von": 0, "bis": 3.8, "start": [390, 250, 1.25], "ende": [390, 250, 1.25] },
+  { "von": 3.8, "bis": 7.0, "start": [390, 250, 1.25], "ende": [405, 245, 1.35], "wackeln": 3 },
+  { "von": 7.0, "bis": 10.0, "start": [405, 245, 1.35], "ende": [390, 250, 1.25] }
+ ],
+ "schilder": [
+  { "von": 3.0, "bis": 3.7, "text": "*KLONK*", "pos": [600, 250], "winkel": 6 },
+  { "von": 3.9, "bis": 5.4, "text": "HAHAHAHA!", "pos": [470, 45], "winkel": -6 },
+  { "von": 5.4, "bis": 6.9, "text": "HAHAHAHAHA!!", "pos": [250, 60], "winkel": 5 },
+  { "von": 7.6, "bis": 8.7, "text": "…hä?", "pos": [470, 70], "winkel": -4 }
+ ]
+}

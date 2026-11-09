@@ -49,6 +49,10 @@
    "datei": "probe-drbier-riese.json"
   },
   {
+   "id": "PROBE-MARLEC",
+   "datei": "probe-marlec.json"
+  },
+  {
    "id": "PROBE-DEICHSHAF",
    "datei": "probe-deichshaf.json"
   },

@@ -82,8 +82,10 @@ function objAt(a,T){if(T<a.von)return null;
 /* Tragbare Gegenstände: liegen, werden getragen, fallen nach dem Loslassen zurück */
 function gegAt(g,T,world){let x=g.x,y=g.y,r=0;const tr=AKT.find(a=>a.geste==='tragen'&&a.gegenstand===g.id&&T>=a.von&&T<a.bis+0.3);
  if(tr){const act=ACT[tr.wer[0]],h=g.art_.trage_hoehe||77.3;
-  if(T<tr.bis){const o=world[tr.wer[0]];x=o.x;y=act.boden+(o.y||0)-h;r=o.rot||0;}
-  else{const k=(T-tr.bis)/0.3;y=lerp(act.boden-h,g.y,k*k);}}
+  if(T<tr.bis){const o=world[tr.wer[0]];x=o.x;y=act.boden+(o.y||0)-h;r=o.rot||0;
+   /* aufheben (s): Gegenstand wandert von seinem Platz weich in die Hände, statt hineinzuspringen */
+   if(tr.aufheben&&T<tr.von+tr.aufheben){const k=ease((T-tr.von)/tr.aufheben);x=lerp(g.x,x,k);y=lerp(g.y,y,k);r=lerp(0,r,k);}}
+  else{const k=(T-tr.bis)/0.3;y=lerp(act.boden-h,g.y,k*k);const o=world[tr.wer[0]];if(o)x=lerp(o.x,g.x,ease(k));}}
  return {x,y,r};}
 
 function camAt(T){const f=Math.floor(T*12);const S=DB.kamera;let sh=S[S.length-1];for(const q of S){if(T>=q.von&&T<q.bis){sh=q;break;}}
