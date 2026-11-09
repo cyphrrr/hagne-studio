@@ -1,0 +1,45 @@
+{
+ "format": "hagne-drehbuch/0.2",
+ "episode": { "id": "PROBE-CYPHER", "titel": "Figurenprobe: cypheR und das gezogene Kabel", "dauer": 10.0, "fps": 12, "bild": "16:9" },
+ "kulisse": { "id": "HALLE-AUSSEN-01", "licht": "tag" },
+ "besetzung": [
+  { "id": "cy", "figur": "cypheR", "x": 340, "boden": 390, "z": 1, "hand_rechts": "lan-kabel" }
+ ],
+ "dialog": [
+  { "von": 2.5, "bis": 4.4, "wer": "cy", "text": "Wer hat das Kabel gezogen?", "blase": [2.4, 4.8] },
+  { "von": 7.7, "bis": 9.0, "wer": "cy", "text": "Einmal mit Profis!", "blase": [7.6, 9.2] }
+ ],
+ "aktionen": [
+  { "von": 0, "bis": 10.0, "wer": "cy", "geste": "wippen", "tempo": 1.4, "weite": 1.5 },
+
+  { "von": 0, "bis": 1.6, "wer": "cy", "geste": "pose", "pose": { "handLeer": true, "head": -1 } },
+  { "von": 0, "bis": 1.6, "wer": "cy", "geste": "umherschauen", "tempo": 1.3 },
+
+  { "von": 1.6, "bis": 2.4, "wer": "cy", "geste": "uebergang", "ab": { "aR": 0 }, "ziel": { "aR": -35 }, "rampe": 0.6 },
+  { "von": 1.6, "bis": 2.4, "wer": "cy", "geste": "pose", "pose": { "px": 2, "py": 3, "head": 2, "br": [-4, 0, -4, 0] } },
+  { "von": 1.6, "bis": 2.4, "wer": "cy", "geste": "schwingen", "feld": "swH", "weite": 6, "tempo": 5 },
+
+  { "von": 2.4, "bis": 4.8, "wer": "cy", "geste": "uebergang", "ab": { "aR": -35 }, "ziel": { "aR": -105 }, "rampe": 0.4 },
+  { "von": 2.4, "bis": 4.8, "wer": "cy", "geste": "pose", "pose": { "px": 3, "py": -1, "head": 5, "br": [-9, -10, 2, -3] } },
+  { "von": 2.4, "bis": 4.8, "wer": "cy", "geste": "schwingen", "feld": "swH", "weite": 14, "tempo": 4 },
+
+  { "von": 4.8, "bis": 5.8, "wer": "cy", "geste": "uebergang", "ab": { "aR": -105 }, "ziel": { "aR": -20 }, "rampe": 0.4 },
+  { "von": 4.8, "bis": 5.8, "wer": "cy", "geste": "pose", "pose": { "px": 0, "py": 0, "head": 0, "br": [2, 4, 2, 4] } },
+  { "von": 4.8, "bis": 5.8, "wer": "cy", "geste": "schwingen", "feld": "swH", "weite": 5, "tempo": 4 },
+
+  { "von": 5.8, "bis": 7.6, "wer": "cy", "geste": "pose", "pose": { "handLeer": true } },
+  { "von": 5.8, "bis": 7.6, "wer": "cy", "geste": "facepalm" },
+
+  { "von": 7.6, "bis": 10.0, "wer": "cy", "geste": "pose", "pose": { "handLeer": true } },
+  { "von": 7.6, "bis": 9.2, "wer": "cy", "geste": "kopf-wiegen", "tempo": 5, "weite": 6 },
+  { "von": 7.6, "bis": 9.2, "wer": "cy", "geste": "brauen", "wert": [-9, -10, 2, -3] },
+  { "von": 9.2, "bis": 10.0, "wer": "cy", "geste": "umherschauen", "tempo": 1.3 }
+ ],
+ "kamera": [
+  { "von": 0, "bis": 10.0, "start": [352, 250, 1.25], "ende": [352, 249, 1.28] }
+ ],
+ "schilder": [
+  { "von": 4.9, "bis": 5.8, "text": "…", "pos": [428, 150], "winkel": -3 },
+  { "von": 5.9, "bis": 7.5, "text": "*seufz*", "pos": [436, 138], "winkel": 4 }
+ ]
+}

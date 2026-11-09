@@ -129,3 +129,10 @@ Object.assign(GESTEN,{
  /* Ein beliebiges Zahlenfeld pendelt um "mitte" */
  'schwingen':(o,c)=>{const a=c.a;o[a.feld]=(a.mitte||0)+Math.sin(c.T*(a.tempo||3))*(a.weite!==undefined?a.weite:1);}
 });
+
+/* ==== 5e) GESTEN für alle V2-Figuren mit makeChar (cypheR, PoBi, Spock …) ==== */
+Object.assign(GESTEN,{
+ /* Hand vors Gesicht: Facepalm-Arm schwenkt in rampe Sekunden hoch, Augen zu, Kopf sackt zur Hand */
+ 'facepalm':(o,c)=>{const a=c.a,k=ease(c.t/(a.rampe!==undefined?a.rampe:0.35));o.fp=20+130*k;o.es=0.12;
+   o.head=(a.kopf!==undefined?a.kopf:6)+Math.sin(c.T*3)*2;o.br=brauen(a.brauen||'genervt');}
+});
