@@ -1,6 +1,6 @@
 # HAGNE – Steckbrief für neue Figuren
 
-Vorlage zum Kopieren für jede neue Orga-Figur:
+Vorlage zum Kopieren für jede neue Orga-Figur. Gibt es ein Foto, füllt der **Hagnomat** sie aus (`docs/HAGNOMAT.md`): Foto in den Chat laden und „Hagnomat: Steckbrief für <Spitzname>“ schreiben.
 
 ```
 Spitzname:

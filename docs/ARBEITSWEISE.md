@@ -4,7 +4,7 @@ Diese Datei ist die eigentliche Anleitung des Skills `hagne-studio`. Der hochgel
 
 ## 1 · Was zuerst lesen
 
-`docs/FORMAT.md` (Drehbuch-Format und Gesten-Katalog). Für Figuren zusätzlich `docs/STECKBRIEF.md` und `docs/VERSION-2.md`. Als Vorlage für Drehbücher dienen `drehbuecher/e02-turnierbuero.json`, `drehbuecher/guertel.json` und `drehbuecher/e03-werbunk.json` (mehrere Szenen mit harten Schnitten, Abläufe aus den Bausteinen `pose`/`uebergang`).
+`docs/FORMAT.md` (Drehbuch-Format und Gesten-Katalog). Für Figuren zusätzlich `docs/STECKBRIEF.md` und `docs/VERSION-2.md`, für Figuren aus einem Foto außerdem `docs/HAGNOMAT.md`. Als Vorlage für Drehbücher dienen `drehbuecher/e02-turnierbuero.json`, `drehbuecher/guertel.json` und `drehbuecher/e03-werbunk.json` (mehrere Szenen mit harten Schnitten, Abläufe aus den Bausteinen `pose`/`uebergang`).
 
 Figuren, Gesten, Kulissen und Requisiten immer aus `bibliothek/` und dem Katalog in `docs/FORMAT.md` nehmen, nie aus dem Gedächtnis nachbauen – das Repo ist immer aktueller als jede Erinnerung.
 
@@ -24,10 +24,13 @@ Mit dem Media-Team **im Dialog, Schritt für Schritt**: erst grob die Idee bzw. 
 3. Szenen in Takte zerlegen, Figuren zuordnen, dann wie A weiter. Hat der Clip Schnitte, je Schauplatz einen Eintrag unter `szenen` anlegen (harte Schnitte wie im Video).
 
 **C · Neue Figur**
-Steckbrief ausfüllen lassen, Figur nach `docs/VERSION-2.md` bauen und mit einer Figurenprobe zeigen (`drehbuecher/probe-<name>.json`, ID `PROBE-<NAME>`, 10 s Schleife mit der typischen Macke – siehe „episode“ in `docs/FORMAT.md`; in `drehbuecher/index.json` eintragen). Einfache Figuren kommen nach `bibliothek/figuren-v2.js` (wie `PB`/`CY`), Figuren mit Ellbogen, eigenen Händen oder Sonderkörper nach `bibliothek/figuren-orga.js` (wie KickASS/m0og über `V2X`, ganz eigene wie Deichshaf/Spallter in einem eigenen Block) – Details in `docs/STECKBRIEF.md`. In beiden Fällen ein Eintrag in `FIGUREN`.
+Steckbrief ausfüllen lassen (gibt es ein Foto, füllt ihn der Hagnomat aus, siehe E), Figur nach `docs/VERSION-2.md` bauen und mit einer Figurenprobe zeigen (`drehbuecher/probe-<name>.json`, ID `PROBE-<NAME>`, 10 s Schleife mit der typischen Macke – siehe „episode“ in `docs/FORMAT.md`; in `drehbuecher/index.json` eintragen). Einfache Figuren kommen nach `bibliothek/figuren-v2.js` (wie `PB`/`CY`), Figuren mit Ellbogen, eigenen Händen oder Sonderkörper nach `bibliothek/figuren-orga.js` (wie KickASS/m0og über `V2X`, ganz eigene wie Deichshaf/Spallter in einem eigenen Block) – Details in `docs/STECKBRIEF.md`. In beiden Fällen ein Eintrag in `FIGUREN`.
 
 **D · Neue Geste, Kulisse, Requisite**
 In der passenden Datei unter `bibliothek/` ergänzen, wiederverwendbar mit Parametern (siehe „Eine neue Geste bauen“ in `docs/FORMAT.md`) und im Katalog in `docs/FORMAT.md` eintragen.
+
+**E · Figur aus Foto (Hagnomat)**
+Lädt jemand ein Foto einer Person hoch („Hagnomat: Steckbrief für …“), `docs/HAGNOMAT.md` lesen und befolgen. Heraus kommt nur der Steckbrief-Vorschlag mit Farben, Merkmal, Verwechslungs-Check und Baukasten-Abgleich. Spitzname und Macke werden nachgefragt. Danach das Foto überall löschen. Gebaut wird erst danach, wie unter C.
 
 ## 3 · Prüfen
 
@@ -50,5 +53,6 @@ Den Kontaktbogen selbst ansehen, bevor er gezeigt wird. Der Kontaktbogen braucht
 - Nur Spitznamen, nie Klarnamen. Shirt-Aufdruck immer `['ju:nien]`.
 - Neue Figuren immer Version 2, ohne Klebestreifen am Kinn.
 - **Nie ins Repo:** Rohvideos, Fotos echter Personen, Zugangsdaten oder Tokens. Das Repo ist öffentlich.
+- Fotos für den Hagnomat nur im Chat ansehen, nicht speichern, zuschneiden oder in Dateien einbetten. Ins Repo geht nur der Text-Steckbrief. Sobald der Steckbrief steht, alle erreichbaren Kopien des Fotos sofort löschen und das bestätigen.
 - Nur eigenes Material der ['ju:nien] verwenden, keine fremde Musik oder Filmausschnitte.
 - Deterministisch bleiben: kein `Math.random()`, sondern `R()`/`hs()` aus `bibliothek/basis.js`.
