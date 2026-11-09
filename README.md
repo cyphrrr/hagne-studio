@@ -9,7 +9,7 @@ Cartoons der LAN-Party **['ju:nien]** – „junienTV präsentiert“. Jede Folg
 | Ordner | Inhalt |
 |---|---|
 | `drehbuecher/` | alle Folgen als JSON, `index.json` listet sie für den Player |
-| `bibliothek/` | Bausteine: `basis`, `kulissen`, `requisiten`, `figuren-v2`, `figuren-v1`, `gegenstaende`, `gesten` |
+| `bibliothek/` | Bausteine: `basis`, `kulissen`, `requisiten`, `figuren-v2`, `figuren-orga`, `gegenstaende`, `gesten` |
 | `player/` | Engine: liest ein Drehbuch und zeichnet jedes Bild |
 | `index.html` | der Player (lädt Bibliothek und Drehbücher) |
 | `werkzeuge/` | `buendeln.py` (Einzeldatei, offline), `pruefen.py` (Prüfung + Kontaktbogen), `rendern.py` (MP4) |

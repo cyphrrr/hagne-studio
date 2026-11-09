@@ -2,7 +2,7 @@
 
 Ein Drehbuch beschreibt eine Szene vollständig als Daten. Gezeichnet wird immer mit der gemeinsamen Bibliothek (`bibliothek/`), abgespielt mit dem Player (`index.html`). Wer eine Folge baut, schreibt also nur JSON – Code entsteht nur, wenn ein Baustein in der Bibliothek fehlt.
 
-Referenzen: `drehbuecher/e02-turnierbuero.json` (ruhig, Sprechblasen, V2-Figuren), `drehbuecher/guertel.json` (viel Choreografie, Blenden, V1-Figuren) und `drehbuecher/e03-werbunk.json` (fünf Szenen mit harten Schnitten, eine Figur, Abläufe aus Bausteinen).
+Referenzen: `drehbuecher/e02-turnierbuero.json` (ruhig, Sprechblasen, V2-Figuren), `drehbuecher/guertel.json` (viel Choreografie, Blenden, Spock und Bierdiebe) und `drehbuecher/e03-werbunk.json` (fünf Szenen mit harten Schnitten, eine Figur, Abläufe aus Bausteinen).
 
 ## Grundregeln
 
@@ -60,13 +60,13 @@ Ohne `szenen` gilt `kulisse` für die ganze Folge. Mit `szenen` wird bei jedem W
 | Feld | Bedeutung |
 |---|---|
 | `id` | kurze ID für dieses Drehbuch (`pb`, `cy`, …) |
-| `figur` | Name in der Bibliothek. V2: `PoBi`, `cypheR`, `KickASS`, `m0og`, `Deichshaf` (mit Ellbogen), `Spallter` (dünn), `DrBier-Riese`. V1: `DrBier`, `Spock`, `Bierdieb-Sturmhaube`, `Bierdieb-Tarnhut` |
+| `figur` | Name in der Bibliothek, alle Version 2: `PoBi`, `cypheR`, `KickASS`, `m0og`, `Deichshaf` (mit Ellbogen), `Spallter` (dünn), `DrBier` (einen Kopf größer), `DrBier-Riese` (Kopf nie im Bild), `Spock`, `Bierdieb-Sturmhaube`, `Bierdieb-Tarnhut` |
 | `x`, `boden` | Standplatz (Füße) |
 | `z` | Ebene, größer = weiter vorn. Gilt auch für Requisiten und Gegenstände |
 | `start` | `draussen`: unsichtbar bis zur ersten Auftritts-Geste (`reinlaufen`, `stapfen`, `auftauchen`, `schleichen`) |
-| `haltung` | `sitzt` (V2: keine Beine; Deichshaf: von vorn sitzend mit Oberschenkeln, dazu `stuhl-gruen`) |
+| `haltung` | `sitzt` (keine Beine; Deichshaf: von vorn sitzend mit Oberschenkeln, dazu `stuhl-gruen`) |
 | Grundpose | `arme` [links, rechts] in Grad, `blick` [x, y] Pupillen, `kopf` Neigung, `brauen` Vorlage oder [4 Zahlen], `mund` (`schief`, `grinsen`, `lachen`), `bebt` (wackelt beim Stampfen) |
-| `hand_rechts` | Gegenstand in der rechten Hand (V1), z. B. `bierflasche-klein` |
+| `hand_rechts` | Gegenstand in der rechten Hand, bleibt aufrecht, z. B. `bierflasche-klein` |
 
 **Armwinkel:** 0 = hängend. Links positiv = nach außen/oben, rechts negativ = nach außen/oben. 150 bzw. −150 ≈ über dem Kopf.
 
@@ -124,8 +124,8 @@ Alle Gesten stehen in `bibliothek/gesten.js`. „Alle“ = funktioniert mit jede
 | `schleichen` | `von_x`, `von_y` (aus der Tiefe, z. B. hinter Busch), `rampe`, `hoch`, `neigung`, `kopf`, `px`, `py`, `armschwung` | geduckt anschleichen |
 | `stapfen` | `von_x`, `schritte` | schwere Schritte (mit `effekte` → stampf) |
 | `fliehen` | `nach_x`, `rampe`, `von_x` | rennt panisch weg |
-| `ausrutschen` | `von_x`, `nach_x`, `hoch` | fliegt hin, landet auf der Seite (V1) |
-| `liegen-glotzen` | `x`, `hoch` | liegt und glotzt, blinzelt ab und zu (V1) |
+| `ausrutschen` | `von_x`, `nach_x`, `hoch` | fliegt hin, landet auf der Seite |
+| `liegen-glotzen` | `x`, `hoch` | liegt und glotzt, blinzelt ab und zu |
 | `auftauchen` | `x`, `tiefe` [von, nach], `rampe`, `blickfolge` [[t, px], …], `brauen` | taucht hinter etwas auf und lauert |
 
 ### Blick und Mimik
@@ -137,13 +137,13 @@ Alle Gesten stehen in `bibliothek/gesten.js`. „Alle“ = funktioniert mit jede
 | `hin-und-her` | `tempo`, `weite` | Blick pendelt links/rechts |
 | `kopf-neigen` | `von_grad`, `nach_grad`, `rampe` | neigt den Kopf langsam |
 | `brauen` | `wert` (Vorlage oder [4 Zahlen]) | setzt die Brauen |
-| `mund` | `wert` (`schief`, `grinsen`, `lachen`), `brauen` | setzt den Mund (V1/Spock) |
+| `mund` | `wert` (`schief`, `grinsen`, `lachen`), `brauen` | setzt den Mund (alle Figuren; die Sturmhaube hat nur den normalen Mund) |
 | `augen-auf` | – | weit aufgerissen |
 | `zucken` | `brauen` | zuckt bei jedem Stampfer |
 | `glotzen` | – | erstarrt, zittert, Augen weit (zu den anderen hin) |
-| `kichern` | – | Augen zu, wackeln, Mund flackert (V2) |
-| `hehehe` | – | fieses Kichern (V1) |
-| `nummer:reaktion-fall` | – | Nummer: Fall verfolgen, starren, hochschauen, anschauen, blinzeln, in die Kamera, Achselzucken (V2) |
+| `kichern` | – | Augen zu, wackeln, Mund flackert |
+| `hehehe` | – | fieses Kichern |
+| `nummer:reaktion-fall` | – | Nummer: Fall verfolgen, starren, hochschauen, anschauen, blinzeln, in die Kamera, Achselzucken |
 
 ### Arme und Aktionen
 
@@ -151,9 +151,9 @@ Alle Gesten stehen in `bibliothek/gesten.js`. „Alle“ = funktioniert mit jede
 |---|---|---|
 | `tippen` | – | tippt am Rechner |
 | `winken` | `arm` (`rechts`/`links`) | winkt |
-| `daumen-hoch` | – | Daumen hoch (V2 mit Daumen, z. B. cypheR) |
-| `arme-heben` | `rampe` | Arme gehen langsam hoch (V2) |
-| `huzzah` | – | Arme hoch, Hüpfer, wieder runter (V2) |
+| `daumen-hoch` | – | Daumen hoch (Figuren mit Daumen, z. B. cypheR) |
+| `arme-heben` | `rampe` | Arme gehen langsam hoch |
+| `huzzah` | – | Arme hoch, Hüpfer, wieder runter |
 | `arme-reissen` | `ziel` (Grad), `rampe` | reißt beide Arme hoch |
 | `jubel` | – | Arme oben, hüpft |
 | `ausholen` | `rampe` | holt Schwung |
@@ -200,6 +200,6 @@ Eine Geste ist eine Funktion `(o, c) => { … }` in `bibliothek/gesten.js`. Sie 
 - `c.T` Zeit, `c.f` Bildnummer, `c.t` Zeit seit Beginn der Aktion, `c.d` Dauer der Aktion
 - `c.a` die Aktion selbst (alle Parameter), `c.self` die Figur aus der Besetzung, `c.seite` ±1 Richtung zu den anderen, `c.world` Posen aller Figuren
 
-**Pose-Felder:** `x`, `y`, Deichshaf: `mikro`, `mikro_kipp` (Handmikro links), `zettel` (rechts), `zeigefinger` (links), `thumb`/`thumbL` (Daumen hoch rechts/links), `flasche` (`"hand"` oder [x, y] im Bild), `flasche_kipp`, `m` auch `n` (gerade) und `o` (Schlürfen), `es` 0.12 = Augen zu, 0.45 = fröhlich;  `rot` (V1, Spallter), `aLf`, `aRf` (Unterarm bei Ellbogen), `wangen` (m0og), `trinkt`, `schuetteln`, `zeigefinger` (DrBier), `spezial` (Spallter: `kratzen`/`riechen`), `head`, `hy`, `aL`, `aR`, `lL`, `lR` (Beine), `px`, `py` (Pupillen), `br` [4], `m` (Mund: Zahl = Öffnung, bei Spock `s`/`g`/`y`), `eye` (V1) bzw. `es`/`ew` (V2), `shrug`, `thumb` (V2), `glint`, `belts`, `swL`, `swR` (Spock), `hat` (Tarnhut), `mFix` (Lippen nicht vom Ton steuern lassen).
+**Pose-Felder:** `x`, `y`, Deichshaf: `mikro`, `mikro_kipp` (Handmikro links), `zettel` (rechts), `zeigefinger` (links), `thumb`/`thumbL` (Daumen hoch rechts/links), `flasche` (`"hand"` oder [x, y] im Bild), `flasche_kipp`, `m` auch `n` (gerade) und `o` (Schlürfen), `es` 0.12 = Augen zu, 0.45 = fröhlich;  `rot` (Körper kippt um die Füße), `aLf`, `aRf` (Unterarm bei Ellbogen), `wangen` (m0og), `trinkt`, `schuetteln`, `zeigefinger` (DrBier), `spezial` (Spallter: `kratzen`/`riechen`), `head`, `hy`, `aL`, `aR`, `lL`, `lR` (Beine), `px`, `py` (Pupillen), `br` [4], `m` (Mund: Zahl = Öffnung, `s` schief, `g` grinsen, `y` lachen), `sy` (Höhe des offenen Lachmunds), `es` (Augen zukneifen, < 1), `ew` (Augen weiten, > 1), `shrug`, `thumb`, `handLeer` (Gegenstand in der Hand weg), `glint` (Brillenblitz), `belts`, `swL`, `swR` (Spock), `hat` (Tarnhut), `mFix` (Lippen nicht vom Ton steuern lassen).
 
 Regeln: Parameter mit sinnvollen Vorgaben, Richtung aus `c.seite` oder Start/Ziel ableiten statt fest verdrahten, und die neue Geste hier im Katalog eintragen.

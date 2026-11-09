@@ -42,7 +42,6 @@
   {
    "id": "d2",
    "figur": "Bierdieb-Tarnhut",
-   "version": 1,
    "x": 270,
    "boden": 390,
    "z": 1,
@@ -51,7 +50,6 @@
   {
    "id": "d1",
    "figur": "Bierdieb-Sturmhaube",
-   "version": 1,
    "x": 490,
    "boden": 390,
    "z": 2,
@@ -61,7 +59,6 @@
   {
    "id": "sp",
    "figur": "Spock",
-   "version": 1,
    "x": 350,
    "boden": 390,
    "z": 3,
