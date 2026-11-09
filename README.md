@@ -14,7 +14,8 @@ Cartoons der LAN-Party **['ju:nien]** – „junienTV präsentiert“. Jede Folg
 | `index.html` | der Player (lädt Bibliothek und Drehbücher) |
 | `werkzeuge/` | `buendeln.py` (Einzeldatei, offline), `pruefen.py` (Prüfung + Kontaktbogen), `rendern.py` (MP4) |
 | `docs/` | `FORMAT.md` (Drehbuch-Format, Gesten-Katalog), `STECKBRIEF.md`, `VERSION-2.md` |
-| `skill/hagne-studio/` | Claude-Skill fürs Media-Team |
+| `skill/hagne-studio/` | Claude-Skill fürs Media-Team (holt nur das Repo) |
+| `docs/ARBEITSWEISE.md` | die eigentliche Anleitung für Claude – Workflows, Prüfen, Abgeben, Regeln |
 | `ton/` | Tonspuren der Folgen (siehe `ton/README.md`) |
 
 ## Benutzen
@@ -40,4 +41,4 @@ Ausführlich: `docs/MITMACHEN.md`.
 
 ## Claude-Skill einrichten
 
-Den Ordner `skill/hagne-studio` als ZIP packen und in Claude unter **Customize → Skills** hochladen. Code-Ausführung muss aktiviert sein (Einstellungen → Fähigkeiten). Der Skill holt sich die Bibliothek jedes Mal frisch aus diesem Repo.
+Den Ordner `skill/hagne-studio` als ZIP packen und in Claude unter **Customize → Skills** hochladen. Code-Ausführung muss aktiviert sein (Einstellungen → Fähigkeiten). Der Skill holt sich bei jedem Einsatz das Repo und liest dann `docs/ARBEITSWEISE.md`. Er muss deshalb nur **einmal** hochgeladen werden – Änderungen an Ablauf, Bibliothek oder Format wirken sofort, sobald sie im Repo sind.

@@ -4,7 +4,7 @@ So kommt eine neue HAGNE-Folge vom Einfall ins Repo. Dauert beim ersten Mal etwa
 
 ## Einmalig einrichten
 
-1. **Claude:** Code-Ausführung einschalten (Einstellungen → Fähigkeiten) und den Skill hochladen: `skill/hagne-studio` als ZIP packen bzw. die ZIP von Julian nehmen, dann **Customize → Skills → hochladen**.
+1. **Claude:** Code-Ausführung einschalten (Einstellungen → Fähigkeiten) und den Skill hochladen: `skill/hagne-studio` als ZIP packen bzw. die ZIP von Julian nehmen, dann **Customize → Skills → hochladen**. Das ist einmalig: Der Skill liest seine Anleitung jedes Mal frisch aus dem Repo.
 2. **GitHub:** ein kostenloses Konto anlegen und Julian den Namen schicken. Ohne Konto geht es auch: dann die Dateien am Ende einfach an Julian schicken.
 
 ## Eine Folge bauen
