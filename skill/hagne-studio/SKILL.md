@@ -26,6 +26,7 @@ Mit dem Media-Team **im Dialog, Schritt für Schritt**: erst grob die Idee bzw. 
 1. Idee klären: Wer spielt mit (nur Figuren aus der Bibliothek oder neue nach Steckbrief), welche Kulisse, welcher Gag, wie lang (meist 20–60 s).
 2. Kurzes Szenenbuch in Worten zeigen (Takte mit Zeiten). Erst nach OK das JSON schreiben.
 3. Nur Gesten, Figuren und Requisiten verwenden, die es gibt. Fehlt etwas, sagen und vorschlagen, es zu bauen (siehe D).
+4. Ohne Ton: Dialog mit `text` schreiben, die Münder plappern dann gleichmäßig. Mit Ton: Tonspur als `ton.mix`, Pegel unter `analyse` berechnen (siehe B).
 
 **B · Folge aus einem eigenen Clip**
 1. Schnitte und Standbilder ziehen: `ffmpeg -i clip.mp4 -vf "select='gt(scene,0.3)',showinfo" -fps_mode vfr bild_%03d.png`, Bilder ansehen.
@@ -51,7 +52,8 @@ Den Kontaktbogen selbst ansehen, bevor er gezeigt wird. Der Kontaktbogen braucht
 
 - **Zum Anschauen:** `python3 werkzeuge/buendeln.py drehbuecher/NEU.json -o dist/NEU-player.html` – eine Datei, läuft per Doppelklick. Tonspur daneben legen.
 - **Als Video:** `python3 werkzeuge/rendern.py drehbuecher/NEU.json --ton ton.mp3` (braucht ffmpeg).
-- **Ins Repo:** Neue und geänderte Dateien (Drehbuch, ggf. `bibliothek/*.js`, `docs/FORMAT.md`) als Dateien an die Person geben und erklären: Auf GitHub `Add file → Upload files`, „Create a new branch … and start a pull request“ wählen. Julian prüft und übernimmt. Neue Folge zusätzlich in `drehbuecher/index.json` eintragen.
+- **Ins Repo:** Alle neuen und geänderten Dateien als **eine ZIP mit den Repo-Pfaden** abgeben (z. B. `drehbuecher/e04-kabelsalat.json`, `drehbuecher/index.json`, ggf. `bibliothek/gesten.js`, `docs/FORMAT.md`, `ton/e04.mp3`). Dateinamen für Folgen: `<id>-<kurztitel>.json` in Kleinbuchstaben. Neue Folge in `drehbuecher/index.json` eintragen. Dann auf `docs/MITMACHEN.md` verweisen (Upload über GitHub, Pull Request). Julian prüft und übernimmt.
+- Bei geänderter Bibliothek vorher alle Drehbücher in `drehbuecher/` mit `pruefen.py` prüfen – bestehende Folgen dürfen nicht kaputtgehen.
 
 ## Regeln
 

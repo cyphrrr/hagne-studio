@@ -30,6 +30,8 @@ python3 werkzeuge/rendern.py drehbuecher/guertel.json --ton ton/guertel.mp3
 
 ## Mitmachen
 
+Ausführlich: `docs/MITMACHEN.md`.
+
 1. Mit Claude und dem Skill `hagne-studio` eine Folge, Figur oder Geste bauen – oder von Hand nach `docs/FORMAT.md`.
 2. Neue Dateien als Pull Request einreichen (auf GitHub: `Add file → Upload files → Create a new branch`).
 3. Julian prüft und übernimmt.
