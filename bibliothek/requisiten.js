@@ -30,3 +30,31 @@ function bush(cx,by,w,sd){seed=sd;const G=['#3F7A30','#4C8538','#5E9A44','#6BA64
  for(let i=0;i<16;i++){const x=cx-w/2+R()*w;const dx=Math.abs(x-cx)/(w/2);const y=by-24-R()*56*(1-dx*0.55);s+=piece(circ(x,y,18+R()*14),G[Math.floor(R()*4)],2.4);}
  for(let i=0;i<10;i++){const x=cx-w/2+R()*w,y=by-30-R()*60;s+=flat(ell(x,y,3,1.6),'#86BE5E',0.4);}return s;}
 REQUISITEN['busch']={absolut:true,build:r=>bush(r.x,r.boden||402,r.breite||150,r.seed||410)};
+
+/* ==== Requisiten aus E03 „Werbunk“ ==== */
+/* Thekentresen mit Schild „Bier kalt“ (rechte Bildhälfte von THEKE-01) */
+REQUISITEN['tresen']={absolut:true,build:()=>{seed=71;let s='';
+ s+=piece([[392,300],[690,284],[690,300],[384,318]],'#C9CDD0',1.2)+ln(392,300,690,284,'#E8EBED',1.6);
+ s+=piece([[384,318],[690,300],[690,430],[384,430]],'#DCDFE1',1.4);
+ for(let x=430;x<690;x+=62)s+=ln(x,318-(x-384)*0.06,x,430,'#B9BEC2',1.4);
+ s+=piece([[400,336],[520,330],[520,352],[400,358]],'#FBFAF5',1)+'<text x="460" y="349" text-anchor="middle" font-size="11" font-weight="600" fill="#2F6E3C" transform="rotate(-3 460 346)" '+F+'>Bier kalt</text>';
+ s+=ln(560,180,560,292,'#B9BEC2',4)+ln(660,170,660,286,'#B9BEC2',4);return s;}};
+/* Spieltisch mit Monitor, Tastatur und PC (linke Bildhälfte von HALLE-LEER-01) */
+REQUISITEN['tisch-pc']={absolut:true,build:()=>{seed=81;let s='';const G='#2F6B47';
+ s+=ln(160,316,156,392,G,4)+ln(344,316,348,392,G,4)+ln(188,312,190,370,'#24553A',3)+ln(324,312,322,370,'#24553A',3);
+ s+=piece([[150,300],[362,300],[370,312],[142,312]],'#E6CB98',1.2)+piece([[142,312],[370,312],[370,320],[142,320]],'#C9A466',0.8)+ln(256,300,256,320,'#CFAF78',1);
+ s+=flat(ell(212,302,22,4),'#141414',0.6)+piece(rr(209,272,6,30,2),'#1E1E1E',0.5);
+ s+=piece([[194,232],[222,238],[222,288],[194,296]],'#1A1A1C',1)+flat([[218,240],[222,238],[222,288],[218,289]],'#3C3E44',0.4);
+ s+=piece(rr(226,262,46,38,2),'#1E1E1E',1)+flat(rect(228,264,42,4),'#2C2C2E',0.4);
+ for(let x=234;x<266;x+=5)s+=ln(x,272,x,294,'#2E2E30',1.2);
+ s+='<circle cx="264" cy="268" r="1.6" fill="#4F9CFF"/>';return s;}};
+/* Mikrofonkopf, z. B. auf einer Flasche abgelegt. x/y = Mitte des Kopfes */
+REQUISITEN['tischmikro']={absolut:true,build:r=>{const x=r.x!==undefined?r.x:296,y=r.y!==undefined?r.y:265;seed=91;
+ return piece(circ(x,y,5.5),'#2E2E30',0.5)+'<path d="M'+(x-4)+' '+(y-1)+' h8 M'+(x-3.5)+' '+(y+2)+' h7" stroke="#555558" stroke-width="0.6"/>'+piece(rr(x-2,y+3,4,5,1),'#1A1A1A',0.3);}};
+/* grüner Metallstuhl, Lehne und Sitz hinter einer sitzenden Figur. x = Figur, boden = Boden der Figur */
+REQUISITEN['stuhl-gruen']={absolut:true,build:r=>{seed=88;const X=r.x,S=0.92,Y=r.boden||390;
+ const G='#2F6B47',GD='#24553A';let s='<g transform="translate('+X+' '+Y+') scale('+S+')">';
+ s+=piece(rr(-48,-118,8,74,3),G,0.6)+piece(rr(40,-118,8,74,3),G,0.6)+piece(rr(-46,-124,92,12,5),G,0.8);
+ s+=piece(rr(-50,-52,100,9,3),GD,0.6);
+ s+=ln(-44,-44,-50,-2,G,4)+ln(44,-44,50,-2,G,4)+ln(-36,-44,-30,-2,GD,3)+ln(36,-44,30,-2,GD,3);
+ return s+'</g>';}};

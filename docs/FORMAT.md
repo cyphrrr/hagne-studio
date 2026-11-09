@@ -2,7 +2,7 @@
 
 Ein Drehbuch beschreibt eine Szene vollständig als Daten. Gezeichnet wird immer mit der gemeinsamen Bibliothek (`bibliothek/`), abgespielt mit dem Player (`index.html`). Wer eine Folge baut, schreibt also nur JSON – Code entsteht nur, wenn ein Baustein in der Bibliothek fehlt.
 
-Referenzen: `drehbuecher/e02-turnierbuero.json` (ruhig, Sprechblasen, V2-Figuren) und `drehbuecher/guertel.json` (viel Choreografie, Blenden, V1-Figuren).
+Referenzen: `drehbuecher/e02-turnierbuero.json` (ruhig, Sprechblasen, V2-Figuren), `drehbuecher/guertel.json` (viel Choreografie, Blenden, V1-Figuren) und `drehbuecher/e03-werbunk.json` (fünf Szenen mit harten Schnitten, eine Figur, Abläufe aus Bausteinen).
 
 ## Grundregeln
 
@@ -19,6 +19,7 @@ Referenzen: `drehbuecher/e02-turnierbuero.json` (ruhig, Sprechblasen, V2-Figuren
   "format": "hagne-drehbuch/0.2",
   "episode":   { "id": "E02", "titel": "Das Turnierbüro", "dauer": 29.9, "fps": 12, "bild": "16:9" },
   "kulisse":   { "id": "HALLE-VOLL-01", "licht": "nacht", "requisiten": [ … ] },
+  "szenen":    [ … ],
   "gegenstaende": [ … ],
   "besetzung": [ … ],
   "ton":       { "mix": "e02.mp3", "lippen": "aus_ton" },
@@ -36,9 +37,23 @@ Referenzen: `drehbuecher/e02-turnierbuero.json` (ruhig, Sprechblasen, V2-Figuren
 
 | Feld | Bedeutung |
 |---|---|
-| `id` | Kulisse aus `bibliothek/kulissen.js`: `HALLE-VOLL-01`, `HALLE-AUSSEN-01` |
+| `id` | Kulisse aus `bibliothek/kulissen.js`: `HALLE-VOLL-01` (Halle mit Gästen), `HALLE-LEER-01` (Halle ohne Gäste), `HALLE-AUSSEN-01` (Vorplatz), `FOYER-01` (Säulen, Klinker), `THEKE-01` (Foyer mit Theken), `FELSHANG-01` (Hang unterhalb der Halle) |
 | `licht` | `nacht` (dunkle Schatten, Halle) oder `tag` (warme, helle Schatten) |
-| `requisiten` | Liste: `{ "id", "x", "z", … }`. Vorhanden: `gaming-stuhl`, `tisch-turnierbuero` (`bebt`: hüpft beim Stampfen), `busch` (`x`, `boden`, `breite`, `seed`) |
+| `requisiten` | Liste: `{ "id", "x", "z", … }`. Vorhanden: `gaming-stuhl`, `tisch-turnierbuero` (`bebt`: hüpft beim Stampfen), `busch` (`x`, `boden`, `breite`, `seed`), `tresen` (Theke „Bier kalt“, zu THEKE-01), `tisch-pc` (Spieltisch mit PC, zu HALLE-LEER-01), `stuhl-gruen` (`x`, `boden`: Lehne hinter einer sitzenden Figur, `z` −1), `tischmikro` (`x`, `y`: Mikrofonkopf, z. B. auf einer Flasche) |
+
+### szenen (mehrere Schauplätze)
+
+Ohne `szenen` gilt `kulisse` für die ganze Folge. Mit `szenen` wird bei jedem Wechsel **hart geschnitten**: neue Kulisse, neue Requisiten, Figuren an neuen Plätzen.
+
+```json
+{ "id": "S4-HALLE", "von": 23.76, "bis": 30.96,
+  "kulisse": { "id": "HALLE-LEER-01", "licht": "tag", "requisiten": [ { "id": "tisch-pc", "z": -2 } ] },
+  "besetzung": { "ds": { "x": 420, "haltung": "sitzt" } } }
+```
+
+- Szenen schließen lückenlos aneinander an (`bis` = `von` der nächsten), die erste beginnt bei 0.
+- `besetzung` in der Szene überschreibt Felder der Figur nur für diese Szene (`x`, `boden`, `haltung`, `z`, Grundpose …).
+- Aktionen, Dialog und Kamera bleiben in den Listen der Folge (Zeiten ab Folgenbeginn). Eine Kamera-Einstellung je Szene ist üblich. Aktionen sollten nicht über einen Schnitt reichen – `pruefen.py` warnt.
 
 ### besetzung
 
@@ -49,7 +64,7 @@ Referenzen: `drehbuecher/e02-turnierbuero.json` (ruhig, Sprechblasen, V2-Figuren
 | `x`, `boden` | Standplatz (Füße) |
 | `z` | Ebene, größer = weiter vorn. Gilt auch für Requisiten und Gegenstände |
 | `start` | `draussen`: unsichtbar bis zur ersten Auftritts-Geste (`reinlaufen`, `stapfen`, `auftauchen`, `schleichen`) |
-| `haltung` | `sitzt` (V2: keine Beine) |
+| `haltung` | `sitzt` (V2: keine Beine; Deichshaf: von vorn sitzend mit Oberschenkeln, dazu `stuhl-gruen`) |
 | Grundpose | `arme` [links, rechts] in Grad, `blick` [x, y] Pupillen, `kopf` Neigung, `brauen` Vorlage oder [4 Zahlen], `mund` (`schief`, `grinsen`, `lachen`), `bebt` (wackelt beim Stampfen) |
 | `hand_rechts` | Gegenstand in der rechten Hand (V1), z. B. `bierflasche-klein` |
 
@@ -67,7 +82,7 @@ Referenzen: `drehbuecher/e02-turnierbuero.json` (ruhig, Sprechblasen, V2-Figuren
 
 ### dialog
 
-`{ "von", "bis", "wer", "text" }` → Sprechblase + Lippen. Ohne `text` (z. B. `"laut": "lachen"`) bewegen sich nur die Lippen. Gibt es keine Pegeldaten unter `analyse` (Folge ohne Ton), plappern die Münder gleichmäßig.
+`{ "von", "bis", "wer", "text" }` → Sprechblase + Lippen. Optional `"blase": [von, bis]`, wenn die Blase anders stehen soll als gesprochen wird (z. B. kurz nach dem Satz stehen bleiben). Ohne `text` (z. B. `"laut": "lachen"`) bewegen sich nur die Lippen. Gibt es keine Pegeldaten unter `analyse` (Folge ohne Ton), plappern die Münder gleichmäßig.
 
 ### aktionen
 
@@ -147,6 +162,20 @@ Alle Gesten stehen in `bibliothek/gesten.js`. „Alle“ = funktioniert mit jede
 | `fallen-lassen` | `gegenstand`, `art` (`von-oben` / `aus-der-hand`), `vorlauf`, `z` und je nach Art: `x`, `landet`, `boden`, `rollt_bis` bzw. `start` [x,y], `boden`, `rollt`, `drehung` | Gegenstand fällt, Hand ist ab dann leer |
 | `kratzen-mund` | `runter_ab` | Arm zum Mund, kratzen, runter (DrBier-Riese) |
 
+### Bausteine für frei gebaute Abläufe
+
+Damit lassen sich die meisten Bewegungen ohne neue Geste beschreiben (Beispiel: `e03-werbunk.json`).
+
+| Geste | Parameter | Wirkung |
+|---|---|---|
+| `pose` | nur `pose` | setzt feste Werte, z. B. `{ "mikro": true, "m": "n" }` für die Dauer der Aktion |
+| `uebergang` | `ab` {Feld: Wert}, `ziel` {Feld: Wert}, `rampe` (Vorgabe: ganze Aktion) | führt Zahlenfelder weich von `ab` nach `ziel` (fehlt `ab`, vom aktuellen Wert). Typisch: `aL`, `aLf`, `aR`, `aRf`, `head`, `px`, `flasche_kipp`. Für einen Rückweg einfach `ab` und `ziel` tauschen |
+| `wippen` | `tempo`, `weite`, `art` (`welle` oder `takt`) | Körper wippt leicht (Gewicht verlagern) bzw. im Takt (beim Trinken) |
+| `kopf-wiegen` | `tempo`, `weite`, `hoch` | Kopf wiegt beim Reden; mit `hoch` hüpft er dabei leicht |
+| `schwingen` | `feld`, `mitte`, `weite`, `tempo` | ein beliebiges Zahlenfeld pendelt (z. B. Flasche beim Schluck) |
+
+Bewährte Armwinkel für Deichshaf [Schulter, Ellbogen]: links Mikro am Kinn [−24.3, −130.5], Mikro tiefer [−18.8, −118.5], Hand zeigt hin [38, 44], Zeigefinger zur Seite [82, 6], Hand auf dem Tisch [13.8, 96.5], im Schoß [10, −30]; rechts Zettel lesen [−17.6, 107.5], hoch zeigen [−158, −6], Flasche greifen [−29.7, −52.5], trinken [−169.6, −79], Daumen hoch [−46.5, −142.5], im Schoß [−10, 30].
+
 ### Figuren mit eigenen Teilen
 
 | Geste | Parameter | Wirkung |
@@ -171,6 +200,6 @@ Eine Geste ist eine Funktion `(o, c) => { … }` in `bibliothek/gesten.js`. Sie 
 - `c.T` Zeit, `c.f` Bildnummer, `c.t` Zeit seit Beginn der Aktion, `c.d` Dauer der Aktion
 - `c.a` die Aktion selbst (alle Parameter), `c.self` die Figur aus der Besetzung, `c.seite` ±1 Richtung zu den anderen, `c.world` Posen aller Figuren
 
-**Pose-Felder:** `x`, `y`, `rot` (V1, Spallter), `aLf`, `aRf` (Unterarm bei Ellbogen), `wangen` (m0og), `trinkt`, `schuetteln`, `zeigefinger` (DrBier), `spezial` (Spallter: `kratzen`/`riechen`), `head`, `hy`, `aL`, `aR`, `lL`, `lR` (Beine), `px`, `py` (Pupillen), `br` [4], `m` (Mund: Zahl = Öffnung, bei Spock `s`/`g`/`y`), `eye` (V1) bzw. `es`/`ew` (V2), `shrug`, `thumb` (V2), `glint`, `belts`, `swL`, `swR` (Spock), `hat` (Tarnhut), `mFix` (Lippen nicht vom Ton steuern lassen).
+**Pose-Felder:** `x`, `y`, Deichshaf: `mikro`, `mikro_kipp` (Handmikro links), `zettel` (rechts), `zeigefinger` (links), `thumb`/`thumbL` (Daumen hoch rechts/links), `flasche` (`"hand"` oder [x, y] im Bild), `flasche_kipp`, `m` auch `n` (gerade) und `o` (Schlürfen), `es` 0.12 = Augen zu, 0.45 = fröhlich;  `rot` (V1, Spallter), `aLf`, `aRf` (Unterarm bei Ellbogen), `wangen` (m0og), `trinkt`, `schuetteln`, `zeigefinger` (DrBier), `spezial` (Spallter: `kratzen`/`riechen`), `head`, `hy`, `aL`, `aR`, `lL`, `lR` (Beine), `px`, `py` (Pupillen), `br` [4], `m` (Mund: Zahl = Öffnung, bei Spock `s`/`g`/`y`), `eye` (V1) bzw. `es`/`ew` (V2), `shrug`, `thumb` (V2), `glint`, `belts`, `swL`, `swR` (Spock), `hat` (Tarnhut), `mFix` (Lippen nicht vom Ton steuern lassen).
 
 Regeln: Parameter mit sinnvollen Vorgaben, Richtung aus `c.seite` oder Start/Ziel ableiten statt fest verdrahten, und die neue Geste hier im Katalog eintragen.

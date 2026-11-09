@@ -10,30 +10,42 @@ function entry(actor){const a=AKT.filter(a=>a.wer.includes(actor.id)&&AUFTRITT.i
 
 function build(){
  DUR=DB.episode.dauer;FEHLT=new Set();
- SHADOW=LICHT[DB.kulisse.licht||'nacht']||LICHT.nacht;
- ACT={};DB.besetzung.forEach(a=>{ACT[a.id]=a;if(!FIGUREN[a.figur])FEHLT.add('Figur '+a.figur);});
+ DB.besetzung.forEach(a=>{if(!FIGUREN[a.figur])FEHLT.add('Figur '+a.figur);});
  AKT=DB.aktionen.map(a=>Object.assign({},a,{wer:Array.isArray(a.wer)?a.wer:[a.wer]}));
  AKT.forEach(a=>{if(!GESTEN[a.geste])FEHLT.add('Geste '+a.geste);});
- const K=KULISSEN[DB.kulisse.id];if(!K)FEHLT.add('Kulisse '+DB.kulisse.id);
+ (DB.szenen||[{kulisse:DB.kulisse}]).forEach(sc=>{const k=sc.kulisse||DB.kulisse;if(!k||!KULISSEN[k.id])FEHLT.add('Kulisse '+(k?k.id:'?'));
+   ((k&&k.requisiten)||[]).forEach(r=>{if(!REQUISITEN[r.id])FEHLT.add('Requisite '+r.id);});});
+ buehne(szeneAt(Math.min(+sl.value||0,DUR)));
+ buildBlenden();
+ SIGNS=allSigns();
+ sl.max=DUR;lastF=-1;renderAt(Math.min(+sl.value||0,DUR));
+ setStatus();}
+
+/* Szenen: jede Szene hat eigene Kulisse, Requisiten und Stellplätze; beim Wechsel wird hart geschnitten.
+   Ohne "szenen" gilt "kulisse" für die ganze Folge. */
+let SZ=null,KUL,BES;
+function szeneAt(T){const S=DB.szenen;if(!S)return -1;for(let i=0;i<S.length;i++)if(T>=S[i].von&&T<S[i].bis)return i;return T<S[0].von?0:S.length-1;}
+function buehne(i){SZ=i;const sc=i>=0?DB.szenen[i]:null;
+ KUL=(sc&&sc.kulisse)||DB.kulisse;
+ BES=DB.besetzung.map(a=>Object.assign({},a,(sc&&sc.besetzung&&sc.besetzung[a.id])||{}));
+ ACT={};BES.forEach(a=>{ACT[a.id]=a;});
+ SHADOW=LICHT[KUL.licht||'nacht']||LICHT.nacht;
+ const K=KULISSEN[KUL.id];
  $('bg').innerHTML=K?K():'';
  const items=[];
- (DB.kulisse.requisiten||[]).forEach((r,i)=>{const R_=REQUISITEN[r.id];if(!R_){FEHLT.add('Requisite '+r.id);return;}
+ (KUL.requisiten||[]).forEach((r,i)=>{const R_=REQUISITEN[r.id];if(!R_)return;
    const dx=R_.absolut?0:(r.x||R_.x0)-R_.x0;items.push({z:r.z||0,svg:'<g id="rq-'+i+'" transform="translate('+dx+' 0)">'+R_.build(r)+'</g>'});});
- DB.besetzung.forEach(a=>{const Fg=FIGUREN[a.figur];if(Fg)items.push({z:a.z||0,svg:'<g id="'+a.id+'">'+Fg.build(a)+'</g>'});});
+ BES.forEach(a=>{const Fg=FIGUREN[a.figur];if(Fg)items.push({z:a.z||0,svg:'<g id="'+a.id+'">'+Fg.build(a)+'</g>'});});
  GEG=[];(DB.gegenstaende||[]).forEach((g,i)=>{const A=GEGENSTAND_ARTEN[g.art];if(!A){FEHLT.add('Gegenstand '+g.art);return;}
    items.push({z:g.z||0,svg:'<g id="gg-'+i+'">'+A.build()+'</g>'});GEG.push(Object.assign({},g,{i,art_:A}));});
  OBJ=[];AKT.forEach((a,i)=>{if(a.geste!=='fallen-lassen')return;const G=GEGENSTAENDE[a.gegenstand];if(!G){FEHLT.add('Gegenstand '+a.gegenstand);return;}
    seed=77;items.push({z:a.z!==undefined?a.z:100,svg:'<g id="obj-'+i+'" style="display:none">'+G()+'</g>'});OBJ.push(Object.assign(a,{idx:i}));});
  items.sort((p,q)=>p.z-q.z);
  $('chars').innerHTML=items.map(i=>i.svg).join('');
- DB.besetzung.forEach(a=>{const Fg=FIGUREN[a.figur];if(Fg&&Fg.post)Fg.post(a.id);});
+ BES.forEach(a=>{const Fg=FIGUREN[a.figur];if(Fg&&Fg.post)Fg.post(a.id);});
  OBJ.forEach(a=>{a.el=$('obj-'+a.idx);});GEG.forEach(g=>{g.el=$('gg-'+g.i);});
- RIGS={};DB.besetzung.forEach(a=>{const Fg=FIGUREN[a.figur];if(Fg)RIGS[a.id]=Fg.rig(a.id);});
- buildBlenden();
- SIGNS=allSigns();
- drawLogos();
- sl.max=DUR;lastF=-1;renderAt(Math.min(+sl.value||0,DUR));
- setStatus();}
+ RIGS={};BES.forEach(a=>{const Fg=FIGUREN[a.figur];if(Fg)RIGS[a.id]=Fg.rig(a.id);});
+ drawLogos();}
 
 function poseAt(actor,T,f,world){
  if(actor.start==='draussen'&&T<entry(actor))return {x:-3000,off:true};
@@ -85,7 +97,7 @@ function signSvg(txt,x,y,a,key){seed=700+key*13;const w=Math.round(txt.length*8.
 function allSigns(){const L=(DB.schilder||[]).map(s=>[s.von,s.bis,s.text,s.pos[0],s.pos[1],s.winkel||0]);
  (DB.effekte||[]).forEach(e=>{if(!e.schild)return;const S=e.schild;e.t.forEach((t,i)=>{const p=S.pos[i%S.pos.length];L.push([t,t+(S.dauer||0.36),S.text,p[0],p[1],S.winkel[i%S.winkel.length]]);});});
  return L;}
-function bubbleSvg(c,d,key){const a=ACT[d.wer],kh=(FIGUREN[a.figur]&&FIGUREN[a.figur].kopfhoehe)||252;const [tx,ty]=toScreen(c,a.x,a.boden-kh*0.92);const L=[d.text];seed=500+key*17;
+function bubbleSvg(c,d,key){const a=ACT[d.wer],K_=FIGUREN[a.figur]&&FIGUREN[a.figur].kopfhoehe,kh=typeof K_==='function'?K_(a):(K_||252);const [tx,ty]=toScreen(c,a.x,a.boden-kh*0.92);const L=[d.text];seed=500+key*17;
  const w=Math.round(Math.max(...L.map(t=>t.length))*7.6+34),h=18+L.length*18;
  const x=Math.min(Math.max(tx-w/2,10),W-10-w),y=Math.max(8,ty-h-26);
  const bx=Math.min(Math.max(tx,x+18),x+w-18);
@@ -109,18 +121,19 @@ function blendenAt(T){(DB.blenden||[]).forEach((b,i)=>{const el=$('bl-'+i);
 
 /* Ein Bild zum Zeitpunkt T (12 fps Legetrick) */
 function renderAt(Tin){const fps=DB.episode.fps||12,f=Math.floor(Tin*fps),T=f/fps;
- let world={};DB.besetzung.forEach(a=>{world[a.id]=poseAt(a,T,f,{});});
- const pass1=world;world={};DB.besetzung.forEach(a=>{world[a.id]=poseAt(a,T,f,pass1);});
- DB.besetzung.forEach(a=>{const Fg=FIGUREN[a.figur];if(!Fg)return;const o=world[a.id];o._f=f;
+ const si=szeneAt(T);if(si!==SZ)buehne(si);
+ let world={};BES.forEach(a=>{world[a.id]=poseAt(a,T,f,{});});
+ const pass1=world;world={};BES.forEach(a=>{world[a.id]=poseAt(a,T,f,pass1);});
+ BES.forEach(a=>{const Fg=FIGUREN[a.figur];if(!Fg)return;const o=world[a.id];o._f=f;
    if(Fg.spricht&&!o.mFix&&!o.off&&talking(a.id,T))Fg.lippen(o,openAt(a.id,f));
    Fg.apply(RIGS[a.id],o,a);});
  const amp=stompAmp(T);
- (DB.kulisse.requisiten||[]).forEach((r,i)=>{const g=document.querySelector('#rq-'+i+' [data-bebt]');if(g)g.setAttribute('transform','translate(0 '+(-amp*(r.bebt||0)).toFixed(1)+')');});
+ (KUL.requisiten||[]).forEach((r,i)=>{const g=document.querySelector('#rq-'+i+' [data-bebt]');if(g)g.setAttribute('transform','translate(0 '+(-amp*(r.bebt||0)).toFixed(1)+')');});
  GEG.forEach(g=>{const p=gegAt(g,T,world);g.el.setAttribute('transform','translate('+p.x.toFixed(1)+','+p.y.toFixed(1)+') rotate('+p.r+') scale(0.92)');});
  OBJ.forEach(a=>{const b=objAt(a,T);show(a.el,!!b);if(b)a.el.setAttribute('transform','translate('+b.x.toFixed(1)+','+b.y.toFixed(1)+') rotate('+b.r.toFixed(1)+') scale(0.92)');});
  const cm=camAt(T);$('cam').setAttribute('transform',cm.str);
  let sg='';SIGNS.forEach((q,i)=>{if(T>=q[0]&&T<q[1])sg+=signSvg(q[2],q[3],q[4],q[5],i);});$('signs').innerHTML=sg;
- let bb='';DB.dialog.forEach((d,i)=>{if(d.text&&T>=d.von&&T<d.bis)bb+=bubbleSvg(cm,d,i);});$('bubble').innerHTML=bb;
+ let bb='';DB.dialog.forEach((d,i)=>{const b=d.blase||[d.von,d.bis];if(d.text&&T>=b[0]&&T<b[1])bb+=bubbleSvg(cm,d,i);});$('bubble').innerHTML=bb;
  blendenAt(T);}
 window.renderAt=renderAt;
 

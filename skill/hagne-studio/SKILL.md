@@ -16,7 +16,7 @@ cd /tmp/hagne-studio
 
 Klappt das nicht (kein Netzwerk zu GitHub), die Person bitten, das Repo als ZIP herunterzuladen (`Code → Download ZIP`) und hochzuladen. Nicht aus dem Gedächtnis nachbauen.
 
-Danach lesen: `docs/FORMAT.md` (Drehbuch-Format und Gesten-Katalog). Für Figuren zusätzlich `docs/STECKBRIEF.md` und `docs/VERSION-2.md`. Als Vorlage für Drehbücher dienen `drehbuecher/e02-turnierbuero.json` und `drehbuecher/guertel.json`.
+Danach lesen: `docs/FORMAT.md` (Drehbuch-Format und Gesten-Katalog). Für Figuren zusätzlich `docs/STECKBRIEF.md` und `docs/VERSION-2.md`. Als Vorlage für Drehbücher dienen `drehbuecher/e02-turnierbuero.json`, `drehbuecher/guertel.json` und `drehbuecher/e03-werbunk.json` (mehrere Szenen mit harten Schnitten, Abläufe aus den Bausteinen `pose`/`uebergang`).
 
 ## 2 · Arbeitsweise
 
@@ -31,7 +31,7 @@ Mit dem Media-Team **im Dialog, Schritt für Schritt**: erst grob die Idee bzw. 
 **B · Folge aus einem eigenen Clip**
 1. Schnitte und Standbilder ziehen: `ffmpeg -i clip.mp4 -vf "select='gt(scene,0.3)',showinfo" -fps_mode vfr bild_%03d.png`, Bilder ansehen.
 2. Ton: Zeiten der Sätze und Geräusche bestimmen (Transkript, falls die Person eins hat oder Whisper verfügbar ist). Lippen-Pegel je Bild in dB für `analyse` berechnen (Sprachband 250–3000 Hz, 12 Bilder pro Sekunde).
-3. Szenen in Takte zerlegen, Figuren zuordnen, dann wie A weiter.
+3. Szenen in Takte zerlegen, Figuren zuordnen, dann wie A weiter. Hat der Clip Schnitte, je Schauplatz einen Eintrag unter `szenen` anlegen (harte Schnitte wie im Video).
 
 **C · Neue Figur**
 Steckbrief ausfüllen lassen, Figur nach `docs/VERSION-2.md` in `bibliothek/figuren-v2.js` bauen (Definition wie `PB`/`CY`, Eintrag in `FIGUREN`), mit einem kleinen Probe-Drehbuch zeigen.

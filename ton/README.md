@@ -8,3 +8,4 @@ Nur eigenes Material der ['ju:nien] und nur fertige Mischungen – keine Rohaufn
 |---|---|---|
 | `e02.mp3` | E02 „Das Turnierbüro“ | 30,3 s |
 | `guertel.mp3` | „Götter der Selbstverteidigung“ | 62,4 s (Folge endet mit hartem Schnitt bei 58 s) |
+| `werbunk.mp3` | E03 „Werbunk“ | 36,4 s |

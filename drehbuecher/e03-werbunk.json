@@ -1,0 +1,81 @@
+{
+ "format": "hagne-drehbuch/0.2",
+ "episode": {"id": "E03", "titel": "Werbunk", "dauer": 36.4, "fps": 12, "bild": "16:9", "quelle": "eigener Clip, Transkription werbunk_deu.json („Union“ = Junien)"},
+ "kulisse": {"id": "FELSHANG-01", "licht": "tag"},
+ "szenen": [
+  {"id": "S1-FELSHANG", "von": 0, "bis": 9.28, "kulisse": {"id": "FELSHANG-01", "licht": "tag"}, "besetzung": {"ds": {"x": 330}}},
+  {"id": "S2-FOYER", "von": 9.28, "bis": 14.8, "kulisse": {"id": "FOYER-01", "licht": "tag"}, "besetzung": {"ds": {"x": 340}}},
+  {"id": "S3-THEKE", "von": 14.8, "bis": 23.76, "kulisse": {"id": "THEKE-01", "licht": "tag", "requisiten": [{"id": "tresen", "z": -1}]}, "besetzung": {"ds": {"x": 330}}},
+  {"id": "S4-HALLE", "von": 23.76, "bis": 30.96, "kulisse": {"id": "HALLE-LEER-01", "licht": "tag", "requisiten": [{"id": "tisch-pc", "z": -2}, {"id": "stuhl-gruen", "x": 420, "boden": 390, "z": -1}, {"id": "tischmikro", "x": 296, "y": 265, "z": 1}]}, "besetzung": {"ds": {"x": 420, "haltung": "sitzt"}}},
+  {"id": "S5-VORPLATZ", "von": 30.96, "bis": 36.4, "kulisse": {"id": "HALLE-AUSSEN-01", "licht": "tag"}, "besetzung": {"ds": {"x": 340}}}
+ ],
+ "besetzung": [
+  {"id": "ds", "figur": "Deichshaf", "x": 330, "boden": 390, "arme": [8, -8]}
+ ],
+ "ton": {"mix": "werbunk.mp3"},
+ "dialog": [
+  {"von": 0.92, "bis": 2.94, "wer": "ds", "text": "Willkommen auf der Junien in Hagen.", "blase": [0.87, 3.39]},
+  {"von": 6.82, "bis": 7.9, "wer": "ds", "text": "Wir sind die Besten.", "blase": [6.77, 8.35]},
+  {"von": 9.46, "bis": 11.42, "wer": "ds", "text": "Hier könnt ihr euch dann anstellen für den Einlass.", "blase": [9.41, 11.87]},
+  {"von": 11.92, "bis": 13.1, "wer": "ds", "text": "Der ist aber grad nicht da.", "blase": [11.87, 13.55]},
+  {"von": 14.94, "bis": 16.74, "wer": "ds", "text": "Hier könnt ihr euch kaltes Bier kaufen.", "blase": [14.89, 17.19]},
+  {"von": 22.22, "bis": 22.76, "wer": "ds", "text": "Lecker.", "blase": [22.17, 23.21]},
+  {"von": 24.72, "bis": 26.76, "wer": "ds", "text": "Hier könnt ihr gemeinsam mit euren Freunden zocken.", "blase": [24.67, 26.99]},
+  {"von": 27.04, "bis": 28.06, "wer": "ds", "text": "Ganz viel Spaß.", "blase": [26.99, 28.51]},
+  {"von": 31.12, "bis": 32.32, "wer": "ds", "text": "Komm auch du zur Junien.", "blase": [31.07, 32.43]},
+  {"von": 32.48, "bis": 36.0, "wer": "ds", "text": "Kongress- und Eventpark in Hagen, Wasserloses Tal 2.", "blase": [32.43, 36.4]}
+ ],
+ "aktionen": [
+  {"von": 0, "bis": 9.28, "wer": "ds", "geste": "pose", "pose": {"aL": -24.3, "aLf": -130.5, "aR": -17.6, "aRf": 107.5, "mikro": true, "mikro_kipp": 14, "zettel": true, "head": 1}, "notiz": "Szene 1: liest vom Zettel, Mikro am Kinn"},
+  {"von": 0, "bis": 9.28, "wer": "ds", "geste": "wippen", "tempo": 1.3},
+  {"von": 0, "bis": 0.92, "wer": "ds", "geste": "pose", "pose": {"py": 3, "head": 3}},
+  {"von": 0.92, "bis": 2.94, "wer": "ds", "geste": "kopf-wiegen", "tempo": 3, "weite": 2, "pose": {"br": [-3, 0, -3, 0]}},
+  {"von": 0.92, "bis": 1.9, "wer": "ds", "geste": "pose", "pose": {"py": 2}},
+  {"von": 2.94, "bis": 4.95, "wer": "ds", "geste": "pose", "pose": {"py": 3, "head": 3, "br": [-1, -3, -1, -3]}},
+  {"von": 4.95, "bis": 9.28, "wer": "ds", "geste": "uebergang", "ab": {"aR": -17.6, "aRf": 107.5, "px": 0}, "ziel": {"aR": -158, "aRf": -6, "px": 1.5}, "rampe": 0.55, "pose": {"br": [-4, 0, -4, 0]}, "notiz": "zeigt hoch zur Halle"},
+  {"von": 6.82, "bis": 9.28, "wer": "ds", "geste": "kopf-wiegen", "tempo": 5, "weite": 2.5, "hoch": 1.5, "pose": {"br": [-6, 0, -6, 0]}},
+  {"von": 7.9, "bis": 9.28, "wer": "ds", "geste": "pose", "pose": {"m": "g", "es": 0.45}},
+  {"von": 9.28, "bis": 14.8, "wer": "ds", "geste": "wippen", "tempo": 1.3, "notiz": "Szene 2: zeigt auf den Platz zum Anstellen"},
+  {"von": 9.46, "bis": 11.6, "wer": "ds", "geste": "uebergang", "ab": {"aL": 8, "aLf": 0, "head": 0, "px": 0}, "ziel": {"aL": 38, "aLf": 44, "head": -2, "px": -2}, "rampe": 0.45, "pose": {"br": [-3, 0, -3, 0]}},
+  {"von": 11.6, "bis": 11.92, "wer": "ds", "geste": "uebergang", "ab": {"aL": 38, "aLf": 44}, "ziel": {"aL": 8, "aLf": 0}, "rampe": 0.32},
+  {"von": 11.92, "bis": 14.8, "wer": "ds", "geste": "pose", "pose": {"px": 2.5, "head": 2, "br": [2, 6, -1, 0]}, "notiz": "„Der ist aber grad nicht da.“"},
+  {"von": 13.1, "bis": 14.8, "wer": "ds", "geste": "pose", "pose": {"m": "n"}},
+  {"von": 14.8, "bis": 23.76, "wer": "ds", "geste": "pose", "pose": {"aL": -24.3, "aLf": -130.5, "aR": -29.7, "aRf": -52.5, "mikro": true, "mikro_kipp": 14, "flasche": [407, 288], "flasche_kipp": 0, "head": 1}, "notiz": "Szene 3: Bier an der Theke"},
+  {"von": 14.8, "bis": 17.5, "wer": "ds", "geste": "wippen", "tempo": 1.3},
+  {"von": 14.94, "bis": 16.8, "wer": "ds", "geste": "kopf-wiegen", "tempo": 3, "weite": 2, "pose": {"br": [-3, 0, -3, 0]}},
+  {"von": 16.8, "bis": 17.5, "wer": "ds", "geste": "uebergang", "ab": {"aR": -29.7, "aRf": -52.5, "aL": -24.3, "aLf": -130.5, "flasche_kipp": 0, "head": 0}, "ziel": {"aR": -169.6, "aRf": -79, "aL": -18.8, "aLf": -118.5, "flasche_kipp": -128, "head": -3}, "rampe": 0.7, "pose": {"flasche": "hand", "m": "o"}, "notiz": "Flasche hoch"},
+  {"von": 17.5, "bis": 21.2, "wer": "ds", "geste": "schwingen", "feld": "flasche_kipp", "mitte": -134, "weite": -4, "tempo": 4, "pose": {"aR": -169.6, "aRf": -79, "aL": -18.8, "aLf": -118.5, "flasche": "hand", "m": "o", "es": 0.12, "head": -5, "hy": -1, "br": [-4, -6, -4, -6]}, "notiz": "langer Schluck"},
+  {"von": 17.5, "bis": 21.2, "wer": "ds", "geste": "wippen", "art": "takt", "tempo": 4},
+  {"von": 21.2, "bis": 23.76, "wer": "ds", "geste": "wippen", "tempo": 1.3},
+  {"von": 21.2, "bis": 21.9, "wer": "ds", "geste": "uebergang", "ab": {"aR": -169.6, "aRf": -79, "aL": -18.8, "aLf": -118.5, "flasche_kipp": -128}, "ziel": {"aR": -29.7, "aRf": -52.5, "aL": -24.3, "aLf": -130.5, "flasche_kipp": 0}, "rampe": 0.7, "pose": {"br": [-2, 4, -2, 4]}, "notiz": "absetzen"},
+  {"von": 21.2, "bis": 21.7917, "wer": "ds", "geste": "pose", "pose": {"flasche": "hand"}},
+  {"von": 21.7917, "bis": 21.9, "wer": "ds", "geste": "pose", "pose": {"flasche_kipp": 0}},
+  {"von": 21.9, "bis": 22.2, "wer": "ds", "geste": "pose", "pose": {"br": [-3, 0, -3, 0]}},
+  {"von": 22.2, "bis": 23.76, "wer": "ds", "geste": "uebergang", "ab": {"aR": -29.7, "aRf": -52.5}, "ziel": {"aR": -46.5, "aRf": -142.5}, "rampe": 0.35, "pose": {"es": 0.45, "br": [-6, 0, -6, 0]}, "notiz": "„Lecker.“ + Daumen hoch"},
+  {"von": 22.2, "bis": 23.76, "wer": "ds", "geste": "kopf-wiegen", "tempo": 5, "weite": 2},
+  {"von": 22.375, "bis": 23.76, "wer": "ds", "geste": "pose", "pose": {"thumb": true}},
+  {"von": 22.76, "bis": 23.76, "wer": "ds", "geste": "pose", "pose": {"m": "g"}},
+  {"von": 23.76, "bis": 30.96, "wer": "ds", "geste": "pose", "pose": {"aL": 10, "aLf": -30, "aR": -10, "aRf": 30, "flasche": [296, 289], "flasche_kipp": 0, "head": 0}, "notiz": "Szene 4: sitzt am Tisch"},
+  {"von": 23.76, "bis": 24.72, "wer": "ds", "geste": "pose", "pose": {"px": -2}},
+  {"von": 24.72, "bis": 26.9, "wer": "ds", "geste": "uebergang", "ab": {"aL": 10, "aLf": -30, "head": 0, "px": 0}, "ziel": {"aL": 82, "aLf": 6, "head": -3, "px": -2}, "rampe": 0.5, "pose": {"br": [-3, 0, -3, 0]}, "notiz": "zeigt auf den PC"},
+  {"von": 24.9583, "bis": 26.9, "wer": "ds", "geste": "pose", "pose": {"zeigefinger": true}},
+  {"von": 26.9, "bis": 28.06, "wer": "ds", "geste": "uebergang", "ab": {"aL": 82, "aLf": 6, "head": -3}, "ziel": {"aL": 13.8, "aLf": 96.5, "head": 0}, "rampe": 0.5, "pose": {"br": [-4, 0, -4, 0]}},
+  {"von": 26.9, "bis": 27.125, "wer": "ds", "geste": "pose", "pose": {"zeigefinger": true}},
+  {"von": 28.06, "bis": 30.96, "wer": "ds", "geste": "pose", "pose": {"aL": 13.8, "aLf": 96.5, "m": "n", "br": [1, 4, 1, 4]}, "notiz": "stummer Blick in die Kamera"},
+  {"von": 29.31, "bis": 29.45, "wer": "ds", "geste": "pose", "pose": {"es": 0.12}},
+  {"von": 30.96, "bis": 36.4, "wer": "ds", "geste": "pose", "pose": {"br": [-2, 0, -2, 0]}, "notiz": "Szene 5: Werbe-Schluss"},
+  {"von": 31.12, "bis": 36.0, "wer": "ds", "geste": "kopf-wiegen", "tempo": 2.2, "weite": 1.2},
+  {"von": 36.0, "bis": 36.4, "wer": "ds", "geste": "pose", "pose": {"m": "g", "es": 0.45, "br": [-5, 0, -5, 0]}}
+ ],
+ "kamera": [
+  {"von": 0, "bis": 9.28, "start": [340, 205, 1.1], "ende": [340, 204, 1.14]},
+  {"von": 9.28, "bis": 14.8, "start": [345, 215, 1.15], "ende": [345, 214, 1.19]},
+  {"von": 14.8, "bis": 23.76, "start": [370, 250, 1.35], "ende": [372, 250, 1.4]},
+  {"von": 23.76, "bis": 30.96, "start": [330, 265, 1.45], "ende": [332, 265, 1.5]},
+  {"von": 30.96, "bis": 36.4, "start": [340, 215, 1.1], "ende": [340, 232, 1.3]}
+ ],
+ "schilder": [
+  {"von": 17.6, "bis": 21.1, "text": "*gluck gluck*", "pos": [470, 58], "winkel": -5}
+ ],
+ "analyse": {"pegel": {"mix": {"o": 0, "null_db": 14, "spanne": 24, "v": [-17, -17, -18, -17, -17, -14, -13, -10, -3, -6, 30, 41, 24, 36, 32, 34, 32, 40, 23, 39, 33, 39, 34, 31, 34, 31, 35, 38, 35, 39, 38, 33, 40, 43, 30, -1, 3, 6, 6, 5, 6, 4, 7, 5, 8, 5, 12, 9, 34, 20, 8, 9, 9, 8, 5, 4, 11, 4, 10, 4, 8, 7, 9, 5, 10, 4, 2, 11, 10, 8, 13, 13, 8, 6, 1, 7, 10, 23, 9, 11, 11, 27, 41, 31, 33, 25, 30, 26, 41, 42, 20, 9, 29, 38, 11, 10, 4, 1, 7, 14, 12, 10, 9, 7, 6, 5, 4, 6, 5, 7, 5, 6, 7, 42, 31, 37, 31, 39, 41, 21, 39, 31, 35, 35, 21, 34, 36, 26, 35, 40, 32, 36, 37, 41, 37, 26, 4, 1, 4, 3, 6, 3, 7, 41, 7, 38, 40, 34, 35, 39, 13, 34, 16, 8, 40, 38, 26, 6, -1, -2, -2, 5, 7, 4, 3, 3, -1, -1, -2, 1, -1, 2, -1, 3, -3, -3, -1, -3, 9, 38, 39, 30, 36, 25, 38, 37, 24, 25, 41, 32, 34, 9, 30, 39, 24, 35, 41, 38, 25, 28, 8, 5, 6, 7, 10, 6, 5, 7, 5, 2, 2, 2, 1, 2, 5, 3, 8, 5, 8, 7, 7, 4, 7, 8, 10, 4, 6, 5, 3, 4, 5, 5, 8, 10, 9, 10, 10, 7, 9, 7, 6, 5, 6, 4, 6, 6, 4, 12, 7, 8, 7, 11, 8, 6, 11, 13, 10, 13, 18, 20, 32, 27, 18, 27, 18, 28, 40, 34, 27, 28, 27, 12, 11, 9, 7, 6, 8, 7, 12, 10, 14, 11, 14, 8, 8, 5, 15, 17, 14, 15, 13, 10, 9, 8, 13, 11, 33, 36, 32, 36, 40, 31, 37, 40, 38, 22, 34, 36, 20, 40, 38, 35, 21, 38, 29, 16, 6, 19, 18, 29, 23, 16, 9, 8, 30, 29, 8, 18, 40, 27, 13, 40, 35, 28, 6, 6, 4, 4, 5, 3, 7, 8, 7, 7, 6, 8, 5, 3, 10, 12, 10, 8, 8, 6, 5, 4, 5, 3, 7, 5, 6, 2, 4, 2, 2, 2, 0, 3, 2, 2, 1, -1, 28, 37, 32, 40, 30, 28, 35, 4, 29, 37, 38, 40, 40, 35, 28, 4, 0, 32, 37, 34, 39, 9, 28, 23, 40, 33, 39, 20, 17, 41, 39, 6, 1, 4, 39, 30, 36, 37, 37, 25, 37, 10, 8, 35, 36, 25, 34, 40, 32, 35, 7, 26, 37, 38, 4, 3, 31, 34, 33, 18, 2, 3, 6, 6, 9]}}}
+}

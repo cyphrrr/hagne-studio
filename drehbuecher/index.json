@@ -5,6 +5,10 @@
    "datei": "e02-turnierbuero.json"
   },
   {
+   "id": "E03",
+   "datei": "e03-werbunk.json"
+  },
+  {
    "id": "GUERTEL",
    "datei": "guertel.json"
   },

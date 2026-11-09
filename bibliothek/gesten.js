@@ -99,8 +99,8 @@ Object.assign(GESTEN,{
 Object.assign(GESTEN,{
  /* Arm in eine feste Pose drehen; mit Ellbogengelenk (Deichshaf) auch den Unterarm.
     Bewährt: Prost [-60,-60] rechts, Tasse zum Mund [96,94] rechts, Funk am Ohr [-172,0] rechts */
- 'arm-pose':(o,c)=>{const a=c.a,k=ease(c.t/(a.rampe||0.3)),L=a.arm==='links';
-   if(L){o.aL=lerp(o.aL||0,a.schulter||0,k);o.aLf=lerp(0,a.ellbogen||0,k);}else{o.aR=lerp(o.aR||0,a.schulter||0,k);o.aRf=lerp(0,a.ellbogen||0,k);}},
+ 'arm-pose':(o,c)=>{const a=c.a,r=a.rampe!==undefined?a.rampe:0.3,k=r>0?ease(c.t/r):1,L=a.arm==='links';
+   if(L){o.aL=lerp(o.aL||0,a.schulter||0,k);o.aLf=lerp(o.aLf||0,a.ellbogen||0,k);}else{o.aR=lerp(o.aR||0,a.schulter||0,k);o.aRf=lerp(o.aRf||0,a.ellbogen||0,k);}},
  'faust-schuetteln':(o,c)=>{const f=c.f;o.aR=-60+(hs(f)-0.5)*30;o.aL=8;o.head=(o.head||0)+(hs(f+3)-0.5)*4;const j=(hs(f+7)-0.5)*6;o.br=[4,28+j,4,28-j];},
  'rot-werden':(o,c)=>{o.wangen=lerp(c.a.von||0,c.a.wert!==undefined?c.a.wert:0.6,c.t/(c.a.rampe||c.d));},
  'trinken':(o,c)=>{o.trinkt=true;o.es=0.12;o.head=-4;o.br=[-5,-6,-5,-6];o.mFix=true;o.m=1.6;},
@@ -108,4 +108,24 @@ Object.assign(GESTEN,{
  'zeigefinger':(o,c)=>{o.zeigefinger=true;o.aR=-65+Math.sin(c.T*5)*6;o.head=Math.sin(c.T*3)*4;o.br=[-3,10,-3,10];},
  'hintern-kratzen':(o,c)=>{o.spezial='kratzen';o.head=3;o.px=2;o.py=-2;o.br=[-6,-6,2,6];},
  'finger-riechen':(o,c)=>{o.spezial='riechen';o.head=Math.floor(c.T*4)%2?-2:0;o.es=0.12;o.br=[-8,-12,-8,-12];o.m=1;o.mFix=true;}
+});
+
+/* ==== 5d) Bausteine für frei gebaute Abläufe (aus E03 „Werbunk“) ====
+   Damit lässt sich fast jede Bewegung ohne neue Geste beschreiben:
+   pose = feste Werte (über "pose"), uebergang = weicher Wechsel von "ab" nach "ziel",
+   wippen / kopf-wiegen / schwingen = gleichmäßige Bewegung über die ganze Aktion. */
+Object.assign(GESTEN,{
+ /* Nur das Feld "pose" der Aktion zählt (z. B. Mikro in die Hand, Mund, Augen, Flasche) */
+ 'pose':()=>{},
+ /* Zahlenfelder weich von "ab" (fehlt: aktueller Wert) nach "ziel" führen, Dauer "rampe" (Vorgabe: ganze Aktion).
+    Felder z. B. aL, aLf, aR, aRf (Arme mit Ellbogen), head, hy, px, py, y, flasche_kipp */
+ 'uebergang':(o,c)=>{const a=c.a,ab=a.ab||{},z=a.ziel||{},r=a.rampe!==undefined?a.rampe:c.d,k=r>0?ease(c.t/r):1;
+   Object.keys(z).forEach(n=>{const v0=ab[n]!==undefined?ab[n]:(o[n]||0);o[n]=v0+(z[n]-v0)*k;});},
+ /* Körper wippt: "welle" = gerundeter Sinus (Vorgabe), "takt" = abwechselnd 0 und weite */
+ 'wippen':(o,c)=>{const a=c.a,w=a.weite!==undefined?a.weite:1,tp=a.tempo||1.3;
+   o.y=(o.y||0)+(a.art==='takt'?(Math.floor(c.T*tp)%2)*w:Math.round(Math.sin(c.T*tp)*w));},
+ /* Kopf wiegt hin und her; "hoch" lässt ihn dabei leicht hüpfen */
+ 'kopf-wiegen':(o,c)=>{const a=c.a,s=Math.sin(c.T*(a.tempo||3));o.head=s*(a.weite!==undefined?a.weite:2);if(a.hoch)o.hy=-Math.round(Math.abs(s)*a.hoch);},
+ /* Ein beliebiges Zahlenfeld pendelt um "mitte" */
+ 'schwingen':(o,c)=>{const a=c.a;o[a.feld]=(a.mitte||0)+Math.sin(c.T*(a.tempo||3))*(a.weite!==undefined?a.weite:1);}
 });

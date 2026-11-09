@@ -16,6 +16,7 @@ function flat(pts,fill,j){return '<path d="'+poly(pts,j===undefined?1.5:j)+'" fi
 function tape(x,y,w,h,a){return '<rect x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" fill="rgba(245,236,200,0.72)" transform="rotate('+a+' '+(x+w/2)+' '+(y+h/2)+')"/>';}
 function ln(x1,y1,x2,y2,c,w){return '<path d="M'+(+x1).toFixed(1)+' '+(+y1).toFixed(1)+' L'+(+x2).toFixed(1)+' '+(+y2).toFixed(1)+'" stroke="'+c+'" stroke-width="'+(w||1)+'" fill="none"/>';}
 function truss(x1,y1,x2,y2,w,c){const dx=x2-x1,dy=y2-y1,l=Math.hypot(dx,dy),nx=-dy/l*w/2,ny=dx/l*w/2;let s=ln(x1+nx,y1+ny,x2+nx,y2+ny,c,2.2)+ln(x1-nx,y1-ny,x2-nx,y2-ny,c,2.2);const n=Math.round(l/(w*1.1));let d='M'+(x1+nx).toFixed(1)+' '+(y1+ny).toFixed(1);for(let i=1;i<=n;i++){const f=i/n,sg=i%2?-1:1;d+=' L'+(x1+dx*f+nx*sg).toFixed(1)+' '+(y1+dy*f+ny*sg).toFixed(1);}return s+'<path d="'+d+'" stroke="'+c+'" stroke-width="1.1" fill="none"/>';}
+function beam(x1,y1,x2,y2,w,fill){const dx=x2-x1,dy=y2-y1,l=Math.hypot(dx,dy),nx=-dy/l*w/2,ny=dx/l*w/2;return piece([[x1+nx,y1+ny],[x2+nx,y2+ny],[x2-nx,y2-ny],[x1-nx,y1-ny]],fill,1.5);}
 const F='style="font-family:var(--font-sans)"';
 function roundPoly(pts,r,n){n=n||5;const o=[];const L=pts.length;
 for(let i=0;i<L;i++){const p0=pts[(i-1+L)%L],p1=pts[i],p2=pts[(i+1)%L];const rr=Array.isArray(r)?r[i]:r;

@@ -1,6 +1,6 @@
 /* HAGNE-Studio · Bibliothek · Orga-Figuren
    KickASS, m0og, Deichshaf (V2), Spallter (V2-Sonderkörper), DrBier (V1, normale Größe).
-   Übernommen aus den Projekt-Dateien FIGUR-KICKASS, FIGUR-M0OG, FOYER-01 (Deichshaf), FIGUR-SPALLTER, FIGUR-DRBIER.
+   Übernommen aus den Projekt-Dateien FIGUR-KICKASS, FIGUR-M0OG, FOYER-01 und EPISODE-WERBUNK (Deichshaf), FIGUR-SPALLTER, FIGUR-DRBIER.
    Jede Figur steckt in einem eigenen Block, damit sich Hilfsnamen nicht in die Quere kommen. */
 
 /* ==== Ellbogengelenk (VERSION-2, Baustein 9) ==== */
@@ -77,22 +77,104 @@ FIGUREN['m0og']=V2X({seed:23,skin:'#F6D2B0',shirt:'#C8382B',pants:'#3A4A62',flus
  hair:()=>piece([[-37,-225],[-36,-244],[-18,-252],[0,-254],[18,-252],[36,-244],[37,-225],[28,-230],[18,-226],[6,-231],[-6,-226],[-18,-231],[-28,-226]],'#D9B85C',1.4),
  acc:()=>'<circle cx="-14" cy="-204" r="10" fill="none" stroke="#C9A04A" stroke-width="2.5"/><circle cx="14" cy="-204" r="10" fill="none" stroke="#C9A04A" stroke-width="2.5"/><path d="M-4 -205 h8" stroke="#C9A04A" stroke-width="2.5"/>'});
 
-/* ==== Deichshaf: grau-braune Haare, Dreitagebart, schwarzes Shirt, Ellbogengelenk (Grundversion aus FOYER-01) ==== */
+/* ==== Deichshaf: grau-braune Haare, Dreitagebart, schwarzes Shirt, Ellbogengelenk ====
+   Fassung aus E03 „Werbunk“ (Grundlage FOYER-01). Kann stehen oder von vorn sitzen (haltung "sitzt", Oberkörper sinkt um 32),
+   hat ein Ansteckmikro und in den Händen: Handmikro links (mikro, mikro_kipp), Zeigefinger links (zeigefinger),
+   Zettel rechts (zettel), Daumen hoch rechts (thumb) und links (thumbL). Die Teile in der Hand bleiben aufrecht.
+   Grüne Bierflasche: flasche "hand" (rechte Hand) oder [x,y] als fester Platz im Bild, Neigung flasche_kipp.
+   Münder: m = 's' Lächeln (Grund), 'g' Grinsen, 'o' Schlürfen, 'n' gerade; eine Zahl ab 2 = Sprechmund mit dieser Öffnung. */
 (()=>{
-const HAIR_N='#7D7064',HAIR_G='#A39A90',HAIR_D='#5C5248';
+const SKIN='#D9A47A',HAIR_N='#7D7064',HAIR_G='#A39A90',HAIR_D='#5C5248';
+const BOT='#3F7A3A',DY=32,EDGE='#45453F',SH='#1E1E1C',PANTS='#3A4A62',BROW='#4E4237';
 function stubble(){let s=flat([[-35,-194],[-26,-185],[-14,-180],[14,-180],[26,-185],[35,-194],[31,-176],[27,-166],[11,-157],[-11,-157],[-27,-166],[-31,-176]],'rgba(70,56,44,0.26)',0.8);
  const wl=y=>y<=-176?35-(y+194)*0.222:(y<=-166?31-(y+176)*0.4:27-(y+166)*1.78);
  let n=0,guard=0;while(n<140&&guard<3000){guard++;const x=(R()-.5)*66,y=-193+R()*35;const ax=Math.abs(x);
   const top=ax>14?-180-(ax-14)*0.667:-180;if(y<top+1||y>-158||ax>wl(y)-2)continue;if(ax<12&&y>-178&&y<-166)continue;
   s+='<circle cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="'+(0.4+R()*0.25).toFixed(2)+'" fill="'+(R()<0.35?'#8E857B':'#4A3E34')+'" opacity="0.55"/>';n++;}
  return s;}
-FIGUREN['Deichshaf']=V2X({seed:53,skin:'#D9A47A',shirt:'#1E1E1C',pants:'#3A4A62',browC:'#4E4237',ellbogen:true,edge:'#45453F',
- under:()=>piece(rect(-39,-226,5,15),'#958B80',0.8)+piece(rect(34,-226,5,15),'#958B80',0.8),
- beard:stubble,
- hair:()=>{let s=piece(roundPoly([[-40,-214],[-40,-232],[-34,-246],[-20,-254],[0,-257],[20,-254],[34,-246],[40,-232],[40,-214],[36,-222],[30,-229],[20,-233],[8,-231],[-2,-234],[-14,-231],[-26,-232],[-34,-224]],3),HAIR_N,1.1);
-  s+='<path d="M-28 -241 l3 -5 M-16 -247 l3 -5 M-4 -250 l3 -5 M8 -249 l3 -5 M20 -245 l3 -5 M-22 -236 l2 -4 M2 -239 l2 -4 M14 -237 l2 -4 M30 -237 l2 -4" stroke="'+HAIR_G+'" stroke-width="1.5" stroke-linecap="round"/>';
-  s+='<path d="M-10 -243 l2 -4 M26 -241 l2 -4 M-32 -232 l2 -4" stroke="'+HAIR_D+'" stroke-width="1.3" stroke-linecap="round"/>';return s;},
- mouth:id=>'<g id="'+id+'-ms"><path d="M-10 -174 Q0 -166 10 -174" stroke="#2A0E0B" stroke-width="2.4" fill="none" stroke-linecap="round"/><path d="M-11 -175.5 l-1.5 -1.5 M11 -175.5 l1.5 -1.5" stroke="#8A4A30" stroke-width="1.2" stroke-linecap="round"/></g>'});
+/* Bierflasche grün. Ursprung = Griffpunkt (Mitte Bauch), Hals nach oben (-y), Boden bei +12 */
+function bottle(id){let s='<g id="'+id+'">';
+ s+=piece(rr(-6,-12,12,24,2.5),BOT,1);
+ s+=piece([[-6,-11],[6,-11],[2.6,-21],[-2.6,-21]],BOT,0.8);
+ s+=piece(rect(-2.6,-30,5.2,10),BOT,0.6);
+ s+=flat(rect(-3.2,-32.5,6.4,3),'#C9CDD0',0.4);
+ s+=flat(rect(-5.6,-6,11.2,10),'#F3F0E6',0.6)+flat(rect(-5.6,-3,11.2,2),'#C8302A',0.3)+flat(rect(-3.4,-16,6.8,3.5),'#F3F0E6',0.3);
+ s+=flat(rect(-4,-10,1.6,20),'rgba(220,255,210,0.35)',0.3);
+ s+='</g>';return s;}
+/* Handmikro: Ursprung = Faust, Kopf oben */
+function micHand(){return piece(rr(-2.2,-8,4.4,16,1.8),'#1A1A1A',0.4)+piece(circ(0,-12,5),'#2E2E30',0.5)+
+ '<path d="M-3.5 -13.5 h7 M-3.8 -11 h7.6 M-1.5 -16 v8 M1.5 -16 v8" stroke="#555558" stroke-width="0.6"/>'+
+ piece(rr(-6,-3,12,7,3),SKIN,0.5)+'<path d="M-5 0.5 h10" stroke="rgba(120,60,30,0.5)" stroke-width="0.8"/>';}
+/* Zettel (Moderationskarte), Ursprung = Faust, Daumen liegt vorne drauf */
+function paperHand(){return piece(rr(-11,-26,22,28,1.5),'#FBFAF5',0.6)+'<path d="M-7 -20 h14 M-7 -15 h12 M-7 -10 h14 M-7 -5 h9" stroke="#8A8A86" stroke-width="1"/>'+
+ piece(rr(-4,-4,8,9,3.5),SKIN,0.4);}
+function thumbUp(id){return '<g id="'+id+'" style="display:none">'+piece(rr(-5,-20,7.5,15,3.6),SKIN,0.7)+'<path d="M-5 -1 h11 M-5 3 h11" stroke="rgba(120,60,30,0.5)" stroke-width="1" stroke-linecap="round"/></g>';}
+function handPos(th,e){const a=th*Math.PI/180,b=(th+e)*Math.PI/180;
+ return [SHOULDER.x-ELBOW*Math.sin(a)-FORE*Math.sin(b),SHOULDER.y+ELBOW*Math.cos(a)+FORE*Math.cos(b)];}
+function armExtra(id,sx){return '<g transform="translate(0 '+FORE+')">'+
+ (sx<0?'<g id="'+id+'-ptL" style="display:none">'+piece(rr(-2.6,4,5.2,15,2.6),SKIN,0.5)+'</g><g id="'+id+'-cL"><g id="'+id+'-mic" style="display:none">'+micHand()+'</g>'+thumbUp(id+'-thL')+'</g>'
+      :'<g id="'+id+'-cR"><g id="'+id+'-paper" style="display:none">'+paperHand()+'</g>'+thumbUp(id+'-thR')+'</g>')+'</g>';}
+function hair(){let s=piece(roundPoly([[-40,-214],[-40,-232],[-34,-246],[-20,-254],[0,-257],[20,-254],[34,-246],[40,-232],[40,-214],[36,-222],[30,-229],[20,-233],[8,-231],[-2,-234],[-14,-231],[-26,-232],[-34,-224]],3),HAIR_N,1.1);
+ s+='<path d="M-28 -241 l3 -5 M-16 -247 l3 -5 M-4 -250 l3 -5 M8 -249 l3 -5 M20 -245 l3 -5 M-22 -236 l2 -4 M2 -239 l2 -4 M14 -237 l2 -4 M30 -237 l2 -4" stroke="'+HAIR_G+'" stroke-width="1.5" stroke-linecap="round"/>';
+ s+='<path d="M-10 -243 l2 -4 M26 -241 l2 -4 M-32 -232 l2 -4" stroke="'+HAIR_D+'" stroke-width="1.3" stroke-linecap="round"/>';return s;}
+function mouth(id){return '<g id="'+id+'-ms"><path d="M-10 -174 Q0 -166 10 -174" stroke="#2A0E0B" stroke-width="2.4" fill="none" stroke-linecap="round"/><path d="M-11 -175.5 l-1.5 -1.5 M11 -175.5 l1.5 -1.5" stroke="#8A4A30" stroke-width="1.2" stroke-linecap="round"/></g>'+
+ '<g id="'+id+'-mg" style="display:none"><path d="M-15 -177 Q0 -172.5 15 -177 Q11 -160 0 -160 Q-11 -160 -15 -177Z" fill="#2A0E0B"/><path d="M-13.5 -176.2 Q0 -172.2 13.5 -176.2 L12.6 -172.6 Q0 -169.2 -12.6 -172.6Z" fill="#FFFDF6"/><ellipse cx="0" cy="-163.5" rx="5" ry="2" fill="#C2504A"/></g>'+
+ '<g id="'+id+'-mo" style="display:none"><ellipse cx="0" cy="-172" rx="3.6" ry="2.6" fill="#2A0E0B"/></g>'+
+ '<g id="'+id+'-mn" style="display:none"><path d="M-9 -172 L9 -172" stroke="#2A0E0B" stroke-width="2.4" stroke-linecap="round"/></g>'+
+ '<ellipse id="'+id+'-mt" style="display:none" cx="0" cy="-171" rx="8" ry="3" fill="#2A0E0B" stroke="#C98A68" stroke-width="1"/>';}
+function build(a){const id=a.id,seated=a.haltung==='sitzt',sk=SKIN;seed=53;let s='';
+ if(seated){
+  s+=piece(box(-23,-36,17,30),PANTS)+piece(box(6,-36,17,30),PANTS);
+  s+=piece(shoe(-31,-10,28,11),'#2A2624')+piece(shoe(3,-10,28,11),'#2A2624');
+  s+=piece(rr(-26,-50,22,20,7),PANTS)+piece(rr(4,-50,22,20,7),PANTS);
+  s+=flat(ell(-15,-38,8,4),'rgba(255,255,255,0.08)',0.4)+flat(ell(15,-38,8,4),'rgba(255,255,255,0.08)',0.4);
+ }else{
+  s+=piece(box(-22,-72,17,66),PANTS)+piece(box(5,-72,17,66),PANTS);
+  s+=piece(shoe(-30,-10,28,11),'#2A2624')+piece(shoe(2,-10,28,11),'#2A2624');}
+ s+='<g transform="translate(0 '+(seated?DY:0)+')">';
+ s+=piece(seated?roundPoly([[-34,-155],[34,-155],[42,-82],[-42,-82]],[13,13,4,4]):TORSO_V2,SH);
+ s+='<g data-logo="1" data-t="translate(0 '+(seated?-112:-102)+')" data-size="15" data-max="64"></g>';
+ s+='<circle cx="12" cy="-140" r="2.6" fill="#0E0E0E" stroke="#3A3A3A" stroke-width="0.8"/>';
+ /* beide Arme liegen vor dem Rumpf, damit Mikro und Zeigefinger vor dem Shirt lesbar bleiben */
+ s+=armJ(id+'-al',-1,SH,sk,armExtra(id,-1),EDGE);
+ s+=armJ(id+'-ar',1,SH,sk,armExtra(id,1),EDGE);
+ s+=piece(box(-8,-168,16,16),sk);
+ s+='<g id="'+id+'-h">';
+ s+=piece(HEAD_V2,sk,2.6);
+ s+=piece(rect(-39,-226,5,15),'#958B80',0.8)+piece(rect(34,-226,5,15),'#958B80',0.8);
+ s+='<g id="'+id+'-e">'+piece(circ(-14,-204,7.5),'#FFFDF6',1.2)+piece(circ(14,-204,7.5),'#FFFDF6',1.2)+'<g id="'+id+'-p"><circle cx="-13" cy="-203" r="3" fill="#1F1B18"/><circle cx="15" cy="-203" r="3" fill="#1F1B18"/></g></g>';
+ s+='<g id="'+id+'-bl">'+flat(rect(-8.5,-2.3,17,4.6),BROW,1)+'</g><g id="'+id+'-br">'+flat(rect(-8.5,-2.3,17,4.6),BROW,1)+'</g>';
+ s+=NOSE_V2();
+ s+=stubble();
+ s+=mouth(id);
+ s+=hair();
+ s+='</g>';
+ s+='<g id="'+id+'-front"><g id="'+id+'-bot">'+bottle(id+'-botg')+'<g id="'+id+'-grip">'+piece(rr(-7.5,-5,15,10,4),SKIN,0.5)+'<path d="M-6.5 -1.6 h13 M-6.5 1.8 h13" stroke="rgba(120,60,30,0.45)" stroke-width="0.8"/></g></g></g>';
+ s+='</g>';
+ return s;}
+function rig(id){const g=k=>$(id+'-'+k);
+ return {g:$(id),h:g('h'),e:g('e'),p:g('p'),bl:g('bl'),br:g('br'),al:g('al'),ar:g('ar'),alf:g('al-f'),arf:g('ar-f'),
+  ms:g('ms'),mg:g('mg'),mo:g('mo'),mt:g('mt'),mn:g('mn'),paper:g('paper'),thL:g('thL'),thR:g('thR'),cL:g('cL'),cR:g('cR'),mic:g('mic'),ptL:g('ptL'),
+  bot:g('bot'),grip:g('grip')};}
+function apply(r,o,a){const aL=o.aL||0,aLf=o.aLf||0,aR=o.aR||0,aRf=o.aRf||0,f=o._f||0,seated=a.haltung==='sitzt';
+ r.g.setAttribute('transform','translate('+o.x.toFixed(1)+','+(a.boden+(o.y||0)).toFixed(1)+') scale(0.92)');
+ r.h.setAttribute('transform','translate(0 '+(o.hy||0)+') rotate('+(o.head||0).toFixed(1)+' 0 -195)');
+ r.al.setAttribute('transform','rotate('+aL.toFixed(1)+')');r.alf.setAttribute('transform','rotate('+aLf.toFixed(1)+')');
+ r.ar.setAttribute('transform','rotate('+aR.toFixed(1)+')');r.arf.setAttribute('transform','rotate('+aRf.toFixed(1)+')');
+ r.cL.setAttribute('transform','rotate('+(-(aL+aLf)+(o.mikro_kipp||0)).toFixed(1)+')');r.cR.setAttribute('transform','rotate('+(-(aR+aRf)).toFixed(1)+')');
+ show(r.thL,!!o.thumbL);show(r.thR,!!o.thumb);show(r.mic,!!o.mikro);show(r.ptL,!!o.zeigefinger);show(r.paper,!!o.zettel);
+ let m=o.m===undefined?'s':o.m;if(typeof m==='number')m=m>=2?'t':'s';else if(m==='y')m='g';
+ show(r.ms,m==='s');show(r.mg,m==='g');show(r.mo,m==='o');show(r.mt,m==='t');show(r.mn,m==='n');if(m==='t')r.mt.setAttribute('ry',o.m.toFixed(1));
+ const b=o.br||[0,0,0,0];r.bl.setAttribute('transform','translate(-15 '+(-218+b[0])+') rotate('+b[1]+')');r.br.setAttribute('transform','translate(15 '+(-218+b[2])+') rotate('+(-b[3])+')');
+ r.p.setAttribute('transform','translate('+(o.px||0)+' '+(o.py||0)+')');
+ /* Blinzeln deterministisch aus der Bildnummer, nur bei offenen Augen */
+ let es=o.es===undefined?1:o.es;const ew=o.ew||1;if(es===1&&ew===1&&((f*7919)%61)<2)es=0.12;
+ r.e.setAttribute('transform',(es!==1||ew!==1)?'translate(0 -204) scale('+ew+' '+(es*ew).toFixed(2)+') translate(0 204)':'');
+ if(!o.flasche){show(r.bot,false);}else{show(r.bot,true);let x,y;
+  if(o.flasche==='hand'){const hp=handPos(aR,aRf);x=hp[0];y=hp[1];show(r.grip,true);}
+  else{x=(o.flasche[0]-o.x)/0.92;y=(o.flasche[1]-a.boden)/0.92-(seated?DY:0);show(r.grip,false);}
+  r.bot.setAttribute('transform','translate('+x.toFixed(1)+' '+y.toFixed(1)+') rotate('+(o.flasche_kipp||0).toFixed(1)+')');}}
+FIGUREN['Deichshaf']={build,rig,apply,spricht:true,lippen:(o,k)=>{if(k>0.12)o.m=1.5+6*k;},kopfhoehe:a=>a.haltung==='sitzt'?262-DY:262};
 })();
 
 /* ==== Spallter: Rumpf so dünn wie die Arme, Kopf in Normalgröße, Brille, kurzer Vollbart ==== */
