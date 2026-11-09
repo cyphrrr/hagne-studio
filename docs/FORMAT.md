@@ -66,7 +66,7 @@ Ohne `szenen` gilt `kulisse` für die ganze Folge. Mit `szenen` wird bei jedem W
 | Feld | Bedeutung |
 |---|---|
 | `id` | kurze ID für dieses Drehbuch (`pb`, `cy`, …) |
-| `figur` | Name in der Bibliothek, alle Version 2: `PoBi`, `cypheR`, `KickASS`, `m0og`, `Deichshaf` (mit Ellbogen), `DocEvel` (mit Ellbogen, Geldscheine), `Spallter` (dünn), `DrBier` (einen Kopf größer), `DrBier-Riese` (Kopf nie im Bild), `Spock`, `Bierdieb-Sturmhaube`, `Bierdieb-Tarnhut` |
+| `figur` | Name in der Bibliothek, alle Version 2: `PoBi`, `cypheR`, `KickASS`, `m0og`, `Deichshaf` (mit Ellbogen), `DocEvel` (mit Ellbogen, Geldscheine), `Spallter` (dünn), `DrBier` (einen Kopf größer), `DrBier-Riese` (Kopf nie im Bild), `Spock`, `Marlec` (Locken, Polo, Badelatschen), `Bierdieb-Sturmhaube`, `Bierdieb-Tarnhut` |
 | `x`, `boden` | Standplatz (Füße) |
 | `z` | Ebene, größer = weiter vorn. Gilt auch für Requisiten und Gegenstände |
 | `start` | `draussen`: unsichtbar bis zur ersten Auftritts-Geste (`reinlaufen`, `stapfen`, `auftauchen`, `schleichen`) |
@@ -81,7 +81,7 @@ Ohne `szenen` gilt `kulisse` für die ganze Folge. Mit `szenen` wird bei jedem W
 
 ### gegenstaende (tragbar)
 
-`{ "id": "kasten", "art": "orga-bierkasten", "x": 270, "y": 361, "z": 4 }` – liegt an (x, y), bis eine `tragen`-Aktion ihn aufnimmt. Nach dem Loslassen fällt er in 0,3 s zurück an seinen Platz.
+`{ "id": "kasten", "art": "orga-bierkasten", "x": 270, "y": 361, "z": 4 }` – liegt an (x, y), bis eine `tragen`-Aktion ihn aufnimmt. Nach dem Loslassen wandert er in 0,3 s zurück an seinen Platz (z. B. auf den Tresen). Mit `"aufheben": 0.45` an der `tragen`-Aktion wandert er beim Aufnehmen weich von seinem Platz in die Hände, statt hineinzuspringen (Beispiel: `probe-marlec.json`).
 
 ### ton
 
@@ -168,7 +168,7 @@ Alle Gesten stehen in `bibliothek/gesten.js`. „Alle“ = funktioniert mit jede
 | `jubel` | – | Arme oben, hüpft |
 | `ausholen` | `rampe` | holt Schwung |
 | `schreck-sprung` | `hoehe`, `hut_hoch`, `px` | springt vor Schreck, Hut fliegt (Tarnhut) |
-| `tragen` | `gegenstand` (ID aus `gegenstaende`) | trägt den Gegenstand vor dem Bauch |
+| `tragen` | `gegenstand` (ID aus `gegenstaende`), `aufheben` (Sekunden, optional) | trägt den Gegenstand vor dem Bauch |
 | `fallen-lassen` | `gegenstand`, `art` (`von-oben` / `aus-der-hand`), `vorlauf`, `z` und je nach Art: `x`, `landet`, `boden`, `rollt_bis` bzw. `start` [x,y], `boden`, `rollt`, `drehung` | Gegenstand fällt, Hand ist ab dann leer |
 | `kratzen-mund` | `runter_ab` | Arm zum Mund, kratzen, runter (DrBier-Riese) |
 
@@ -213,6 +213,6 @@ Eine Geste ist eine Funktion `(o, c) => { … }` in `bibliothek/gesten.js`. Sie 
 - `c.T` Zeit, `c.f` Bildnummer, `c.t` Zeit seit Beginn der Aktion, `c.d` Dauer der Aktion
 - `c.a` die Aktion selbst (alle Parameter), `c.self` die Figur aus der Besetzung, `c.seite` ±1 Richtung zu den anderen, `c.world` Posen aller Figuren
 
-**Pose-Felder:** `x`, `y`, Deichshaf: `mikro`, `mikro_kipp` (Handmikro links), `zettel` (rechts), `zeigefinger` (links), `thumb`/`thumbL` (Daumen hoch rechts/links), `flasche` (`"hand"` oder [x, y] im Bild), `flasche_kipp`, `m` auch `n` (gerade) und `o` (Schlürfen), `es` 0.12 = Augen zu, 0.45 = fröhlich;  DocEvel: `geld` (Fächer Scheine links), `geldR` (ein Schein rechts), `fallen` 0–1 (drei Scheine fallen zu Boden), `lid` 0–1 (Oberlid senkt sich, genervt), `m` auch `n` (neutral, Grundmund) und `p` (Mund zusammengezogen);  `rot` (Körper kippt um die Füße), `aLf`, `aRf` (Unterarm bei Ellbogen), `wangen` (m0og), `trinkt`, `schuetteln`, `zeigefinger` (DrBier), `spezial` (Spallter: `kratzen`/`riechen`), `head`, `hy`, `aL`, `aR`, `lL`, `lR` (Beine), `px`, `py` (Pupillen), `br` [4], `m` (Mund: Zahl = Öffnung, `s` schief, `g` grinsen, `y` lachen), `sy` (Höhe des offenen Lachmunds), `es` (Augen zukneifen, < 1), `ew` (Augen weiten, > 1), `shrug`, `thumb`, `handLeer` (Gegenstand in der Hand weg), `brillenarm` 0–1 und `brille_y` (PoBi), `swH` (Gegenstand in der Hand schwingt, Grad), `fp` (Facepalm-Arm, Winkel; 0 = aus), `glint` (Brillenblitz), `belts`, `swL`, `swR` (Spock), `hat` (Tarnhut), `mFix` (Lippen nicht vom Ton steuern lassen).
+**Pose-Felder:** `x`, `y`, Deichshaf: `mikro`, `mikro_kipp` (Handmikro links), `zettel` (rechts), `zeigefinger` (links), `thumb`/`thumbL` (Daumen hoch rechts/links), `flasche` (`"hand"` oder [x, y] im Bild), `flasche_kipp`, `m` auch `n` (gerade) und `o` (Schlürfen), `es` 0.12 = Augen zu, 0.45 = fröhlich;  DocEvel: `geld` (Fächer Scheine links), `geldR` (ein Schein rechts), `fallen` 0–1 (drei Scheine fallen zu Boden), `lid` 0–1 (Oberlid senkt sich, genervt), `m` auch `n` (neutral, Grundmund) und `p` (Mund zusammengezogen);  `rot` (Körper kippt um die Füße), `aLf`, `aRf` (Unterarm bei Ellbogen), `wangen` (m0og), `trinkt`, `schuetteln`, `zeigefinger` (DrBier), `spezial` (Spallter: `kratzen`/`riechen`), `head`, `hy`, `aL`, `aR`, `lL`, `lR` (Beine), `px`, `py` (Pupillen), `br` [4], `m` (Mund: Zahl = Öffnung, `s` schief, `g` grinsen, `y` lachen), `sy`, `sx` (Höhe und Breite des offenen Lachmunds), `schiel` 0–1 (Pupillen laufen auseinander, alle V2-Figuren aus dem Baukasten), `es` (Augen zukneifen, < 1), `ew` (Augen weiten, > 1), `shrug`, `thumb`, `handLeer` (Gegenstand in der Hand weg), `brillenarm` 0–1 und `brille_y` (PoBi), `swH` (Gegenstand in der Hand schwingt, Grad), `fp` (Facepalm-Arm, Winkel; 0 = aus), `glint` (Brillenblitz), `belts`, `swL`, `swR` (Spock), `hat` (Tarnhut), `mFix` (Lippen nicht vom Ton steuern lassen).
 
 Regeln: Parameter mit sinnvollen Vorgaben, Richtung aus `c.seite` oder Start/Ziel ableiten statt fest verdrahten, und die neue Geste hier im Katalog eintragen.
