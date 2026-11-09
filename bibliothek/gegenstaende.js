@@ -19,4 +19,13 @@ function crate(){seed=901;let s='';
  s+='<text x="0" y="27.5" text-anchor="middle" font-size="5.5" font-weight="700" fill="#2C2C2A" '+F+'>Finger weg!</text>'+tape(-44,6,14,6,-30);return s;}
 const GEGENSTAND_ARTEN={'orga-bierkasten':{build:crate,trage_hoehe:77.3}};
 
-const GEGENSTAENDE={'bierflasche':rBottle,'bierflasche-klein':bottle};
+/* LAN-Patchkabel (cypheR): kurzes Ende über der Faust, Stecker baumelt nach unten (Schwung über Pose-Feld swH) */
+function lanKabel(){const d='M-3 -14 Q-7 -6 0 2 C9 14 -7 28 2 40 C6 46 1 50 0 52';
+ return '<path d="'+d+'" transform="translate(2.5,2.5)" stroke="'+SHADOW+'" stroke-width="4.5" fill="none"/>'+
+ '<path d="'+d+'" stroke="#3D7FD1" stroke-width="4.5" fill="none" stroke-linecap="round"/>'+
+ '<path d="'+d+'" stroke="#8DB8EA" stroke-width="1" fill="none" stroke-dasharray="3 4" transform="translate(-1 0)"/>'+
+ piece(rr(-4.5,49,9,8,2),'#3D7FD1',0.4)+piece(rr(-5.5,56,11,13,1.5),'#E4EEF4',0.4)+
+ '<path d="M-3.5 66 V68.5 M-1.7 66 V68.5 M0.1 66 V68.5 M1.9 66 V68.5 M3.7 66 V68.5" stroke="#D8A93A" stroke-width="0.9"/>'+
+ '<path d="M-3 57 L-3 63 L3 63 L3 57" fill="none" stroke="#B9C7D1" stroke-width="0.8"/>';}
+
+const GEGENSTAENDE={'bierflasche':rBottle,'bierflasche-klein':bottle,'lan-kabel':lanKabel};
