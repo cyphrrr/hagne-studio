@@ -19,6 +19,10 @@
   {
    "id": "PROBE-DOCEVEL",
    "datei": "probe-docevel.json"
+  },
+  {
+   "id": "PROBE-CYPHER",
+   "datei": "probe-cypher.json"
   }
  ]
 }

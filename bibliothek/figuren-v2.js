@@ -66,6 +66,8 @@ if(p.over)s+=p.over();
 s+=p.hair(p.id);
 if(p.acc)s+=p.acc(p.id);
 s+='</g>';
+/* Facepalm-Arm (Pose-Feld fp = Winkel): zweiter rechter Arm über dem Kopf, gleiches Schultergelenk. Eigener Zufall, damit sich nichts anderes verschiebt. */
+if(!p.seated){const sv=seed;seed=p.seed+91;s+='<g id="'+p.id+'-fpw" style="display:none">'+armAt(p.id+'-fp',1,armShirt,sk,'','',armQ(1))+'</g>';seed=sv;}
 return s;}
 function beardFull(base,light,dark){return ()=>{let s=piece(roundPoly([[-37,-192],[-30,-189],[-20,-180],[20,-180],[30,-189],[37,-192],[33,-166],[17,-150],[0,-145],[-17,-150],[-33,-166]],[2,3,3,3,3,2,9,9,8,9,9]),base,2);
 s+=flat(circ(-22,-166,3),light)+flat(circ(14,-156,2.5),light)+flat(circ(25,-172,2.5),dark)+flat(circ(-8,-152,2.5),dark)+flat(circ(4,-162,2),light)+flat(circ(-28,-178,2),light);return s;};}
@@ -107,14 +109,15 @@ return s;}
 
 function show(el,on){if(el)el.style.display=on?'':'none';}
 function rigV2(id,browY){const g=k=>$(id+'-'+k);return {browY:browY||-218,btl:g('btl'),btr:g('btr'),btlr:g('btl-r'),btrr:g('btr-r'),g:$(id),h:g('h'),e:g('e'),p:g('p'),bl:g('bl'),br:g('br'),m:g('m'),al:g('al'),ar:g('ar'),sl:g('sl'),sr:g('sr'),ll:g('ll'),lr:g('lr'),th:g('th'),
- mfs:g('mfs'),mfg:g('mfg'),mfy:g('mfy'),hr:g('hr'),hrc:g('hrc'),gt:g('gt'),hat:g('hat')};}
+ mfs:g('mfs'),mfg:g('mfg'),mfy:g('mfy'),hr:g('hr'),hrc:g('hrc'),gt:g('gt'),hat:g('hat'),fpw:g('fpw'),fp:g('fp')};}
 /* Pose für alle V2-Figuren. Felder: x, y, rot (Körper kippt um die Füße), head, hy, aL, aR, lL, lR, px, py,
    es (Augen zukneifen, <1), ew (Augen weiten, >1), m (Zahl = Mundöffnung, 's'/'g'/'y' = Mundform), br, shrug, thumb,
-   handLeer (Gegenstand in der Hand weg), glint (Brillenblitz), hat (Hut hebt sich um diesen Wert) */
+   handLeer (Gegenstand in der Hand weg), swH (Gegenstand in der Hand schwingt, Grad), fp (Facepalm, Armwinkel), glint (Brillenblitz), hat (Hut hebt sich um diesen Wert) */
 function poseV2(c,o,baseY){
  c.g.setAttribute('transform','translate('+o.x.toFixed(1)+','+(baseY+(o.y||0)).toFixed(1)+') scale(0.92)'+(o.rot?' rotate('+o.rot.toFixed(1)+')':''));
  c.h.setAttribute('transform','translate(0 '+(o.hy||0)+') rotate('+(o.head||0).toFixed(1)+' 0 -195)');
  const sh=!!o.shrug;show(c.al,!sh);show(c.ar,!sh);show(c.sl,sh);show(c.sr,sh);
+ if(c.fpw){show(c.fpw,!!o.fp);if(o.fp){show(c.ar,false);c.fp.setAttribute('transform','rotate('+o.fp.toFixed(1)+')');}}
  if(c.al)c.al.setAttribute('transform','rotate('+(o.aL||0).toFixed(1)+')');
  if(c.ar)c.ar.setAttribute('transform','rotate('+(o.aR||0).toFixed(1)+')');
  if(c.ll)c.ll.setAttribute('transform','rotate('+(o.lL||0).toFixed(1)+' -13 -70)');
@@ -128,7 +131,7 @@ function poseV2(c,o,baseY){
  if(c.btl){show(c.btl,!!o.belts);show(c.btr,!!o.belts);   /* Teile an der Hand hängen nach unten und schwingen um swL/swR */
   c.btlr.setAttribute('transform','rotate('+(-(o.aL||0)+(o.swL||0)).toFixed(1)+')');c.btrr.setAttribute('transform','rotate('+(-(o.aR||0)+(o.swR||0)).toFixed(1)+')');}
  if(c.m){show(c.m,!mf);if(!mf)c.m.setAttribute('ry',typeof o.m==='number'?o.m:1.6);}
- if(c.hr){show(c.hr,!o.handLeer);c.hrc.setAttribute('transform','rotate('+(-(o.aR||0)).toFixed(1)+')');}
+ if(c.hr){show(c.hr,!o.handLeer);c.hrc.setAttribute('transform','rotate('+(-(o.aR||0)+(o.swH||0)).toFixed(1)+')');}
  if(c.gt)show(c.gt,!!o.glint);
  if(c.hat)c.hat.setAttribute('transform','translate(0 '+(o.hat||0).toFixed(1)+')');
  const b=o.br||[0,0,0,0];const by=c.browY||-218;c.bl.setAttribute('transform','translate(-15 '+(by+b[0])+') rotate('+b[1]+')');c.br.setAttribute('transform','translate(15 '+(by+b[2])+') rotate('+(-b[3])+')');}
