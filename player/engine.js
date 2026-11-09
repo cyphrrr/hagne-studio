@@ -40,6 +40,10 @@ function buehne(i){SZ=i;const sc=i>=0?DB.szenen[i]:null;
    items.push({z:g.z||0,svg:'<g id="gg-'+i+'">'+A.build()+'</g>'});GEG.push(Object.assign({},g,{i,art_:A}));});
  OBJ=[];AKT.forEach((a,i)=>{if(a.geste!=='fallen-lassen')return;const G=GEGENSTAENDE[a.gegenstand];if(!G){FEHLT.add('Gegenstand '+a.gegenstand);return;}
    seed=77;items.push({z:a.z!==undefined?a.z:100,svg:'<g id="obj-'+i+'" style="display:none">'+G()+'</g>'});OBJ.push(Object.assign(a,{idx:i}));});
+ /* Namensschild unten am Bildrand (Figurenproben): "namensschild": true oder {"text", "x"} */
+ BES.forEach((a,i)=>{const n=a.namensschild;if(!n)return;const txt=n.text||a.name||a.figur.replace(/-/g,' '),x=n.x!==undefined?n.x:a.x;
+   seed=500+i;const w=txt.length*7.6+20;
+   items.push({z:1000,svg:piece(rect(x-w/2,403,w,16),'#FBFAF5',1)+'<text x="'+x+'" y="415" text-anchor="middle" font-size="12" font-weight="500" fill="#2C2C2A" '+F+'>'+txt+'</text>'});});
  items.sort((p,q)=>p.z-q.z);
  $('chars').innerHTML=items.map(i=>i.svg).join('');
  BES.forEach(a=>{const Fg=FIGUREN[a.figur];if(Fg&&Fg.post)Fg.post(a.id);});
@@ -145,7 +149,7 @@ function setStatus(){const st=$('status');let msg='Drehbuch '+DB.episode.id+' �
  st.textContent=msg;st.className=FEHLT.size?'warn':'';}
 function fmt(x){return Math.floor(x/60)+':'+String(Math.floor(x%60)).padStart(2,'0')+'.'+Math.floor((x%1)*10);}
 function now(){return audioOK?au.currentTime:(playing?clockT+(performance.now()-clock0)/1000:clockT);}
-function frame(){let T=now();if(T>=DUR&&playing){stop();T=DUR;}T=Math.min(T,DUR);const f=Math.floor(T*12);
+function frame(){let T=now();if(T>=DUR&&playing){if(DB.episode.schleife&&!audioOK){seekTo(0);T=0;}else{stop();T=DUR;}}T=Math.min(T,DUR);const f=Math.floor(T*12);
  if(f!==lastF){renderAt(T);lastF=f;sl.value=T;tl.textContent=fmt(T)+' / '+fmt(DUR);}if(playing)requestAnimationFrame(frame);}
 function stop(){playing=false;if(audioOK)au.pause();else clockT=Math.min(now(),DUR);btn.textContent='Abspielen';}
 btn.onclick=()=>{if(playing){stop();return;}if(now()>=DUR)seekTo(0);playing=true;btn.textContent='Pause';
@@ -167,7 +171,12 @@ async function ladeFolgen(){const eing=[...document.querySelectorAll('script.dre
  return Promise.all(idx.folgen.map(async f=>{const d=await (await fetch('drehbuecher/'+f.datei)).json();if(d.ton&&d.ton.mix)d.ton.mix='ton/'+d.ton.mix;return d;}));}
 let FOLGEN=[];
 ladeFolgen().then(F=>{FOLGEN=F;const sel=$('folge');
- FOLGEN.forEach((d,i)=>{const o=document.createElement('option');o.value=i;o.textContent=d.episode.id+' – '+d.episode.titel;sel.appendChild(o);});
+ /* Menü in zwei Gruppen: Folgen und Figurenproben (ID beginnt mit PROBE-) */
+ const gruppe=n=>{const g=document.createElement('optgroup');g.label=n;sel.appendChild(g);return g;};
+ const GF=gruppe('Folgen'),GP=gruppe('Figuren');
+ FOLGEN.forEach((d,i)=>{const fig=/^PROBE-/.test(d.episode.id),o=document.createElement('option');o.value=i;
+   o.textContent=fig?d.episode.titel.replace(/^Figurenprobe:\s*/,''):d.episode.id+' – '+d.episode.titel;(fig?GP:GF).appendChild(o);});
+ [GF,GP].forEach(g=>{if(!g.children.length)g.remove();});
  sel.onchange=()=>ladeFolge(FOLGEN[+sel.value]);
  const wahl=new URLSearchParams(location.search).get('folge');
  const start=Math.max(0,FOLGEN.findIndex(d=>d.episode.id===wahl));sel.value=start;

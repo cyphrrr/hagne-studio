@@ -1,0 +1,29 @@
+{
+ "format": "hagne-drehbuch/0.2",
+ "episode": {"id": "PROBE-SPOCK", "titel": "Figurenprobe: Spock – Kranich-Stil", "dauer": 10.0, "fps": 12, "bild": "16:9", "schleife": true},
+ "kulisse": {"id": "HALLE-AUSSEN-01", "licht": "tag"},
+ "besetzung": [
+  {"id": "sp", "figur": "Spock", "x": 340, "boden": 390, "arme": [4, -4], "kopf": 2, "brauen": [1, 6, -4, 8], "mund": "schief", "namensschild": true}
+ ],
+ "dialog": [],
+ "aktionen": [
+  {"von": 0, "bis": 10, "wer": "sp", "geste": "wippen", "tempo": 1.2},
+  {"von": 0, "bis": 1.5, "wer": "sp", "geste": "umherschauen", "tempo": 1.3},
+  {"von": 1.5, "bis": 2.6, "wer": "sp", "geste": "mund", "wert": "grinsen", "brauen": [-3, 0, -5, 6], "pose": {"head": 5, "hy": -1}},
+  {"von": 1.5, "bis": 2.1, "wer": "sp", "geste": "brillenblitz"},
+  {"von": 2.6, "bis": 8.8, "wer": "sp", "geste": "guertel-zeigen"},
+  {"von": 2.6, "bis": 3.3, "wer": "sp", "geste": "uebergang", "ab": {"aL": 4, "aR": -4}, "ziel": {"aL": 30, "aR": -30}, "rampe": 0.5, "pose": {"br": [-1, 8, -1, 8], "head": 2}, "notiz": "Gürtel ziehen"},
+  {"von": 3.3, "bis": 5.2, "wer": "sp", "geste": "kranich"},
+  {"von": 5.2, "bis": 7.6, "wer": "sp", "geste": "wirbeln"},
+  {"von": 5.2, "bis": 7.6, "wer": "sp", "geste": "mund", "wert": "lachen"},
+  {"von": 7.6, "bis": 8.8, "wer": "sp", "geste": "jubel"},
+  {"von": 8.8, "bis": 10, "wer": "sp", "geste": "umherschauen", "tempo": 1.3}
+ ],
+ "kamera": [
+  {"von": 0, "bis": 10.0, "start": [340, 229, 1.1], "ende": [340, 229, 1.1]}
+ ],
+ "schilder": [
+  {"von": 3.3, "bis": 5.2, "text": "*Kranich-Stil!*", "pos": [481.1, 35.1], "winkel": -4},
+  {"von": 5.2, "bis": 7.6, "text": "*HUAAA!*", "pos": [496.5, 21.9], "winkel": 5}
+ ]
+}

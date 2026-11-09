@@ -1,0 +1,36 @@
+{
+ "format": "hagne-drehbuch/0.2",
+ "episode": {"id": "PROBE-BIERDIEBE", "titel": "Figurenprobe: die Bierdiebe", "dauer": 10.0, "fps": 12, "bild": "16:9", "schleife": true},
+ "kulisse": {"id": "HALLE-AUSSEN-01", "licht": "tag"},
+ "besetzung": [
+  {"id": "d2", "figur": "Bierdieb-Tarnhut", "x": 400, "boden": 390, "z": 1, "namensschild": {"x": 510}},
+  {"id": "d1", "figur": "Bierdieb-Sturmhaube", "x": 250, "boden": 390, "z": 2, "hand_rechts": "bierflasche-klein", "namensschild": {"x": 170}}
+ ],
+ "gegenstaende": [
+  {"id": "kasten", "art": "orga-bierkasten", "x": 400, "y": 361, "z": 3}
+ ],
+ "dialog": [],
+ "aktionen": [
+  {"von": 0, "bis": 3, "wer": "d1", "geste": "schleichen", "von_x": -200, "rampe": 3, "neigung": 5, "kopf": 4, "px": 2, "py": -1, "notiz": "schleichen mit der Beute"},
+  {"von": 0, "bis": 3, "wer": "d2", "geste": "schleichen", "von_x": -60, "rampe": 3, "neigung": 5, "kopf": -3, "px": 2},
+  {"von": 0, "bis": 4.7, "wer": "d2", "geste": "tragen", "gegenstand": "kasten"},
+  {"von": 3, "bis": 4.5, "wer": ["d1", "d2"], "geste": "hehehe"},
+  {"von": 4.5, "bis": 5.1, "wer": "d1", "geste": "schreck-sprung", "hoehe": 16, "px": 4, "notiz": "*HUAAA!* aus dem Off"},
+  {"von": 4.5, "bis": 5.1, "wer": "d2", "geste": "schreck-sprung", "hoehe": 20, "hut_hoch": 18},
+  {"von": 4.7, "bis": 10, "wer": "d1", "geste": "fallen-lassen", "gegenstand": "bierflasche-klein", "art": "aus-der-hand", "start": [290, 313], "boden": 384, "rollt": 30, "drehung": 320, "z": 5},
+  {"von": 5.3, "bis": 10, "wer": "d2", "geste": "fliehen", "nach_x": -160, "rampe": 1.2},
+  {"von": 5.3, "bis": 5.75, "wer": "d1", "geste": "fliehen", "von_x": 250, "nach_x": 120, "rampe": 0.45},
+  {"von": 5.75, "bis": 6.15, "wer": "d1", "geste": "ausrutschen", "von_x": 120, "nach_x": 70, "hoch": -36},
+  {"von": 6.15, "bis": 10, "wer": "d1", "geste": "liegen-glotzen", "x": 70, "hoch": -36, "kopf_nach": "rechts"},
+  {"von": 9.2, "bis": 10, "wer": "d1", "geste": "uebergang", "ab": {"x": 70}, "ziel": {"x": -330}, "rampe": 0.8, "notiz": "rutscht aus dem Bild"}
+ ],
+ "kamera": [
+  {"von": 0, "bis": 10.0, "start": [340, 229, 1.1], "ende": [340, 229, 1.1]}
+ ],
+ "schilder": [
+  {"von": 0.2, "bis": 3, "text": "*schleich schleich*", "pos": [274.3, 35.1], "winkel": -3},
+  {"von": 3, "bis": 4.5, "text": "*hehehe*", "pos": [329.3, 28.5], "winkel": 4},
+  {"von": 4.5, "bis": 5.3, "text": "*HUAAA!*", "pos": [615.3, 15.3], "winkel": 6},
+  {"von": 6.6, "bis": 9.2, "text": "*ächz*", "pos": [164.3, 233.1], "winkel": -6}
+ ]
+}

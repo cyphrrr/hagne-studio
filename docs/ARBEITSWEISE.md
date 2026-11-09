@@ -24,7 +24,7 @@ Mit dem Media-Team **im Dialog, Schritt für Schritt**: erst grob die Idee bzw. 
 3. Szenen in Takte zerlegen, Figuren zuordnen, dann wie A weiter. Hat der Clip Schnitte, je Schauplatz einen Eintrag unter `szenen` anlegen (harte Schnitte wie im Video).
 
 **C · Neue Figur**
-Steckbrief ausfüllen lassen, Figur nach `docs/VERSION-2.md` bauen und mit einem kleinen Probe-Drehbuch zeigen. Einfache Figuren kommen nach `bibliothek/figuren-v2.js` (wie `PB`/`CY`), Figuren mit Ellbogen, eigenen Händen oder Sonderkörper nach `bibliothek/figuren-orga.js` (wie KickASS/m0og über `V2X`, ganz eigene wie Deichshaf/Spallter in einem eigenen Block) – Details in `docs/STECKBRIEF.md`. In beiden Fällen ein Eintrag in `FIGUREN`.
+Steckbrief ausfüllen lassen, Figur nach `docs/VERSION-2.md` bauen und mit einer Figurenprobe zeigen (`drehbuecher/probe-<name>.json`, ID `PROBE-<NAME>`, 10 s Schleife mit der typischen Macke – siehe „episode“ in `docs/FORMAT.md`; in `drehbuecher/index.json` eintragen). Einfache Figuren kommen nach `bibliothek/figuren-v2.js` (wie `PB`/`CY`), Figuren mit Ellbogen, eigenen Händen oder Sonderkörper nach `bibliothek/figuren-orga.js` (wie KickASS/m0og über `V2X`, ganz eigene wie Deichshaf/Spallter in einem eigenen Block) – Details in `docs/STECKBRIEF.md`. In beiden Fällen ein Eintrag in `FIGUREN`.
 
 **D · Neue Geste, Kulisse, Requisite**
 In der passenden Datei unter `bibliothek/` ergänzen, wiederverwendbar mit Parametern (siehe „Eine neue Geste bauen“ in `docs/FORMAT.md`) und im Katalog in `docs/FORMAT.md` eintragen.
