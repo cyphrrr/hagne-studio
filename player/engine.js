@@ -101,8 +101,15 @@ function signSvg(txt,x,y,a,key){seed=700+key*13;const w=Math.round(txt.length*8.
 function allSigns(){const L=(DB.schilder||[]).map(s=>[s.von,s.bis,s.text,s.pos[0],s.pos[1],s.winkel||0]);
  (DB.effekte||[]).forEach(e=>{if(!e.schild)return;const S=e.schild;e.t.forEach((t,i)=>{const p=S.pos[i%S.pos.length];L.push([t,t+(S.dauer||0.36),S.text,p[0],p[1],S.winkel[i%S.winkel.length]]);});});
  return L;}
-function bubbleSvg(c,d,key){const a=ACT[d.wer],K_=FIGUREN[a.figur]&&FIGUREN[a.figur].kopfhoehe,kh=typeof K_==='function'?K_(a):(K_||252);const [tx,ty]=toScreen(c,a.x,a.boden-kh*0.92);const L=[d.text];seed=500+key*17;
+/* Frage aus dem Off: Blase am linken oder rechten Bildrand, Zipfel zeigt aus dem Bild, Text kursiv */
+function offBubbleSvg(d,key){const links=d.aus_dem_off!=='rechts',w=Math.round(d.text.length*7.2+30),y=d.hoehe||120;seed=300+key*11;
+ const x=links?18:W-18-w,tail=links?[[x+8,y+30],[x+30,y+32],[x-16,y+58]]:[[x+w-8,y+30],[x+w-30,y+32],[x+w+16,y+58]];
+ return piece(rect(x,y,w,34),'#FBFAF5',2)+piece(tail,'#FBFAF5',1.2)+'<text x="'+(x+w/2).toFixed(1)+'" y="'+(y+22)+'" text-anchor="middle" font-size="13.5" font-style="italic" fill="#2C2C2A" '+F+'>'+d.text+'</text>'+tape(links?x+w-14:x-8,y-4,22,8,links?30:-30);}
+function bubbleSvg(c,d,key){if(d.aus_dem_off)return offBubbleSvg(d,key);const a=ACT[d.wer],K_=FIGUREN[a.figur]&&FIGUREN[a.figur].kopfhoehe,kh=typeof K_==='function'?K_(a):(K_||252);const [tx,ty]=toScreen(c,a.x,a.boden-kh*0.92);const L=[d.text];seed=500+key*17;
  const w=Math.round(Math.max(...L.map(t=>t.length))*7.6+34),h=18+L.length*18;
+ /* Kopf über dem Bildrand (DrBier-Riese): Blase hängt oben, Zipfel zeigt nach oben aus dem Bild */
+ if(ty<20){const x=Math.min(Math.max(tx-w+12,10),W-10-w),y=26;let s=piece([[x+w-42,y+4],[x+w-18,y+4],[tx-22,-14]],'#FBFAF5',1.2)+piece(rect(x,y,w,h),'#FBFAF5',2);
+   L.forEach((t,i)=>{s+='<text x="'+(x+w/2).toFixed(1)+'" y="'+(y+23+i*18).toFixed(1)+'" text-anchor="middle" font-size="14" fill="#2C2C2A" '+F+'>'+t+'</text>';});return s+tape(x-6,y-4,22,8,-35);}
  const x=Math.min(Math.max(tx-w/2,10),W-10-w),y=Math.max(8,ty-h-26);
  const bx=Math.min(Math.max(tx,x+18),x+w-18);
  let s=piece([[bx-10,y+h-2],[bx+10,y+h-2],[tx+2,Math.max(y+h+12,ty-6)]],'#FBFAF5',1.2)+piece(rect(x,y,w,h),'#FBFAF5',2);

@@ -73,13 +73,14 @@ def pruefe(db, lib):
             if a.get('geste') in ('brauen', 'zucken', 'mund', 'auftauchen') and isinstance(v, str) and v not in lib['brauen'] | lib['mund']:
                 F.append(f"{wo}: unbekannter Wert '{v}'")
     for d in db.get('dialog', []):
+        if d.get('aus_dem_off'): continue
         if d['wer'] not in ids: F.append(f"Dialog {d.get('text') or d.get('laut')}: unbekannte Figur-ID {d['wer']}")
     kam = sorted(db['kamera'], key=lambda k: k['von'])
     if not kam or kam[0]['von'] > 0: F.append('Kamera: keine Einstellung ab 0 s')
     for a, b in zip(kam, kam[1:]):
         if abs(a['bis'] - b['von']) > 1e-6: W.append(f"Kamera: Lücke oder Überlappung bei {a['bis']} / {b['von']} s")
     if kam and kam[-1]['bis'] < dauer: W.append('Kamera: letzte Einstellung endet vor dem Episodenende (bleibt stehen)')
-    sprecher = {d['wer'] for d in db.get('dialog', [])}
+    sprecher = {d.get('wer') for d in db.get('dialog', []) if d.get('wer')}
     pegel = (db.get('analyse') or {}).get('pegel', {})
     if sprecher and not pegel: W.append("Keine Pegeldaten unter 'analyse' – Münder plappern gleichmäßig statt nach dem Ton")
     return F, W

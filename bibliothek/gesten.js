@@ -106,6 +106,8 @@ Object.assign(GESTEN,{
  'trinken':(o,c)=>{o.trinkt=true;o.es=0.12;o.head=-4;o.br=[-5,-6,-5,-6];o.mFix=true;o.m=1.6;},
  'flasche-schuetteln':(o,c)=>{o.trinkt=true;o.schuetteln=true;o.px=-3;o.py=-2;o.br=[-7,-14,-7,-14];o.m=3;o.mFix=true;},
  'zeigefinger':(o,c)=>{o.zeigefinger=true;o.aR=-65+Math.sin(c.T*5)*6;o.head=Math.sin(c.T*3)*4;o.br=[-3,10,-3,10];},
+ /* PoBi: Brille mit dem Zeigefinger hochschieben; danach sitzt sie höher (brille_y), bis eine spätere Aktion sie zurücksetzt */
+ 'brille-hochschieben':(o,c)=>{const k=clamp(c.t/(c.a.rampe||0.5));o.brillenarm=Math.max(0.01,k);o.brille_y=-2.5*k;o.es=0.7;o.br=[1,-4,1,-4];},
  'hintern-kratzen':(o,c)=>{o.spezial='kratzen';o.head=3;o.px=2;o.py=-2;o.br=[-6,-6,2,6];},
  'finger-riechen':(o,c)=>{o.spezial='riechen';o.head=Math.floor(c.T*4)%2?-2:0;o.es=0.12;o.br=[-8,-12,-8,-12];o.m=1;o.mFix=true;}
 });

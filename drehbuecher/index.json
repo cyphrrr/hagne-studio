@@ -39,6 +39,14 @@
   {
    "id": "PROBE-BIERDIEBE",
    "datei": "probe-bierdiebe.json"
+  },
+  {
+   "id": "PROBE-POBI",
+   "datei": "probe-pobi.json"
+  },
+  {
+   "id": "PROBE-DRBIER-RIESE",
+   "datei": "probe-drbier-riese.json"
   }
  ]
 }

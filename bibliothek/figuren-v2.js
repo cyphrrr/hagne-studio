@@ -68,6 +68,8 @@ if(p.acc)s+=p.acc(p.id);
 s+='</g>';
 /* Facepalm-Arm (Pose-Feld fp = Winkel): zweiter rechter Arm über dem Kopf, gleiches Schultergelenk. Eigener Zufall, damit sich nichts anderes verschiebt. */
 if(!p.seated){const sv=seed;seed=p.seed+91;s+='<g id="'+p.id+'-fpw" style="display:none">'+armAt(p.id+'-fp',1,armShirt,sk,'','',armQ(1))+'</g>';seed=sv;}
+/* Brillen-Arm (Pose-Feld brillenarm 0–1): rechter Arm angewinkelt, Zeigefinger schiebt die Brille am Steg hoch. Eigener Zufall wie beim Facepalm. */
+if(p.brillenArm){const sv=seed;seed=p.seed+3;s+='<g id="'+p.id+'-bga" style="display:none">'+piece(seg(40,-147,56,-170,14),armShirt,1.2)+piece(seg(56,-170,24,-180,12),sk,1.2)+piece(circ(22,-180,7.5),sk,1)+piece(seg(19,-184,1.5,-206,4.2),sk,0.4)+'</g>';seed=sv;}
 return s;}
 function beardFull(base,light,dark){return ()=>{let s=piece(roundPoly([[-37,-192],[-30,-189],[-20,-180],[20,-180],[30,-189],[37,-192],[33,-166],[17,-150],[0,-145],[-17,-150],[-33,-166]],[2,3,3,3,3,2,9,9,8,9,9]),base,2);
 s+=flat(circ(-22,-166,3),light)+flat(circ(14,-156,2.5),light)+flat(circ(25,-172,2.5),dark)+flat(circ(-8,-152,2.5),dark)+flat(circ(4,-162,2),light)+flat(circ(-28,-178,2),light);return s;};}
@@ -79,7 +81,7 @@ const CY={seed:37,thumb:true,skin:'#F2C9A0',shirt:'#262624',pants:'#3A4A62',brow
  acc:()=>'<rect x="-26" y="-213" width="23" height="17" rx="2" fill="none" stroke="#141210" stroke-width="4.5"/><rect x="3" y="-213" width="23" height="17" rx="2" fill="none" stroke="#141210" stroke-width="4.5"/><path d="M-3 -206 h6" stroke="#141210" stroke-width="4"/>'};
 
 const PHAIR='#A3A19C',PHAIR_D='#7C7A75',PHAIR_L='#C6C4BE',PBEARD='#8E8C87';
-const PB={seed:61,skin:'#F3CDB0',shirt:'#2F855A',pants:'#3A4A62',browC:'#6E6C67',
+const PB={seed:61,brillenArm:true,skin:'#F3CDB0',shirt:'#2F855A',pants:'#3A4A62',browC:'#6E6C67',
  under:()=>piece(rect(-37,-230,7,34),PHAIR_D,1)+piece(rect(30,-230,7,34),PHAIR_D,1),
  beard:()=>{let s=piece(roundPoly([[-37,-196],[-31,-194],[-27,-182],[-15,-179],[15,-179],[27,-183],[31,-196],[37,-198],[33,-166],[17,-150],[0,-145],[-17,-150],[-33,-166]],[2,3,3,3,3,3,3,2,9,9,8,9,9]),PBEARD,1.2);
   s+='<path d="M-28 -170 Q-18 -158 0 -154 Q18 -158 28 -170" fill="none" stroke="'+PHAIR_D+'" stroke-width="1.2" opacity="0.7"/>';
@@ -89,7 +91,7 @@ const PB={seed:61,skin:'#F3CDB0',shirt:'#2F855A',pants:'#3A4A62',browC:'#6E6C67'
   s+=piece([[-37,-222],[-37,-241],[-28,-250],[-17,-252],[-15,-238],[-26,-234],[-33,-228]],PHAIR_D,0.8);
   s+='<path d="M-14 -251 L-13 -239" stroke="#E4C2A6" stroke-width="1.8" stroke-linecap="round"/>';
   s+='<path d="M-8 -248 Q12 -254 34 -244 M-6 -243 Q14 -248 37 -236 M-28 -244 Q-24 -246 -19 -248" fill="none" stroke="'+PHAIR_L+'" stroke-width="1.4" stroke-linecap="round"/>';return s;},
- acc:()=>'<g>'+
+ acc:id=>'<g id="'+id+'-gl">'+
   '<rect x="-26" y="-213" width="22" height="17" rx="5" fill="rgba(220,235,245,0.18)" stroke="#9EA4A9" stroke-width="1.3"/>'+
   '<rect x="4" y="-213" width="22" height="17" rx="5" fill="rgba(220,235,245,0.18)" stroke="#9EA4A9" stroke-width="1.3"/>'+
   '<path d="M-27 -208 Q-27 -214 -20 -214 L-10 -214 Q-3 -214 -3 -208 M3 -208 Q3 -214 10 -214 L20 -214 Q27 -214 27 -208" fill="none" stroke="#2A2624" stroke-width="4.2" stroke-linecap="round"/>'+
@@ -109,15 +111,17 @@ return s;}
 
 function show(el,on){if(el)el.style.display=on?'':'none';}
 function rigV2(id,browY){const g=k=>$(id+'-'+k);return {browY:browY||-218,btl:g('btl'),btr:g('btr'),btlr:g('btl-r'),btrr:g('btr-r'),g:$(id),h:g('h'),e:g('e'),p:g('p'),bl:g('bl'),br:g('br'),m:g('m'),al:g('al'),ar:g('ar'),sl:g('sl'),sr:g('sr'),ll:g('ll'),lr:g('lr'),th:g('th'),
- mfs:g('mfs'),mfg:g('mfg'),mfy:g('mfy'),hr:g('hr'),hrc:g('hrc'),gt:g('gt'),hat:g('hat'),fpw:g('fpw'),fp:g('fp')};}
+ mfs:g('mfs'),mfg:g('mfg'),mfy:g('mfy'),gl:g('gl'),bga:g('bga'),hr:g('hr'),hrc:g('hrc'),gt:g('gt'),hat:g('hat'),fpw:g('fpw'),fp:g('fp')};}
 /* Pose für alle V2-Figuren. Felder: x, y, rot (Körper kippt um die Füße), head, hy, aL, aR, lL, lR, px, py,
    es (Augen zukneifen, <1), ew (Augen weiten, >1), m (Zahl = Mundöffnung, 's'/'g'/'y' = Mundform), br, shrug, thumb,
-   handLeer (Gegenstand in der Hand weg), swH (Gegenstand in der Hand schwingt, Grad), fp (Facepalm, Armwinkel), glint (Brillenblitz), hat (Hut hebt sich um diesen Wert) */
+   handLeer (Gegenstand in der Hand weg), brillenarm 0–1 / brille_y (PoBi schiebt die Brille hoch), swH (Gegenstand in der Hand schwingt, Grad), fp (Facepalm, Armwinkel), glint (Brillenblitz), hat (Hut hebt sich um diesen Wert) */
 function poseV2(c,o,baseY){
  c.g.setAttribute('transform','translate('+o.x.toFixed(1)+','+(baseY+(o.y||0)).toFixed(1)+') scale(0.92)'+(o.rot?' rotate('+o.rot.toFixed(1)+')':''));
  c.h.setAttribute('transform','translate(0 '+(o.hy||0)+') rotate('+(o.head||0).toFixed(1)+' 0 -195)');
  const sh=!!o.shrug;show(c.al,!sh);show(c.ar,!sh);show(c.sl,sh);show(c.sr,sh);
  if(c.fpw){show(c.fpw,!!o.fp);if(o.fp){show(c.ar,false);c.fp.setAttribute('transform','rotate('+o.fp.toFixed(1)+')');}}
+ if(c.bga){const k=o.brillenarm||0;show(c.bga,k>0);if(k>0){show(c.ar,false);c.bga.setAttribute('transform','translate(0 '+(-3*k).toFixed(1)+')');}}
+ if(c.gl)c.gl.setAttribute('transform',o.brille_y?'translate(0 '+o.brille_y.toFixed(1)+')':'');
  if(c.al)c.al.setAttribute('transform','rotate('+(o.aL||0).toFixed(1)+')');
  if(c.ar)c.ar.setAttribute('transform','rotate('+(o.aR||0).toFixed(1)+')');
  if(c.ll)c.ll.setAttribute('transform','rotate('+(o.lL||0).toFixed(1)+' -13 -70)');
@@ -140,10 +144,10 @@ const LIPPEN_V2=(o,k)=>{o.m=k>0.15?1.6+k*6:1.6;};
 const FIGUREN={
  'PoBi':   {build:(a)=>makeChar(Object.assign({},PB,{id:a.id,seated:a.haltung==='sitzt',handR:a.hand_rechts})),rig:rigV2,apply:(r,o,a)=>poseV2(r,o,a.boden),spricht:true,lippen:LIPPEN_V2},
  'cypheR': {build:(a)=>makeChar(Object.assign({},CY,{id:a.id,seated:a.haltung==='sitzt',handR:a.hand_rechts})),rig:rigV2,apply:(r,o,a)=>poseV2(r,o,a.boden),spricht:true,lippen:LIPPEN_V2},
- 'DrBier-Riese':{build:(a)=>makeRiese(a.id),
+ 'DrBier-Riese':{build:(a)=>makeRiese(a.id),kopfhoehe:252+RUP+24,spricht:true,lippen:()=>{},
    rig:(id)=>({g:$(id),al:$(id+'-al'),ar:$(id+'-ar'),ll:$(id+'-ll'),lr:$(id+'-lr'),hb:$(id+'-hb')}),
    apply:(r,o,a)=>{r.g.setAttribute('transform','translate('+o.x.toFixed(1)+','+a.boden+') scale(0.92)');
-     r.al.setAttribute('transform','rotate('+(a.pose==='trinkt-oben'?168:(o.aL||0))+')');
+     r.al.setAttribute('transform','rotate('+((a.pose==='trinkt-oben'||o.trinkt)?168+(o.schuetteln?((o._f||0)%2?5:-5):0):(o.aL||0))+')');
      r.ar.setAttribute('transform','rotate('+(o.aR||0).toFixed(1)+')');
      r.ll.setAttribute('transform','rotate('+(o.lL||0).toFixed(1)+' -10.5 '+(-72-RLEG)+')');
      r.lr.setAttribute('transform','rotate('+(o.lR||0).toFixed(1)+' 10.5 '+(-72-RLEG)+')');
