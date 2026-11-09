@@ -1,6 +1,6 @@
 # HAGNE – Figuren-Baukasten Version 2
 
-> **Hinweis fürs Studio-Repo:** Diese Regeln stammen aus dem Claude-Projekt „JUNIEN“ (dort `cartoon/VERSION-2.md`). Die Pfade unten (`cartoon/…`) beziehen sich auf die Projekt-Dokumente. Im Repo liegt der V2-Baukasten in `bibliothek/figuren-v2.js`. Das Ellbogengelenk (Baustein 9) ist dort noch nicht eingebaut. „Zurückschreiben“ heißt im Repo: als Datei liefern bzw. per Pull Request einreichen.
+> **Hinweis fürs Studio-Repo:** Diese Regeln stammen aus dem Claude-Projekt „JUNIEN“ (dort `cartoon/VERSION-2.md`). Die Pfade unten (`cartoon/…`) beziehen sich auf die Projekt-Dokumente. Im Repo liegt der V2-Baukasten in `bibliothek/figuren-v2.js`. Seit November 2026 sind alle Figuren der Bibliothek Version 2; den alten V1-Baukasten gibt es nicht mehr. Kippen (`rot`), Augen weiten/zukneifen (`ew`/`es`), Mundformen (`s`/`g`/`y`) und `hand_rechts` kann jede V2-Figur. Das Ellbogengelenk (Baustein 9) ist dort noch nicht eingebaut. „Zurückschreiben“ heißt im Repo: als Datei liefern bzw. per Pull Request einreichen.
 
 **Stichwort:** `Bau den Char in Version 2!`
 

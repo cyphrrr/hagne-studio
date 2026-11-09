@@ -28,7 +28,6 @@
   {
    "id": "pb",
    "figur": "PoBi",
-   "version": 2,
    "x": 200,
    "boden": 420,
    "z": 2,
@@ -41,7 +40,6 @@
   {
    "id": "rz",
    "figur": "DrBier-Riese",
-   "version": 1,
    "x": 500,
    "boden": 390,
    "z": 4,
@@ -52,7 +50,6 @@
   {
    "id": "cy",
    "figur": "cypheR",
-   "version": 2,
    "x": 600,
    "boden": 390,
    "z": 5,

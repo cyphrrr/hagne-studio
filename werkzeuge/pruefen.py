@@ -13,7 +13,7 @@ Exit-Code 1, wenn Fehler gefunden wurden.
 import json, sys, subprocess, pathlib, shutil, tempfile
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-MODULE = ['basis', 'kulissen', 'requisiten', 'figuren-v2', 'figuren-v1', 'figuren-orga', 'gegenstaende', 'gesten']
+MODULE = ['basis', 'kulissen', 'requisiten', 'figuren-v2', 'figuren-orga', 'gegenstaende', 'gesten']
 
 def bibliothek():
     """Lädt die Bibliothek in Node (ohne Browser) und liest die Namen aller Bausteine aus."""
