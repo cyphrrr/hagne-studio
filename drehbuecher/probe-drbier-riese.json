@@ -1,0 +1,25 @@
+{
+ "format": "hagne-drehbuch/0.2",
+ "episode": {"id": "PROBE-DRBIER-RIESE", "titel": "Figurenprobe: DrBier (Riese) – Kopf nie im Bild", "dauer": 10.0, "fps": 12, "bild": "16:9", "schleife": true},
+ "kulisse": {"id": "HALLE-AUSSEN-01", "licht": "tag"},
+ "besetzung": [
+  {"id": "rz", "figur": "DrBier-Riese", "x": 340, "boden": 390, "namensschild": {"text": "DrBier"}}
+ ],
+ "dialog": [
+  {"von": 5.8, "bis": 8.6, "wer": "rz", "text": "Bring Bier mit!"}
+ ],
+ "aktionen": [
+  {"von": 2, "bis": 2.4, "wer": "rz", "geste": "pose", "pose": {"aL": 30}, "notiz": "Flasche hoch"},
+  {"von": 2.4, "bis": 3.8, "wer": "rz", "geste": "trinken", "notiz": "Flasche verschwindet oben aus dem Bild"},
+  {"von": 3.8, "bis": 5.3, "wer": "rz", "geste": "flasche-schuetteln"},
+  {"von": 5.3, "bis": 5.8, "wer": "rz", "geste": "pose", "pose": {"aL": 30}},
+  {"von": 5.8, "bis": 8.6, "wer": "rz", "geste": "zeigefinger"}
+ ],
+ "kamera": [
+  {"von": 0, "bis": 10.0, "start": [340, 229, 1.1], "ende": [340, 229, 1.1]}
+ ],
+ "schilder": [
+  {"von": 2.4, "bis": 3.8, "text": "*gluck gluck*", "pos": [440, 14], "winkel": -4},
+  {"von": 3.8, "bis": 5.3, "text": "*leer?!*", "pos": [448, 14], "winkel": 4}
+ ]
+}

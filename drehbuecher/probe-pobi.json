@@ -1,0 +1,28 @@
+{
+ "format": "hagne-drehbuch/0.2",
+ "episode": {"id": "PROBE-POBI", "titel": "Figurenprobe: PoBi – Weiß ich nich", "dauer": 10.0, "fps": 12, "bild": "16:9", "schleife": true},
+ "kulisse": {"id": "HALLE-AUSSEN-01", "licht": "tag"},
+ "besetzung": [
+  {"id": "pb", "figur": "PoBi", "x": 360, "boden": 390, "namensschild": true}
+ ],
+ "dialog": [
+  {"von": 1.5, "bis": 3.6, "aus_dem_off": "links", "text": "PoBi, wo is der Ersatz-Switch?"},
+  {"von": 5.0, "bis": 7.6, "wer": "pb", "text": "Weiß ich nich, du Fotze."}
+ ],
+ "aktionen": [
+  {"von": 0, "bis": 10, "wer": "pb", "geste": "wippen", "tempo": 1.2},
+  {"von": 0, "bis": 1.5, "wer": "pb", "geste": "umherschauen", "tempo": 1.3},
+  {"von": 1.5, "bis": 3.6, "wer": "pb", "geste": "pose", "pose": {"px": -3, "py": -0.5, "head": -3, "br": [-2, 0, -2, 0]}, "notiz": "Frage aus dem Off"},
+  {"von": 3.6, "bis": 4.4, "wer": "pb", "geste": "brille-hochschieben", "rampe": 0.5},
+  {"von": 4.4, "bis": 7.6, "wer": "pb", "geste": "pose", "pose": {"brille_y": -2.5, "es": 0.55}},
+  {"von": 4.4, "bis": 4.6, "wer": "pb", "geste": "uebergang", "ab": {"aL": 0, "aR": 0}, "ziel": {"aL": 15, "aR": -15}, "rampe": 0.2, "notiz": "Schulterzucken"},
+  {"von": 4.6, "bis": 7.6, "wer": "pb", "geste": "pose", "pose": {"shrug": true}},
+  {"von": 4.4, "bis": 5.0, "wer": "pb", "geste": "uebergang", "ab": {"hy": 0, "head": 0}, "ziel": {"hy": 3, "head": 4}, "rampe": 0.4, "pose": {"br": [-8, 0, -8, 0]}},
+  {"von": 5.0, "bis": 7.6, "wer": "pb", "geste": "kopf-wiegen", "tempo": 2, "weite": 2, "pose": {"hy": 3, "br": [-8, 0, -8, 0]}},
+  {"von": 7.6, "bis": 10, "wer": "pb", "geste": "umherschauen", "tempo": 1.3}
+ ],
+ "kamera": [
+  {"von": 0, "bis": 10.0, "start": [340, 229, 1.1], "ende": [340, 229, 1.1]}
+ ],
+ "schilder": []
+}

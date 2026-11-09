@@ -91,6 +91,8 @@ Ohne `szenen` gilt `kulisse` für die ganze Folge. Mit `szenen` wird bei jedem W
 
 `{ "von", "bis", "wer", "text" }` → Sprechblase + Lippen. Optional `"blase": [von, bis]`, wenn die Blase anders stehen soll als gesprochen wird (z. B. kurz nach dem Satz stehen bleiben). Ohne `text` (z. B. `"laut": "lachen"`) bewegen sich nur die Lippen. Gibt es keine Pegeldaten unter `analyse` (Folge ohne Ton), plappern die Münder gleichmäßig.
 
+Frage aus dem Off (ohne Figur im Bild): `{ "von", "bis", "aus_dem_off": "links" | "rechts", "text", "hoehe" }` – kursive Blase am Bildrand, der Zipfel zeigt aus dem Bild (`hoehe` = y der Blase, Vorgabe 120). Liegt der Kopf des Sprechers über dem Bildrand (DrBier-Riese), hängt die Blase oben und zeigt nach oben aus dem Bild.
+
 ### aktionen
 
 `{ "von", "bis", "wer", "geste", …Parameter }`. `wer` ist eine ID oder eine Liste von IDs. Jede Aktion darf zusätzlich `"pose": { … }` enthalten – feste Werte, die nach der Geste gesetzt werden (Feinschliff, z. B. `{ "head": 3 }`).
@@ -193,9 +195,10 @@ Bewährte Armwinkel für Deichshaf [Schulter, Ellbogen]: links Mikro am Kinn [�
 | `arm-pose` | `arm` (`rechts`/`links`), `schulter`, `ellbogen`, `rampe` | dreht einen Arm in eine feste Pose; mit Ellbogengelenk (Deichshaf) knickt der Unterarm. Bewährt rechts: Prost [−60, −60], Tasse zum Mund [96, 94], Funk am Ohr [−172, 0]; links Daumen-Pose [50, 70] |
 | `faust-schuetteln` | – | Faust schütteln beim Ausraster (m0og) |
 | `rot-werden` | `von`, `wert` (0–1), `rampe` | Wangen werden rot (m0og) |
-| `trinken` | – | setzt die Flasche an, Augen zu (DrBier) |
+| `trinken` | – | setzt die Flasche an, Augen zu (DrBier; beim Riesen verschwindet die Flasche oben aus dem Bild) |
 | `flasche-schuetteln` | – | leere Flasche schütteln (DrBier) |
 | `zeigefinger` | – | erhobener Zeigefinger beim Reden (DrBier) |
+| `brille-hochschieben` | `rampe` (0.5) | Zeigefinger schiebt die Brille am Steg hoch, Augen schmal (PoBi). Danach mit `"pose": { "brille_y": -2.5 }` oben halten |
 | `hintern-kratzen` | – | Kratz-Arm hinten (Spallter) |
 | `finger-riechen` | – | Finger unter die Nase (Spallter) |
 
@@ -210,6 +213,6 @@ Eine Geste ist eine Funktion `(o, c) => { … }` in `bibliothek/gesten.js`. Sie 
 - `c.T` Zeit, `c.f` Bildnummer, `c.t` Zeit seit Beginn der Aktion, `c.d` Dauer der Aktion
 - `c.a` die Aktion selbst (alle Parameter), `c.self` die Figur aus der Besetzung, `c.seite` ±1 Richtung zu den anderen, `c.world` Posen aller Figuren
 
-**Pose-Felder:** `x`, `y`, Deichshaf: `mikro`, `mikro_kipp` (Handmikro links), `zettel` (rechts), `zeigefinger` (links), `thumb`/`thumbL` (Daumen hoch rechts/links), `flasche` (`"hand"` oder [x, y] im Bild), `flasche_kipp`, `m` auch `n` (gerade) und `o` (Schlürfen), `es` 0.12 = Augen zu, 0.45 = fröhlich;  DocEvel: `geld` (Fächer Scheine links), `geldR` (ein Schein rechts), `fallen` 0–1 (drei Scheine fallen zu Boden), `lid` 0–1 (Oberlid senkt sich, genervt), `m` auch `n` (neutral, Grundmund) und `p` (Mund zusammengezogen);  `rot` (Körper kippt um die Füße), `aLf`, `aRf` (Unterarm bei Ellbogen), `wangen` (m0og), `trinkt`, `schuetteln`, `zeigefinger` (DrBier), `spezial` (Spallter: `kratzen`/`riechen`), `head`, `hy`, `aL`, `aR`, `lL`, `lR` (Beine), `px`, `py` (Pupillen), `br` [4], `m` (Mund: Zahl = Öffnung, `s` schief, `g` grinsen, `y` lachen), `sy` (Höhe des offenen Lachmunds), `es` (Augen zukneifen, < 1), `ew` (Augen weiten, > 1), `shrug`, `thumb`, `handLeer` (Gegenstand in der Hand weg), `swH` (Gegenstand in der Hand schwingt, Grad), `fp` (Facepalm-Arm, Winkel; 0 = aus), `glint` (Brillenblitz), `belts`, `swL`, `swR` (Spock), `hat` (Tarnhut), `mFix` (Lippen nicht vom Ton steuern lassen).
+**Pose-Felder:** `x`, `y`, Deichshaf: `mikro`, `mikro_kipp` (Handmikro links), `zettel` (rechts), `zeigefinger` (links), `thumb`/`thumbL` (Daumen hoch rechts/links), `flasche` (`"hand"` oder [x, y] im Bild), `flasche_kipp`, `m` auch `n` (gerade) und `o` (Schlürfen), `es` 0.12 = Augen zu, 0.45 = fröhlich;  DocEvel: `geld` (Fächer Scheine links), `geldR` (ein Schein rechts), `fallen` 0–1 (drei Scheine fallen zu Boden), `lid` 0–1 (Oberlid senkt sich, genervt), `m` auch `n` (neutral, Grundmund) und `p` (Mund zusammengezogen);  `rot` (Körper kippt um die Füße), `aLf`, `aRf` (Unterarm bei Ellbogen), `wangen` (m0og), `trinkt`, `schuetteln`, `zeigefinger` (DrBier), `spezial` (Spallter: `kratzen`/`riechen`), `head`, `hy`, `aL`, `aR`, `lL`, `lR` (Beine), `px`, `py` (Pupillen), `br` [4], `m` (Mund: Zahl = Öffnung, `s` schief, `g` grinsen, `y` lachen), `sy` (Höhe des offenen Lachmunds), `es` (Augen zukneifen, < 1), `ew` (Augen weiten, > 1), `shrug`, `thumb`, `handLeer` (Gegenstand in der Hand weg), `brillenarm` 0–1 und `brille_y` (PoBi), `swH` (Gegenstand in der Hand schwingt, Grad), `fp` (Facepalm-Arm, Winkel; 0 = aus), `glint` (Brillenblitz), `belts`, `swL`, `swR` (Spock), `hat` (Tarnhut), `mFix` (Lippen nicht vom Ton steuern lassen).
 
 Regeln: Parameter mit sinnvollen Vorgaben, Richtung aus `c.seite` oder Start/Ziel ableiten statt fest verdrahten, und die neue Geste hier im Katalog eintragen.
