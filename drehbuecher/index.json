@@ -47,6 +47,18 @@
   {
    "id": "PROBE-DRBIER-RIESE",
    "datei": "probe-drbier-riese.json"
+  },
+  {
+   "id": "PROBE-DEICHSHAF",
+   "datei": "probe-deichshaf.json"
+  },
+  {
+   "id": "PROBE-M0OG",
+   "datei": "probe-m0og.json"
+  },
+  {
+   "id": "PROBE-KICKASS",
+   "datei": "probe-kickass.json"
   }
  ]
 }

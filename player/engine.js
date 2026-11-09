@@ -95,11 +95,11 @@ function camAt(T){const f=Math.floor(T*12);const S=DB.kamera;let sh=S[S.length-1
  return {cx,cy,s,str:'translate('+(W/2).toFixed(1)+' '+(H/2).toFixed(1)+') rotate('+rot.toFixed(2)+') scale('+s.toFixed(3)+') translate('+(-cx).toFixed(1)+' '+(-cy).toFixed(1)+')'};}
 function toScreen(c,x,y){return [(x-c.cx)*c.s+W/2,(y-c.cy)*c.s+H/2];}
 
-function signSvg(txt,x,y,a,key){seed=700+key*13;const w=Math.round(txt.length*8.2+26);
+function signSvg(txt,x,y,a,key,farbe){seed=700+key*13;const w=Math.round(txt.length*8.2+26);
  return '<g transform="rotate('+a+' '+(x+w/2)+' '+(y+10)+')">'+piece(rect(x,y,w,22),'#FBFAF5',1.2)+
- '<text x="'+(x+w/2)+'" y="'+(y+16)+'" text-anchor="middle" font-size="14" font-weight="800" fill="#2C2C2A" '+F+'>'+txt+'</text>'+tape(x-7,y-4,20,8,-30)+'</g>';}
-function allSigns(){const L=(DB.schilder||[]).map(s=>[s.von,s.bis,s.text,s.pos[0],s.pos[1],s.winkel||0]);
- (DB.effekte||[]).forEach(e=>{if(!e.schild)return;const S=e.schild;e.t.forEach((t,i)=>{const p=S.pos[i%S.pos.length];L.push([t,t+(S.dauer||0.36),S.text,p[0],p[1],S.winkel[i%S.winkel.length]]);});});
+ '<text x="'+(x+w/2)+'" y="'+(y+16)+'" text-anchor="middle" font-size="14" font-weight="800" fill="'+(farbe||'#2C2C2A')+'" '+F+'>'+txt+'</text>'+tape(x-7,y-4,20,8,-30)+'</g>';}
+function allSigns(){const L=(DB.schilder||[]).map(s=>[s.von,s.bis,s.text,s.pos[0],s.pos[1],s.winkel||0,s.farbe]);
+ (DB.effekte||[]).forEach(e=>{if(!e.schild)return;const S=e.schild;e.t.forEach((t,i)=>{const p=S.pos[i%S.pos.length];L.push([t,t+(S.dauer||0.36),S.text,p[0],p[1],S.winkel[i%S.winkel.length],S.farbe]);});});
  return L;}
 /* Frage aus dem Off: Blase am linken oder rechten Bildrand, Zipfel zeigt aus dem Bild, Text kursiv */
 function offBubbleSvg(d,key){const links=d.aus_dem_off!=='rechts',w=Math.round(d.text.length*7.2+30),y=d.hoehe||120;seed=300+key*11;
@@ -115,6 +115,20 @@ function bubbleSvg(c,d,key){if(d.aus_dem_off)return offBubbleSvg(d,key);const a=
  let s=piece([[bx-10,y+h-2],[bx+10,y+h-2],[tx+2,Math.max(y+h+12,ty-6)]],'#FBFAF5',1.2)+piece(rect(x,y,w,h),'#FBFAF5',2);
  L.forEach((t,i)=>{s+='<text x="'+(x+w/2).toFixed(1)+'" y="'+(y+23+i*18).toFixed(1)+'" text-anchor="middle" font-size="14" fill="#2C2C2A" '+F+'>'+t+'</text>';});
  return s+tape(x-6,y-4,22,8,-35);}
+
+/* Effekte am Boden (Weltkoordinaten): "staub" = Wölkchen bei Schritten und Bremsungen, "spur" = Linien am Boden (Bremsspur).
+   staub: t [Zeitpunkte], wer + dx oder x, y (Boden), menge, breite. Jede Wolke lebt etwa 1 s, alles aus hs() – gleich bei jedem Abspielen.
+   spur: von, bis, aus [t0, t1] (ausblenden), linien [[x1,y1,x2,y2,breite], …], farbe. Liegt hinter den Figuren. */
+function staubX(e,t){if(e.x!==undefined)return e.x;e._x=e._x||{};if(e._x[t]===undefined){const a=ACT[e.wer];e._x[t]=a?poseAt(a,t,Math.floor(t*12),{}).x:0;}return e._x[t]+(e.dx||0);}
+function effekteAt(T){let vorn='',hinten='';
+ (DB.effekte||[]).forEach((e,ei)=>{
+  if(e.typ==='staub')e.t.forEach((t0,ti)=>{if(T<t0||T>=t0+1.2)return;const n=Math.round((T-t0)*12),x=staubX(e,t0),y=e.y||390;
+    for(let j=0;j<(e.menge||3);j++){const h=k=>hs(ei*97+ti*31+j*7+k*1.37);const a=0.95-0.085*n;if(a<=0)continue;
+      seed=900+ti*7+j;const px=x+(h(1)-.5)*(e.breite||14)+(h(3)-.5)*2.2*n,py=y-h(2)*5-h(4)*1.4*n;
+      vorn+=flat(circ(px,py,4+h(5)*4+0.55*n),'rgba(222,206,180,'+(a*0.85).toFixed(2)+')',1);}});
+  if(e.typ==='spur'&&T>=e.von&&T<e.bis){const A=e.aus?clamp(1-(T-e.aus[0])/(e.aus[1]-e.aus[0])):1;if(A<=0)return;
+    hinten+='<g opacity="'+A.toFixed(2)+'">'+e.linien.map(l=>ln(l[0],l[1],l[2],l[3],e.farbe||'#4A3A2E',l[4]||3)).join('')+'</g>';}});
+ $('fx').innerHTML=vorn;$('fxb').innerHTML=hinten;}
 
 /* Blenden: Schwarz-/Weißblende und Texttafeln über dem Bild */
 function buildBlenden(){let s='';(DB.blenden||[]).forEach((b,i)=>{
@@ -142,8 +156,9 @@ function renderAt(Tin){const fps=DB.episode.fps||12,f=Math.floor(Tin*fps),T=f/fp
  (KUL.requisiten||[]).forEach((r,i)=>{const g=document.querySelector('#rq-'+i+' [data-bebt]');if(g)g.setAttribute('transform','translate(0 '+(-amp*(r.bebt||0)).toFixed(1)+')');});
  GEG.forEach(g=>{const p=gegAt(g,T,world);g.el.setAttribute('transform','translate('+p.x.toFixed(1)+','+p.y.toFixed(1)+') rotate('+p.r+') scale(0.92)');});
  OBJ.forEach(a=>{const b=objAt(a,T);show(a.el,!!b);if(b)a.el.setAttribute('transform','translate('+b.x.toFixed(1)+','+b.y.toFixed(1)+') rotate('+b.r.toFixed(1)+') scale(0.92)');});
+ if($('fx'))effekteAt(T);
  const cm=camAt(T);$('cam').setAttribute('transform',cm.str);
- let sg='';SIGNS.forEach((q,i)=>{if(T>=q[0]&&T<q[1])sg+=signSvg(q[2],q[3],q[4],q[5],i);});$('signs').innerHTML=sg;
+ let sg='';SIGNS.forEach((q,i)=>{if(T>=q[0]&&T<q[1])sg+=signSvg(q[2],q[3],q[4],q[5],i,q[6]);});$('signs').innerHTML=sg;
  let bb='';DB.dialog.forEach((d,i)=>{const b=d.blase||[d.von,d.bis];if(d.text&&T>=b[0]&&T<b[1])bb+=bubbleSvg(cm,d,i);});$('bubble').innerHTML=bb;
  blendenAt(T);}
 window.renderAt=renderAt;
