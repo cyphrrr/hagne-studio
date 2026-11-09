@@ -23,6 +23,22 @@
   {
    "id": "PROBE-CYPHER",
    "datei": "probe-cypher.json"
+  },
+  {
+   "id": "PROBE-SPALLTER",
+   "datei": "probe-spallter.json"
+  },
+  {
+   "id": "PROBE-DRBIER",
+   "datei": "probe-drbier.json"
+  },
+  {
+   "id": "PROBE-SPOCK",
+   "datei": "probe-spock.json"
+  },
+  {
+   "id": "PROBE-BIERDIEBE",
+   "datei": "probe-bierdiebe.json"
   }
  ]
 }

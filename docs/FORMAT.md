@@ -55,6 +55,12 @@ Ohne `szenen` gilt `kulisse` für die ganze Folge. Mit `szenen` wird bei jedem W
 - `besetzung` in der Szene überschreibt Felder der Figur nur für diese Szene (`x`, `boden`, `haltung`, `z`, Grundpose …).
 - Aktionen, Dialog und Kamera bleiben in den Listen der Folge (Zeiten ab Folgenbeginn). Eine Kamera-Einstellung je Szene ist üblich. Aktionen sollten nicht über einen Schnitt reichen – `pruefen.py` warnt.
 
+### episode
+
+`id`, `titel`, `dauer` (s), `fps` (12), `bild` (`16:9`). Optional `schleife: true` – der Player fängt am Ende wieder von vorn an (für Figurenproben, nur ohne Ton).
+
+**Figurenproben** haben eine ID mit `PROBE-` vorn (Datei `drehbuecher/probe-<name>.json`). Der Player zeigt sie im Menü unter „Figuren“ statt unter „Folgen“, ohne das „Figurenprobe:“ im Titel. Üblich: 10 s, `schleife: true`, eine Figur mit `namensschild` vor HALLE-AUSSEN-01, Kamera ruhig auf `[340, 229, 1.1]`. Beispiele: `probe-spallter.json`, `probe-bierdiebe.json`.
+
 ### besetzung
 
 | Feld | Bedeutung |
@@ -67,6 +73,7 @@ Ohne `szenen` gilt `kulisse` für die ganze Folge. Mit `szenen` wird bei jedem W
 | `haltung` | `sitzt` (keine Beine; Deichshaf: von vorn sitzend mit Oberschenkeln, dazu `stuhl-gruen`) |
 | Grundpose | `arme` [links, rechts] in Grad, `blick` [x, y] Pupillen, `kopf` Neigung, `brauen` Vorlage oder [4 Zahlen], `mund` (`schief`, `grinsen`, `lachen`), `bebt` (wackelt beim Stampfen) |
 | `hand_rechts` | Gegenstand in der rechten Hand, bleibt aufrecht, z. B. `bierflasche-klein`, `bierflasche`, `lan-kabel` (hängt nach unten, Schwung über `schwingen` auf Feld `swH`) |
+| `namensschild` | `true` = Papierschild mit dem Namen unten am Bildrand unter der Figur; oder `{ "text", "x" }` für eigenen Text bzw. festen Platz |
 
 **Armwinkel:** 0 = hängend. Links positiv = nach außen/oben, rechts negativ = nach außen/oben. 150 bzw. −150 ≈ über dem Kopf.
 
@@ -124,8 +131,8 @@ Alle Gesten stehen in `bibliothek/gesten.js`. „Alle“ = funktioniert mit jede
 | `schleichen` | `von_x`, `von_y` (aus der Tiefe, z. B. hinter Busch), `rampe`, `hoch`, `neigung`, `kopf`, `px`, `py`, `armschwung` | geduckt anschleichen |
 | `stapfen` | `von_x`, `schritte` | schwere Schritte (mit `effekte` → stampf) |
 | `fliehen` | `nach_x`, `rampe`, `von_x` | rennt panisch weg |
-| `ausrutschen` | `von_x`, `nach_x`, `hoch` | fliegt hin, landet auf der Seite |
-| `liegen-glotzen` | `x`, `hoch` | liegt und glotzt, blinzelt ab und zu |
+| `ausrutschen` | `von_x`, `nach_x`, `hoch` | fliegt hin, landet auf dem Rücken (Kopf entgegen der Laufrichtung) |
+| `liegen-glotzen` | `x`, `hoch`, `kopf_nach` (`links` Vorgabe / `rechts`) | liegt und glotzt, blinzelt ab und zu. Nach `ausrutschen` nach links: `kopf_nach` `rechts` |
 | `auftauchen` | `x`, `tiefe` [von, nach], `rampe`, `blickfolge` [[t, px], …], `brauen` | taucht hinter etwas auf und lauert |
 
 ### Blick und Mimik
