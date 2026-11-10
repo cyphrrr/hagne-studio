@@ -127,7 +127,7 @@ Geräusch-Schilder in Bildschirm-Koordinaten (746 × 420): `{ "von", "bis", "tex
 
 Wird vom Studio aus dem Ton erzeugt, nicht von Hand geschrieben. `pegel` je Figur-ID oder als `mix` für die ganze Spur: `{ "o": erstes Bild, "v": [dB je Bild], "null_db": Pegel für geschlossenen Mund, "spanne": dB bis ganz offen }`.
 
-`mundbilder` je Figur-ID: Ausgabe von Rhubarb Lip Sync (`rhubarb -r phonetic -f json -d satz.txt stimme.wav`), also `{ "versatz": Sekunde, an der die Tonspur im Drehbuch beginnt, "mouthCues": [{ "start", "end", "value" }] }`. Erlaubte Werte A–H und X; `pruefen.py` meldet andere.
+`mundbilder` je Figur-ID (optional, für normale Folgen nicht nötig): Mundbilder mit festen Zeiten im Format von Rhubarb Lip Sync, `{ "versatz": Sekunde, "mouthCues": [{ "start", "end", "value" }] }`. Erlaubte Werte A–H und X; `pruefen.py` meldet andere. Ist der Abschnitt da, hat er Vorrang vor dem Text.
 
 ## Gesten-Katalog
 
