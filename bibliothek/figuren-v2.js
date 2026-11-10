@@ -306,11 +306,11 @@ const MC={seed:53,skin:'#F2C9A0',shirt:MPOLO,pants:'#3A4A62',browC:'#4A2F1C',
  acc:()=>brille('dick')};
 FIGUREN['Marlec']={build:a=>makeChar(Object.assign({},MC,{id:a.id,seated:a.haltung==='sitzt',handR:a.hand_rechts})),rig:rigV2,apply:(r,o,a)=>poseV2(r,o,a.boden),spricht:true,lippen:LIPPEN_V2};
 
-/* ----- RamShadow, Version 2: sehr kurze aschgraue Haare mit fast rasierten Seiten, dünne eckige Brille, glatt rasiert,
+/* ----- RamShadow, Version 2: flacher schwarzer Irokese, Rest des Kopfes stoppelig rasiert, dünne eckige Brille, glatt rasiert,
    schwarzes Polo mit Kragen. Merkmal: Brust-Rig (Gurt, Funkgerät mit Antenne, Taschenlampe, Handsprecher am Spiralkabel).
    Cargo-Hose mit Kniepolstern, Arbeitsschutzschuhe, Linien-Tattoo mit Pfeil auf beiden Unterarmen.
-   Abgrenzung zu DocEvel/cypheR: Rig, kein Bart, rasierte Seiten. Pose-Feld funkarm 0–1: Handsprecher zum Mund. ----- */
-const RS_HAIR='#8E8A82',RS_HAIR_L='#ABA79F',RS_SIDE='#C2B6A8',RS_SHIRT='#1C1C1E',RS_POLO_K='#38383E',RS_POLO_D='#0C0C0E',
+   Abgrenzung zu DocEvel/cypheR: Rig, Irokese, kein Bart. Pose-Feld funkarm 0–1: Handsprecher zum Mund. ----- */
+const RS_HAIR='#16161A',RS_HAIR_L='#3C3C44',RS_SIDE='#5A5450',RS_SHIRT='#1C1C1E',RS_POLO_K='#38383E',RS_POLO_D='#0C0C0E',
  RS_RIG='#3A3B41',RS_RIG_L='#55565D',RS_RIG_D='#26272B',RS_FUNK='#1D1D21',RS_KABEL='#6A6B72',RS_INK='rgba(52,66,84,0.8)';
 /* Spiralkabel: Kurve von a nach b über den Stützpunkt c, mit kleinen Wellen quer dazu */
 function rsKabel(ax,ay,cx,cy,bx,by){let d='';const n=44;
@@ -338,10 +338,15 @@ const RS={seed:59,skin:'#F0C4A0',shirt:RS_SHIRT,pants:'#1F2026',browC:'#5E564C',
   s+=piece(rr(-14,-147,7,22,3),'#2A2A2E',0.5)+flat(rr(-14.5,-150,8,5,2),'#8C8F96',0.3);
   s+='<g id="'+id+'-hsp">'+rsKabel(20,-133,6,-108,-17,-128)+rsSprecher(20,-144)+'</g>';
   return s;},
- /* rasierte Seiten: heller Flaum über der Haut */
- under:()=>piece(rect(-38,-232,6,22),RS_SIDE,0.6)+piece(rect(32,-232,6,22),RS_SIDE,0.6),
- hair:()=>{let s=piece(roundPoly([[-36,-226],[-35,-241],[-24,-251],[-6,-255],[12,-255],[28,-250],[37,-240],[37,-226],[30,-233],[16,-238],[0,-239],[-16,-238],[-30,-233]],4),RS_HAIR,1);
-  s+='<path d="M-26 -244 l2 -3 M-14 -248 l2 -3 M-2 -250 l2 -3 M10 -250 l2 -3 M22 -246 l2 -3 M-20 -241 l2 -3 M-8 -244 l2 -3 M4 -245 l2 -3 M16 -243 l2 -3 M28 -239 l2 -3" stroke="'+RS_HAIR_L+'" stroke-width="1.2" stroke-linecap="round"/>';return s;},
+ /* rasierte Seiten: Stoppeln über der Haut */
+ under:()=>flat(rect(-38,-232,6,22),'rgba(70,64,62,0.3)',0.4)+flat(rect(32,-232,6,22),'rgba(70,64,62,0.3)',0.4)+'<path d="M-36 -229h0.1M-34 -224h0.1M-36 -219h0.1M-34 -214h0.1M36 -229h0.1M34 -224h0.1M36 -219h0.1M34 -214h0.1" stroke="'+RS_SIDE+'" stroke-width="1.3" stroke-linecap="round" opacity="0.75"/>',
+ /* Irokese: Kopf rundum stoppelig rasiert (Haut mit dunklen Stoppeln), in der Mitte ein flacher schwarzer Kamm von der Stirn nach hinten */
+ hair:()=>{const kappe=roundPoly([[-37,-220],[-36,-238],[-26,-248],[0,-251],[26,-248],[36,-238],[37,-220],[30,-229],[14,-234],[0,-235],[-14,-234],[-30,-229]],5);
+  let s=piece(kappe,RS.skin,0.5)+flat(kappe,'rgba(70,64,62,0.2)',0.4),d='';
+  for(let y=-246;y<=-222;y+=4)for(let x=-35;x<=35;x+=4.5){const xx=x+((y/4)%2?2.2:0);if(Math.abs(xx)<12)continue;if(Math.hypot(xx/34,(y+221)/27)>0.93||y>-226)continue;d+='M'+xx.toFixed(1)+' '+y+'h0.1';}
+  s+='<path d="'+d+'" stroke="#4A4542" stroke-width="1.3" stroke-linecap="round" opacity="0.75"/>';
+  const K=[[-10,-231],[-12,-246],[-10,-256],[-6,-254],[-4,-262],[0,-258],[4,-262],[6,-254],[10,-256],[12,-246],[10,-231]];
+  s+=piece(roundPoly(K,[3,3,1,2,1,2,1,2,1,3,3]),RS_HAIR,0.7)+'<path d="M-5 -236 L-6 -252 M0 -236 L0 -255 M5 -236 L6 -252" stroke="'+RS_HAIR_L+'" stroke-width="1.3" stroke-linecap="round" fill="none"/>';return s;},
  acc:()=>brille('duenn'),
  /* Tattoo auf dem Unterarm (vor der Hand) */
  armHand:()=>rsTattoo(0,53,0,37),

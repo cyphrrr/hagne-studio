@@ -91,6 +91,7 @@ Noch frei sind zum Beispiel orange, gelb, lila, weiß und bordeaux. **Blau besse
 | Badelatschen mit Socken | Marlec |
 | kurz stachelig | DocEvel |
 | Glatze | Bierdieb-Sturmhaube (darunter) |
+| Irokese (flach, Kopf stoppelig rasiert) | RamShadow |
 | Kippe mit Rauch | m0og |
 | Bierflasche, Handmikro, Zettel, Geldscheine | Requisiten in `figuren-orga.js` |
 | Bierkasten „ORGA-BIER“ (tragbar) | `orga-bierkasten` in `gegenstaende.js`, Geste `tragen` |
@@ -142,5 +143,5 @@ Unsicher:             (was auf dem Foto nicht klar zu sehen war)
 
 ## Gelernt aus Tests
 
-- **RamShadow (2026-11-10):** Das Media-Team wollte trotz Orga-Polo Schwarz. Weil das sehr nah an DocEvel und cypheR liegt, trägt das Merkmal (Brust-Rig mit Funk über die ganze Brust) die Abgrenzung allein, dazu kein Bart und rasierte Seiten. Gut zu wissen: Ein dunkles Rig auf schwarzem Shirt braucht ein mittleres Grau und helle Nähte, sonst verschwindet es.
+- **RamShadow (2026-11-10):** Das Media-Team wollte trotz Orga-Polo Schwarz. Weil das sehr nah an DocEvel und cypheR liegt, tragen das Merkmal (Brust-Rig mit Funk über die ganze Brust) und der Irokese die Abgrenzung, dazu kein Bart. Gut zu wissen: Ein dunkles Rig auf schwarzem Shirt braucht ein mittleres Grau und helle Nähte, sonst verschwindet es.
 - **Marlec (2026-11-09):** Brille, Vollbart und schwarzes Orga-Polo ergaben fast cypheR. Abhilfe waren Locken als Merkmal und ein freies Petrol. Die Badelatschen mit Socken wären im alten Steckbrief untergegangen. Die Macke ließ sich fast komplett mit vorhandenen Bausteinen abbilden.
