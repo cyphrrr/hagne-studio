@@ -20,7 +20,7 @@ function makeCharV2x(p){seed=p.seed;let s='';const sk=p.skin,id=p.id;
  const arm=(aid,side)=>p.ellbogen?armJ(aid,side,p.shirt,sk,'',p.edge):armAt(aid,side,p.shirt,sk,'',side>0?handItem(id,p.handR):'');
  s+=arm(id+'-al',-1);
  s+=piece(TORSO_V2,p.shirt);
- s+='<g data-logo="1" data-t="translate(0 -102)" data-size="15" data-max="64"></g>';
+ s+='<g data-logo="1" data-t="translate(0 -127)" data-size="15" data-max="64"></g>';
  s+=arm(id+'-ar',1);
  s+=piece(box(-8,-168,16,16),sk);
  s+='<g id="'+id+'-h">';
@@ -163,7 +163,7 @@ function build(a){const id=a.id,seated=a.haltung==='sitzt',sk=SKIN;seed=53;let s
   s+=piece(shoe(-30,-10,28,11),'#2A2624')+piece(shoe(2,-10,28,11),'#2A2624');}
  s+='<g transform="translate(0 '+(seated?DY:0)+')">';
  s+=piece(seated?roundPoly([[-34,-155],[34,-155],[42,-82],[-42,-82]],[13,13,4,4]):TORSO_V2,SH);
- s+='<g data-logo="1" data-t="translate(0 '+(seated?-112:-102)+')" data-size="15" data-max="64"></g>';
+ s+='<g data-logo="1" data-t="translate(0 -127)" data-size="15" data-max="64"></g>';
  s+='<circle cx="12" cy="-140" r="2.6" fill="#0E0E0E" stroke="#3A3A3A" stroke-width="0.8"/>';
  /* beide Arme liegen vor dem Rumpf, damit Mikro und Zeigefinger vor dem Shirt lesbar bleiben */
  s+=armJ(id+'-al',-1,SH,sk,armExtra(id,-1),EDGE);
@@ -267,7 +267,7 @@ function build(id,handR){const p=P;seed=p.seed;let s='';const sk=p.skin;
  s+='<g id="'+id+'-lr">'+piece(box(4,-72-LEG,13,66+LEG),p.pants)+piece(shoe(2,-10,25,11),'#2A2624')+'</g>';
  s+=armLang(id+'-al',-1,p.shirt,sk,SH,0,'<g transform="translate(0 108.5)">'+rBottle()+'</g>');
  s+=piece(roundPoly([[-27,SH],[27,SH],[33,HIPY],[-33,HIPY]],[11,11,4,4]),p.shirt);
- s+='<g data-logo="1" data-t="translate(0 '+(SH+58)+')" data-size="14" data-max="50"></g>';
+ s+='<g data-logo="1" data-t="translate(0 '+(SH+38)+')" data-size="14" data-max="50"></g>';
  s+=armLang(id+'-ar',1,p.shirt,sk,SH,0,handItem(id,handR,94.5),'<g id="'+id+'-fi" style="display:none">'+piece(seg(0,98.5,0,111.5,4.4),sk,0.4)+'</g>');
  s+='<g transform="translate(0 '+(-UP)+')">';
  s+=piece(box(-7,-168,14,16),sk);

@@ -15,7 +15,7 @@ Typischer Spruch oder Macke:
 
 ## Feste Regeln (müssen nicht mehr angegeben werden)
 
-- Shirt-Aufdruck ist bei allen Figuren immer `['ju:nien]`.
+- Shirt-Aufdruck ist bei allen Figuren immer `['ju:nien]` und sitzt immer auf Brusthöhe (V2-Rumpf: y −127).
 - Es wird nur der Spitzname verwendet, kein Klarname.
 - Figuren werden im Baukasten Version 2 gebaut (`docs/VERSION-2.md`), ohne Klebestreifen am Kinn.
 
