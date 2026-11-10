@@ -315,7 +315,7 @@ FIGUREN['DrBier']={build:a=>build(a.id,a.hand_rechts),spricht:true,lippen:LIPPEN
    lid 0–1 (Oberlid senkt sich, genervt), aLf/aRf (Unterarme). Münder: 'n' neutral, 'p' zusammengezogen, 's' schief, 'g' Grinsen, Zahl ab 2 = Sprechmund.
    Bewährte Armwinkel [Schulter, Ellbogen]: Scheine vor dem Bauch links [−8, −50], zählen rechts [8, 50] (Ellbogen schwingt 38–58); der Aufdruck sitzt auf Brusthöhe (y −127) und bleibt frei. */
 (()=>{
-const SKIN='#C68A5E',SH='#1E1E1C',EDGE='#45453F',PANTS='#3A4A62',BROW='#3A3836';
+const SKIN='#D9A47A',SH='#1E1E1C',EDGE='#45453F',PANTS='#3A4A62',BROW='#3A3836';
 const HAIR_S='#AEB0B3',HAIR_L='#D4D6D8',HAIR_K='#262527',HAIR_T='#8D8F92';
 const NOTES=['#D98E4A','#6F9CC4','#7FA86E','#C9726A'];
 function note(col){return piece(rr(-12,-6,24,12,1.5),col,0.4)+'<rect x="-10" y="-4" width="20" height="8" rx="1" fill="none" stroke="rgba(255,255,255,0.45)" stroke-width="0.9"/>'+
