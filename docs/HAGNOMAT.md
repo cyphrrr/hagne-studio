@@ -49,6 +49,8 @@ Farben und vorhandene Teile in den Tabellen unten haben den Stand 2026-11. Bei Z
 | grau-braun | `#6B6259` | cypheR |
 | grau | `#A3A19C` | PoBi |
 | hell silbergrau | `#D2D1CB`, Brauen `#98948A` | DocEvel |
+| fast schwarzbraun | `#2B211C` | KickASS (Haar und Brauen) |
+| Bart grau-weiß, Schnurrbart dunkel | `#B4B0A8`, hell `#DAD6CE`, dunkel `#4E4741` | KickASS |
 
 Brauen sind meist etwas dunkler als das Haar, Bart oft auch.
 
@@ -80,6 +82,7 @@ Noch frei sind zum Beispiel orange, gelb, lila, weiß und bordeaux. **Blau besse
 | schmale rechteckige Metallbrille (silber) | DocEvel |
 | Brille, dünner dunkelbrauner Rahmen | Spallter |
 | Vollbart | cypheR, PoBi, Spallter (kurz) |
+| langer Spitzbart mit dunklem Schnurrbart | KickASS (Spitze endet über dem Logo) |
 | Dreitagebart / Stoppeln | Deichshaf |
 | Kappe | DrBier („MAKE HAGNE GREAT AGAIN“) |
 | Tarnhut, Sturmhaube | Bierdiebe |
@@ -95,7 +98,8 @@ Noch frei sind zum Beispiel orange, gelb, lila, weiß und bordeaux. **Blau besse
 | Kippe mit Rauch | m0og |
 | Bierflasche, Handmikro, Zettel, Geldscheine | Requisiten in `figuren-orga.js` |
 | Bierkasten „ORGA-BIER“ (tragbar) | `orga-bierkasten` in `gegenstaende.js`, Geste `tragen` |
-| Shorts, große Stiefel | KickASS |
+| schwarze Cargo-Shorts mit Seitentasche, schwarze Springerstiefel (hoher Schaft) | KickASS |
+| Seiten kurz rasiert (Fade), oben kurz nach hinten | KickASS |
 | Locken | Marlec |
 
 ## Macke → Gesten (Auswahl aus `docs/FORMAT.md`)
