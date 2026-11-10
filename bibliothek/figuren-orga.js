@@ -308,15 +308,15 @@ FIGUREN['DrBier']={build:a=>build(a.id,a.hand_rechts),spricht:true,lippen:LIPPEN
   show(c.fi,!!o.zeigefinger);}};
 })();
 
-/* ==== DocEvel (Version 2): sehr kurze Haare hell silberblond, oben leicht aufgestellt, glatt rasiert, heller Hautton,
+/* ==== DocEvel (Version 2): sehr kurze Haare hell silbergrau (kaum blond), oben leicht aufgestellt, glatt rasiert, heller Hautton,
    schmale rechteckige Metallbrille (silber), schwarzes Shirt, Ellbogengelenk, Geldscheine in der Hand.
    Wirkt gelassen (Grundmund 'n' = leichtes, verschmitztes Lächeln), regt er sich auf: Mund zusammenziehen ('p') und Augen rollen (py −4.5, lid).
    Pose-Felder: geld (Fächer Scheine in der linken Hand), geldR (ein Schein rechts), fallen 0–1 (drei Scheine fallen aus der linken Hand zu Boden),
    lid 0–1 (Oberlid senkt sich, genervt), aLf/aRf (Unterarme). Münder: 'n' leichtes Lächeln, 'p' zusammengezogen, 's' schief, 'g' Grinsen, Zahl ab 2 = Sprechmund.
    Bewährte Armwinkel [Schulter, Ellbogen]: Scheine vor dem Bauch links [−8, −50], zählen rechts [8, 50] (Ellbogen schwingt 38–58); der Aufdruck sitzt auf Brusthöhe (y −127) und bleibt frei. */
 (()=>{
-const SKIN='#F2C9A0',SH='#1E1E1C',EDGE='#45453F',PANTS='#3A4A62',BROW='#A8987A';
-const HAIR_S='#DDD3B8',HAIR_L='#F0EAD8',HAIR_D='#BDB196',HAIR_T='#C8BDA2';
+const SKIN='#F2C9A0',SH='#1E1E1C',EDGE='#45453F',PANTS='#3A4A62',BROW='#98948A';
+const HAIR_S='#D2D1CB',HAIR_L='#EDECE7',HAIR_D='#ADABA4',HAIR_T='#BCBAB3';
 const NOTES=['#D98E4A','#6F9CC4','#7FA86E','#C9726A'];
 function note(col){return piece(rr(-12,-6,24,12,1.5),col,0.4)+'<rect x="-10" y="-4" width="20" height="8" rx="1" fill="none" stroke="rgba(255,255,255,0.45)" stroke-width="0.9"/>'+
  '<circle cx="5" cy="0" r="2.6" fill="rgba(255,255,255,0.4)"/><path d="M-8 -1.5 h7 M-8 1.5 h5" stroke="rgba(40,30,20,0.4)" stroke-width="0.8"/>';}

@@ -48,7 +48,7 @@ Farben und vorhandene Teile in den Tabellen unten haben den Stand 2026-11. Bei Z
 | blond | Brauen `#B8943E` | m0og |
 | grau-braun | `#6B6259` | cypheR |
 | grau | `#A3A19C` | PoBi |
-| hell silberblond | `#DDD3B8`, Brauen `#A8987A` | DocEvel |
+| hell silbergrau | `#D2D1CB`, Brauen `#98948A` | DocEvel |
 
 Brauen sind meist etwas dunkler als das Haar, Bart oft auch.
 
