@@ -50,25 +50,45 @@ function poseV2x(c,o,a){poseV2(c,o,a.boden);
  if(c.smoke){const f=o._f||0;c.smoke.setAttribute('transform','translate('+(Math.floor(f/3)%2?1.5:-1.5)+' '+(-(Math.floor(f/2)%4))+')');}}
 const V2X=def=>({build:a=>makeCharV2x(Object.assign({},def,{id:a.id,seated:a.haltung==='sitzt',handR:a.hand_rechts})),rig:rigV2x,apply:poseV2x,spricht:true,lippen:LIPPEN_V2});
 
-/* ==== KickASS: olivgrünes Shirt, Shorts, extra große Stiefel mit Hüftgelenk, Funk am Ohr ==== */
+/* ==== KickASS (überarbeitet 2026-11-10): olivgrünes Shirt, schwarze Cargo-Shorts, schwarze Springerstiefel mit Hüftgelenk,
+   Seiten kurz rasiert (Fade), langer grauer Spitzbart mit dunklem Schnurrbart, Funk am Ohr ==== */
 (()=>{
 const HIP={x:14,y:-66,r:10};
-const BOOT='#8A5A2E',BOOT_D='#5C3A1C',BOOT_L='#B57E48',SOLE='#2E2018',LACE='#E6D3A8';
+const BOOT='#1C1B1A',BOOT_D='#2E2C2A',BOOT_L='#4A4744',SOLE='#0D0C0B',LACE='#8A847C',STITCH='#6A655F';
+const SHORTS='#1F1E1C',POCKET='#34312E',SEAM='#6A655F';
+const HAIR='#2B211C',HAIR_L='#4A3A30',FADE='#5A524C';
+const BEARD='#B4B0A8',BEARD_L='#DAD6CE',BEARD_D='#4E4741';
+/* Springerstiefel: hoher Schaft bis knapp unter die Shorts, Schnürung mit vier Kreuzen */
 function bootV2(s,cx){let o='';
- o+=piece(rr(Math.min(cx-s*10,cx+s*16),36,26,22,6),BOOT);
+ o+=piece(rr(Math.min(cx-s*10,cx+s*16),28,26,30,6),BOOT);
  o+=piece(roundPoly([[cx-s*10,44],[cx+s*12,44],[cx+s*34,48],[cx+s*43,60],[cx-s*11,61]],[5,8,13,5,4]),BOOT);
  o+=flat(ell(cx+s*31,52,8,3.8),BOOT_L,0.6);
- o+=piece(rr(Math.min(cx-s*11,cx+s*17),33,28,7,3),BOOT_D,1);
+ o+=piece(rr(Math.min(cx-s*11,cx+s*17),25,28,7,3),BOOT_D,1);
  o+=piece(rr(Math.min(cx-s*11,cx+s*45),59,56,8,3),SOLE,1);
- o+='<path d="M'+(cx-s*9)+' 58 L'+(cx+s*40)+' 58" stroke="'+BOOT_L+'" stroke-width="0.9" stroke-dasharray="2 2" fill="none"/>';
- const lx=cx+s*3;let l='';[39,44,49].forEach(y=>{l+='M'+(lx-5)+' '+y+' L'+(lx+5)+' '+(y+4)+' M'+(lx+5)+' '+y+' L'+(lx-5)+' '+(y+4)+' ';});
+ o+='<path d="M'+(cx-s*9)+' 58 L'+(cx+s*40)+' 58" stroke="'+STITCH+'" stroke-width="0.9" stroke-dasharray="2 2" fill="none"/>';
+ const lx=cx+s*3;let l='';[33,38,43,48].forEach(y=>{l+='M'+(lx-5)+' '+y+' L'+(lx+5)+' '+(y+4)+' M'+(lx+5)+' '+y+' L'+(lx-5)+' '+(y+4)+' ';});
  o+='<path d="'+l+'" stroke="'+LACE+'" stroke-width="1.3" stroke-linecap="round" fill="none"/>';
  return o;}
+/* Cargo-Shorts: aufgesetzte Seitentasche außen mit heller Naht */
+function cargo(side){const x=side>0?2:-10;
+ return piece(rr(x,3,8,13,2),POCKET,0.5)+'<path d="M'+(x+0.8)+' 6.5 L'+(x+7.2)+' 6.5" stroke="'+SEAM+'" stroke-width="0.9" stroke-dasharray="1.6 1.4" fill="none"/>'+
+  '<path d="M'+(-HIP.r+1)+' 22 L'+(HIP.r-1)+' 22" stroke="'+SEAM+'" stroke-width="0.9" stroke-dasharray="2 2" fill="none"/>';}
 function legAt(id,side,p){const cx=-side*1.5;
- return '<g transform="translate('+(side*HIP.x)+' '+HIP.y+')" data-huefte="1"><g id="'+id+'">'+piece(box(cx-6.5,18,13,26),p.skin)+piece(sleevePts(HIP.r,24),p.pants)+bootV2(side,cx)+'</g></g>';}
-FIGUREN['KickASS']=V2X({seed:11,skin:'#F0C4A0',shirt:'#5E6640',pants:'#22201E',browC:'#3E2A1E',legAt,
- beard:beardFull('#8E8A84','#B9B5AD','#5F5B56'),
- hair:()=>{let s=piece([[-37,-226],[-35,-247],[-16,-258],[14,-260],[34,-251],[38,-226]],'#3E2A1E',1.6);s+='<path d="M-22 -250 Q-4 -262 26 -250 M-26 -242 Q-2 -254 30 -242" fill="none" stroke="#5E4332" stroke-width="2"/>';s+=piece(rect(-38,-232,6,24),'#AAA69E',1)+piece(rect(32,-232,6,24),'#AAA69E',1);return s;},
+ return '<g transform="translate('+(side*HIP.x)+' '+HIP.y+')" data-huefte="1"><g id="'+id+'">'+piece(box(cx-6.5,18,13,26),p.skin)+piece(sleevePts(HIP.r,24),p.pants)+cargo(side)+bootV2(side,cx)+'</g></g>';}
+/* langer grauer Spitzbart: folgt oben der Ei-Kontur, hängt unten übers Kinn (Spitze über dem Logo), Schnurrbart und Wangen dunkel */
+function beardLong(){let s=piece(roundPoly([[-37,-192],[-30,-189],[-20,-180],[20,-180],[30,-189],[37,-192],[34,-166],[24,-152],[10,-141],[0,-137],[-10,-141],[-24,-152],[-34,-166]],[2,3,3,3,3,2,9,9,6,4,6,9,9]),BEARD,2);
+ s+=flat([[-36,-191],[-29,-188],[-26,-176],[-31,-170],[-34,-178]],BEARD_D,0.6)+flat([[36,-191],[29,-188],[26,-176],[31,-170],[34,-178]],BEARD_D,0.6);
+ s+=flat(ell(-3,-150,9,5),BEARD_L,0.6);
+ s+=piece(roundPoly([[-19,-178],[-8,-182],[0,-179],[8,-182],[19,-178],[22,-170],[11,-175],[0,-174],[-11,-175],[-22,-170]],[3,4,3,4,3,3,4,3,4,3]),BEARD_D,0.8);
+ return s;}
+FIGUREN['KickASS']=V2X({seed:11,skin:'#F0C4A0',shirt:'#5E6640',pants:SHORTS,browC:HAIR,legAt,
+ beard:beardLong,
+ /* Fade: Seiten kurz rasiert, Stoppeln über der Haut */
+ under:()=>{let s=flat([[-38,-236],[-31,-238],[-31,-212],[-38,-210]],'rgba(60,52,46,0.42)',0.4)+flat([[38,-236],[31,-238],[31,-212],[38,-210]],'rgba(60,52,46,0.42)',0.4);
+  s+='<path d="M-36 -233h0.1M-33 -228h0.1M-36 -223h0.1M-33 -218h0.1M-36 -213h0.1M36 -233h0.1M33 -228h0.1M36 -223h0.1M33 -218h0.1M36 -213h0.1" stroke="'+FADE+'" stroke-width="1.4" stroke-linecap="round" opacity="0.9"/>';return s;},
+ /* oben kurz, nach hinten gestrichen, fast schwarzbraun – liegt auf dem Kopf an, Seiten bleiben frei */
+ hair:()=>{let s=piece(roundPoly([[-34,-227],[-35,-242],[-24,-253],[0,-257],[24,-254],[35,-244],[35,-228],[28,-233],[14,-236],[0,-237],[-14,-236],[-28,-233]],[3,6,8,8,8,6,3,4,4,4,4,4]),HAIR,1.2);
+  s+='<path d="M-20 -235 Q-18 -247 -8 -253 M-2 -237 Q0 -249 10 -254 M16 -235 Q20 -246 27 -249" fill="none" stroke="'+HAIR_L+'" stroke-width="1.8" stroke-linecap="round"/>';return s;},
  acc:()=>piece(rect(35,-207,7,11),'#2A2624',0.8)+'<path d="M39 -196 l-4 4 l5 3 l-5 3 l5 3 l-5 3 l5 3 l-5 3 l5 3 L32 -162" fill="none" stroke="#2A2624" stroke-width="1.6" stroke-linejoin="round"/>'});
 })();
 
