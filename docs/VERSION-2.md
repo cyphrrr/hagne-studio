@@ -201,7 +201,7 @@ Alle Figuren haben denselben Augensatz, so wie sie dieselben Mundbilder haben. E
 - **Augen:** `augen(id)` zeichnet zwei hochovale, leicht zueinander geneigte Augen ohne Collage-Schatten mit kleiner Pupille. Die Maße stehen in `AUGE` (Mitte, Halbachsen, Neigung, Pupille, Brauenposition). Wer die Augen ändern will, ändert nur `AUGE`.
 - **Brauen** sitzen auf `AUGE.braue` / `AUGE.braueY`.
 - **Brillen:** `brille('dick')` und `brille('duenn')` sind die beiden schwarzen Rahmen. Zwei Gläser mit abgerundeten Ecken, Steg, Bügel. Die Brille rechnet ihre Größe aus `AUGE` und sitzt damit immer um die Augen. Andere Farbe: `brille('duenn',{farbe:'#C9A04A'})` (m0og).
-- **Eigene Brillenformen** (PoBi Halbrand, DocEvel rund, Spock Sonnenbrille) bleiben erlaubt, brauchen aber Steg und Bügel und müssen die Augen ganz umschließen. Maße dafür liefert `brilleMasse()`.
+- **Eigene Brillenformen** (PoBi Halbrand, Spock Sonnenbrille) bleiben erlaubt, brauchen aber Steg und Bügel und müssen die Augen ganz umschließen. Maße dafür liefert `brilleMasse()`.
 - **Regel:** Passt eine Brille oder Maske nicht zu den Augen, wird sie angepasst – nicht die Augen.
 
 Wer trägt was: dick – cypheR, Marlec. Dünn – RamShadow, Spallter (dunkelbraun), m0og (gold).

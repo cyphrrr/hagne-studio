@@ -308,15 +308,15 @@ FIGUREN['DrBier']={build:a=>build(a.id,a.hand_rechts),spricht:true,lippen:LIPPEN
   show(c.fi,!!o.zeigefinger);}};
 })();
 
-/* ==== DocEvel (Version 2): kurze stachelige Haare silbergrau mit schwarzem Rest, graue Stoppeln, mittlerer Hautton,
-   kleine Rundbrille, schwarzes Shirt, Ellbogengelenk, Geldscheine in der Hand.
-   Wirkt gelassen (Grundmund 'n' = neutral), regt er sich auf: Mund zusammenziehen ('p') und Augen rollen (py −4.5, lid).
+/* ==== DocEvel (Version 2): sehr kurze Haare hell silberblond, oben leicht aufgestellt, glatt rasiert, heller Hautton,
+   schmale rechteckige Metallbrille (silber), schwarzes Shirt, Ellbogengelenk, Geldscheine in der Hand.
+   Wirkt gelassen (Grundmund 'n' = leichtes, verschmitztes Lächeln), regt er sich auf: Mund zusammenziehen ('p') und Augen rollen (py −4.5, lid).
    Pose-Felder: geld (Fächer Scheine in der linken Hand), geldR (ein Schein rechts), fallen 0–1 (drei Scheine fallen aus der linken Hand zu Boden),
-   lid 0–1 (Oberlid senkt sich, genervt), aLf/aRf (Unterarme). Münder: 'n' neutral, 'p' zusammengezogen, 's' schief, 'g' Grinsen, Zahl ab 2 = Sprechmund.
+   lid 0–1 (Oberlid senkt sich, genervt), aLf/aRf (Unterarme). Münder: 'n' leichtes Lächeln, 'p' zusammengezogen, 's' schief, 'g' Grinsen, Zahl ab 2 = Sprechmund.
    Bewährte Armwinkel [Schulter, Ellbogen]: Scheine vor dem Bauch links [−8, −50], zählen rechts [8, 50] (Ellbogen schwingt 38–58); der Aufdruck sitzt auf Brusthöhe (y −127) und bleibt frei. */
 (()=>{
-const SKIN='#D9A47A',SH='#1E1E1C',EDGE='#45453F',PANTS='#3A4A62',BROW='#3A3836';
-const HAIR_S='#AEB0B3',HAIR_L='#D4D6D8',HAIR_K='#262527',HAIR_T='#8D8F92';
+const SKIN='#F2C9A0',SH='#1E1E1C',EDGE='#45453F',PANTS='#3A4A62',BROW='#A8987A';
+const HAIR_S='#DDD3B8',HAIR_L='#F0EAD8',HAIR_D='#BDB196',HAIR_T='#C8BDA2';
 const NOTES=['#D98E4A','#6F9CC4','#7FA86E','#C9726A'];
 function note(col){return piece(rr(-12,-6,24,12,1.5),col,0.4)+'<rect x="-10" y="-4" width="20" height="8" rx="1" fill="none" stroke="rgba(255,255,255,0.45)" stroke-width="0.9"/>'+
  '<circle cx="5" cy="0" r="2.6" fill="rgba(255,255,255,0.4)"/><path d="M-8 -1.5 h7 M-8 1.5 h5" stroke="rgba(40,30,20,0.4)" stroke-width="0.8"/>';}
@@ -327,22 +327,14 @@ function single(){return '<g transform="rotate(-12) translate(4 -9)">'+note(NOTE
 function armExtra(id,sx){return '<g transform="translate(0 '+FORE+')">'+(sx<0?'<g id="'+id+'-cL"><g id="'+id+'-fan" style="display:none">'+fan()+'</g></g>'
  :'<g id="'+id+'-cR"><g id="'+id+'-one" style="display:none">'+single()+'</g></g>')+'</g>';}
 function handPos(sx,th,e){const a=th*Math.PI/180,b=(th+e)*Math.PI/180;return [sx*SHOULDER.x-ELBOW*Math.sin(a)-FORE*Math.sin(b),SHOULDER.y+ELBOW*Math.cos(a)+FORE*Math.cos(b)];}
-function stubble(){let s=flat([[-35,-194],[-26,-185],[-14,-180],[14,-180],[26,-185],[35,-194],[31,-176],[27,-166],[11,-157],[-11,-157],[-27,-166],[-31,-176]],'rgba(60,54,50,0.2)',0.8);
- const wl=y=>y<=-176?35-(y+194)*0.222:(y<=-166?31-(y+176)*0.4:27-(y+166)*1.78);
- let n=0,guard=0;while(n<130&&guard<3000){guard++;const x=(R()-.5)*66,y=-193+R()*35;const ax=Math.abs(x);
-  const top=ax>14?-180-(ax-14)*0.667:-180;if(y<top+1||y>-158||ax>wl(y)-2)continue;if(ax<12&&y>-178&&y<-166)continue;
-  s+='<circle cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="'+(0.4+R()*0.25).toFixed(2)+'" fill="'+(R()<0.55?'#8C8884':'#3A3634')+'" opacity="0.6"/>';n++;}
- return s;}
-/* kurz und leicht stachelig: viele kleine, weiche Spitzen oben, Ansatz flach */
-function hair(){const top=[];for(let i=0;i<=12;i++){const x=-33+i*5.5;top.push([x,(i%2?-250:-255)-Math.round(3*Math.cos(x/40*Math.PI/2))]);}
- let s=piece(roundPoly([[-39,-214],[-40,-232],[-36,-244],...top,[36,-244],[40,-232],[39,-214],[35,-222],[28,-228],[16,-231],[4,-229],[-8,-232],[-20,-230],[-30,-227],[-35,-221]],1.8),HAIR_S,1.1);
- s+='<path d="M-24 -240 l-2 -8 M-8 -242 l0 -9 M8 -242 l1 -9 M24 -240 l2 -8" stroke="'+HAIR_L+'" stroke-width="1.4" stroke-linecap="round"/>';
- s+='<path d="M-16 -238 l-1 -11 M0 -240 l0.5 -12 M16 -238 l1.5 -10 M-30 -234 l-2 -7" stroke="'+HAIR_K+'" stroke-width="2.2" stroke-linecap="round"/>';
- s+='<path d="M-4 -236 l-1 -7 M30 -235 l2 -6" stroke="'+HAIR_K+'" stroke-width="1.5" stroke-linecap="round" opacity="0.8"/>';return s;}
-function glasses(){return '<g><circle cx="-11.3" cy="-204.2" r="9.5" fill="rgba(220,235,245,0.16)" stroke="#2B2B2D" stroke-width="1.9"/><circle cx="11.3" cy="-204.2" r="9.5" fill="rgba(220,235,245,0.16)" stroke="#2B2B2D" stroke-width="1.9"/>'+
- '<path d="M-2 -206 Q0 -208.4 2 -206" stroke="#2B2B2D" stroke-width="1.7" fill="none"/><path d="M-20.8 -205 L-37 -208 M20.8 -205 L37 -208" stroke="#2B2B2D" stroke-width="1.7"/>'+
- '<path d="M-16 -210 l-3 4 M7 -210 l-3 4" stroke="rgba(255,255,255,0.45)" stroke-width="1.3" stroke-linecap="round"/></g>';}
-function mouth(id){return '<g id="'+id+'-mn"><path d="M-9 -172 Q0 -171 9 -172.6" stroke="#2A0E0B" stroke-width="2.3" fill="none" stroke-linecap="round"/></g>'+
+/* sehr kurz, oben nur leicht aufgestellt: flache, weiche Wellen, Ansatz flach */
+function hair(){const top=[];for(let i=0;i<=10;i++){const x=-32+i*6.4;top.push([x,(i%2?-247:-250)-Math.round(2*Math.cos(x/40*Math.PI/2))]);}
+ let s=piece(roundPoly([[-39,-214],[-39.5,-231],[-36,-241],...top,[36,-241],[39.5,-231],[39,-214],[35,-221],[28,-226],[16,-228],[4,-226.5],[-8,-228],[-20,-227],[-30,-225],[-35,-220]],2.4),HAIR_S,1);
+ s+='<path d="M-24 -238 l-1 -6 M-12 -240 l0 -7 M0 -241 l0.5 -7 M12 -240 l1 -7 M24 -238 l1.5 -6" stroke="'+HAIR_L+'" stroke-width="1.4" stroke-linecap="round"/>';
+ s+='<path d="M-18 -236 l-0.5 -5 M6 -238 l0.5 -6 M30 -233 l1.5 -5 M-30 -232 l-1 -5" stroke="'+HAIR_D+'" stroke-width="1.3" stroke-linecap="round" opacity="0.8"/>';return s;}
+/* schmale, rechteckige Metallbrille in Silber */
+function glasses(){return brille('duenn',{farbe:'#8E959C',rahmen:1.4,steg:1.3,buegel:1.4,ecke:2});}
+function mouth(id){return '<g id="'+id+'-mn"><path d="M-9 -173 Q0 -168.6 9.5 -174.4" stroke="#2A0E0B" stroke-width="2.2" fill="none" stroke-linecap="round"/><path d="M10.5 -175.6 l1.2 -1.4" stroke="#B57A5A" stroke-width="1.1" stroke-linecap="round"/></g>'+
  '<g id="'+id+'-mp" style="display:none"><path d="M-6 -172 Q0 -171 6 -172" stroke="#2A0E0B" stroke-width="2.4" fill="none" stroke-linecap="round"/>'+
   '<path d="M-8.5 -174.5 l-0.8 4.5 M8.5 -174.5 l0.8 4.5 M-3.5 -166.8 q3.5 1.4 7 0" stroke="#8A4A30" stroke-width="1.1" fill="none" stroke-linecap="round"/></g>'+
  '<g id="'+id+'-msc" style="display:none"><path d="M-9 -172 Q2 -170 9 -175" stroke="#2A0E0B" stroke-width="2.3" fill="none" stroke-linecap="round"/></g>'+
@@ -362,7 +354,7 @@ function build(a){const id=a.id,sk=SKIN;seed=131;let s='';
  s+='<clipPath id="'+id+'-ec">'+augeForm(-1)+augeForm(1)+'</clipPath>';
  s+=augen(id,'<g clip-path="url(#'+id+'-ec)"><rect id="'+id+'-lid" x="-24" y="'+(AUGE.y-AUGE.ry-0.4)+'" width="48" height="0" fill="'+sk+'"/></g>');
  s+='<g id="'+id+'-bl">'+flat(rect(-8.5,-2.3,17,4.6),BROW,1)+'</g><g id="'+id+'-br">'+flat(rect(-8.5,-2.3,17,4.6),BROW,1)+'</g>';
- s+=NOSE_V2()+stubble()+mouth(id)+hair()+glasses();
+ s+=NOSE_V2()+mouth(id)+hair()+glasses();
  s+='</g>';
  /* lose Scheine, die aus der linken Hand fallen: eigene Lage vor allem */
  s+='<g id="'+id+'-fall" style="display:none">'+[0,1,2].map(i=>'<g id="'+id+'-fall'+i+'">'+note(NOTES[(i+1)%4])+'</g>').join('')+'</g>';
