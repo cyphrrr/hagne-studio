@@ -29,6 +29,34 @@ function handItem(id,name,y){return name&&GEGENSTAENDE[name]?'<g id="'+id+'-hr" 
 function mundformen(id){return '<g id="'+id+'-mfs" style="display:none"><path d="M-11 -173 Q0 -169 9 -174 Q12 -176 14 -180" stroke="#2A0E0B" stroke-width="2.4" fill="none" stroke-linecap="round"/><path d="M15 -175 l2.5 2" stroke="#8A4A30" stroke-width="1.3" stroke-linecap="round"/></g>'+
  '<g id="'+id+'-mfg" style="display:none"><path d="M-16 -178 Q0 -168 17 -180 Q15 -166 1 -161 Q-13 -164 -16 -178Z" fill="#2A0E0B"/><path d="M-14 -177 Q0 -170 15 -179 L14 -174 Q0 -168 -13 -173Z" fill="#FFFDF6"/></g>'+
  '<g id="'+id+'-mfy" style="display:none"><ellipse cx="1" cy="-170" rx="8" ry="7" fill="#2A0E0B"/><path d="M-6 -175 Q1 -178 8 -175" stroke="#FFFDF6" stroke-width="2" fill="none"/><ellipse cx="1" cy="-166" rx="4" ry="2" fill="#C2504A"/></g>';}
+/* ==== Mundbilder beim Sprechen (Satz nach Rhubarb Lip Sync, A–H + X) ====
+   Gleiche Formen und Farben für alle Figuren. Der Player hängt sie hinter den Mund jeder sprechenden Figur
+   (mundbilderEinbauen) und zeigt beim Reden immer genau eines davon (mundbildZeigen); passt eine Figur nicht dazu,
+   wird die Figur angepasst, nicht der Mund (z. B. DrBiers Bart, Mundloch der Sturmhaube).
+   X Ruhe · A M B P · B K S T I · C E Ä · D A · E O · F U W · G F V · H L N */
+const MB_D='#2A0E0B',MB_T='#FFFDF6',MB_Z='#C2504A',MB_L='#E9C7A8',MB_LL='#8A4A30';
+const mbP=(d,f,x)=>'<path d="'+d+'" fill="'+(f||'none')+'" '+(x||'')+'/>';
+const MB_RAND='stroke="'+MB_L+'" stroke-width="1.2" stroke-linejoin="round"';
+const MUNDBILDER={
+ X:()=>mbP('M-9 -172 Q0 -171 9 -172',null,'stroke="'+MB_D+'" stroke-width="2.4" stroke-linecap="round"'),
+ A:()=>mbP('M-8.5 -172 Q0 -172.8 8.5 -172',null,'stroke="'+MB_D+'" stroke-width="3" stroke-linecap="round"')+mbP('M-5 -168.6 Q0 -167.2 5 -168.6',null,'stroke="'+MB_LL+'" stroke-width="1.3" stroke-linecap="round"')+mbP('M-10.5 -173.2 l-1.2 1.6 M10.5 -173.2 l1.2 1.6',null,'stroke="'+MB_LL+'" stroke-width="1.1" stroke-linecap="round"'),
+ B:()=>mbP('M-13 -174 Q0 -176 13 -174 Q11 -166.5 0 -166 Q-11 -166.5 -13 -174Z',MB_D,MB_RAND)+mbP('M-11.6 -174 Q0 -175.7 11.6 -174 L11 -171.6 Q0 -172.9 -11 -171.6Z',MB_T)+mbP('M-8.5 -167.6 Q0 -166.8 8.5 -167.6 L7.8 -169.2 Q0 -168.3 -7.8 -169.2Z',MB_T),
+ C:()=>mbP('M-11.5 -175 Q0 -177 11.5 -175 Q11 -166 0 -164 Q-11 -166 -11.5 -175Z',MB_D,MB_RAND)+mbP('M-10.1 -174.8 Q0 -176.4 10.1 -174.8 L9.6 -172.4 Q0 -173.6 -9.6 -172.4Z',MB_T)+'<ellipse cx="0" cy="-166.2" rx="4.5" ry="1.4" fill="'+MB_Z+'"/>',
+ D:()=>mbP('M-12 -176 Q0 -178 12 -176 Q12 -163 0 -159.5 Q-12 -163 -12 -176Z',MB_D,MB_RAND)+mbP('M-10.6 -175.8 Q0 -177.4 10.6 -175.8 L10 -172.6 Q0 -173.9 -10 -172.6Z',MB_T)+'<ellipse cx="0" cy="-163" rx="6.2" ry="2.7" fill="'+MB_Z+'"/>',
+ E:()=>'<ellipse cx="0" cy="-170" rx="7" ry="7.6" fill="'+MB_D+'" stroke="'+MB_L+'" stroke-width="1.6"/>'+mbP('M-4.6 -175.2 Q0 -176.6 4.6 -175.2 L4 -173.6 Q0 -174.6 -4 -173.6Z',MB_T)+'<ellipse cx="0" cy="-165.4" rx="3.6" ry="1.6" fill="'+MB_Z+'"/>',
+ F:()=>'<ellipse cx="0" cy="-171" rx="5.6" ry="5" fill="'+MB_LL+'"/><ellipse cx="0" cy="-171" rx="2.8" ry="2.6" fill="'+MB_D+'"/>'+mbP('M-3.4 -175 Q0 -176 3.4 -175',null,'stroke="'+MB_L+'" stroke-width="1" stroke-linecap="round"'),
+ G:()=>mbP('M-10 -173.6 Q0 -175.2 10 -173.6 Q0 -169.2 -10 -173.6Z',MB_D,MB_RAND)+mbP('M-8 -174 Q0 -175.2 8 -174 L7.5 -170.9 Q0 -170.2 -7.5 -170.9Z',MB_T)+mbP('M-8.5 -169 Q0 -166.4 8.5 -169',null,'stroke="'+MB_LL+'" stroke-width="1.6" stroke-linecap="round"'),
+ H:()=>mbP('M-11 -175 Q0 -177 11 -175 Q10 -164 0 -162.5 Q-10 -164 -11 -175Z',MB_D,MB_RAND)+mbP('M-9.6 -174.8 Q0 -176.4 9.6 -174.8 L9.1 -172.4 Q0 -173.6 -9.1 -172.4Z',MB_T)+mbP('M-6 -163.4 Q-3.5 -171.6 0 -172 Q3.5 -171.6 6 -163.4Z',MB_Z)};
+/* Mund-Elemente einer Figur: direkte Kinder des Kopfs mit diesen Endungen (V2, V2X, Deichshaf, DocEvel) */
+const MUND_TEILE=['m','ms','mg','mo','mn','mt','mp','msc','mfs','mfg','mfy'];
+function mundbilderEinbauen(id){const h=$(id+'-h');if(!h)return null;
+ const teile=MUND_TEILE.map(k=>$(id+'-'+k)).filter(e=>e&&e.parentNode===h);if(!teile.length)return null;
+ let s='<g id="'+id+'-mb">';Object.keys(MUNDBILDER).forEach(k=>{s+='<g id="'+id+'-mb'+k+'" style="display:none">'+MUNDBILDER[k]()+'</g>';});
+ teile[teile.length-1].insertAdjacentHTML('afterend',s+'</g>');
+ const bilder={};Object.keys(MUNDBILDER).forEach(k=>{bilder[k]=$(id+'-mb'+k);});return {teile,bilder};}
+/* Ein Mundbild zeigen (k = 'A'…'H'/'X') oder mit null alle ausblenden; die Figur behält dann ihren eigenen Mund */
+function mundbildZeigen(mb,k){if(!mb)return;const an=!!(k&&mb.bilder[k]);
+ Object.keys(mb.bilder).forEach(b=>show(mb.bilder[b],an&&b===k));if(an)mb.teile.forEach(e=>show(e,false));}
 function shrugArm(side,shirt,sk){const a1=-35*side,a2=-115*side;
  let s='<g transform="translate('+(side*SHOULDER.x)+' '+SHOULDER.y+') rotate('+a1+')">'+piece(sleevePts(SHOULDER.r,35),shirt)+piece(rr(-6,31,12,16,4.5),sk);
  s+='<g transform="translate(0 44) rotate('+a2+')">'+piece(sleevePts(6,24),sk)+piece(ell(0,29,8,9.5),sk,1);
@@ -201,13 +229,13 @@ const camoKit={shirt:CAMO_BASE,pants:CAMO_BASE,shoe:'#2A2624',noLogo:true,
  legExtra:sx=>camo(sx<0?-21:6,-70,15,56,9,4),
  armDeko:()=>camo(-6,3,12,30,5,4)};
 const BAL='#1C1C1E';
-/* Sturmhaube folgt dem Ei-Kopf; die Rippen werden auf die Haube zugeschnitten */
+/* Sturmhaube folgt dem Ei-Kopf; die Rippen werden auf die Haube zugeschnitten. Das Mundloch ist so groß, dass auch das weit offene Mundbild (D) hineinpasst. */
 const HOOD_V2=roundPoly([[-41,-205],[-37,-241],[-21,-257],[0,-261],[21,-257],[37,-241],[42,-205],[33,-164],[13,-151],[-13,-151],[-33,-164]],[14,12,10,8,10,12,14,14,8,8,14]);
 const D1={seed:81,skin:'#F2C9A6',browC:BAL,...camoKit,keineMundformen:true,
  under:id=>{let s=piece(rect(-13,-172,26,22),BAL,0.8)+piece(HOOD_V2,BAL,1.6);
   s+='<clipPath id="'+id+'-hk"><path d="M'+HOOD_V2.map(q=>q[0].toFixed(1)+' '+q[1].toFixed(1)).join(' L')+'Z"/></clipPath><g clip-path="url(#'+id+'-hk)">';
   for(let x=-30;x<=30;x+=7.5)s+='<path d="M'+x+' -252 L'+(x*1.06).toFixed(1)+' -150" stroke="#2A2A2E" stroke-width="1.1"/>';
-  s+='</g>'+piece(ell(-14,-204,11.5,10),'#F2C9A6',1)+piece(ell(14,-204,11.5,10),'#F2C9A6',1)+piece(ell(1,-172,11,8),'#F2C9A6',1);return s;},
+  s+='</g>'+piece(ell(-14,-204,11.5,10),'#F2C9A6',1)+piece(ell(14,-204,11.5,10),'#F2C9A6',1)+piece(ell(1,-169.5,15,11.5),'#F2C9A6',1);return s;},
  mouth:id=>'<ellipse id="'+id+'-m" cx="1" cy="-172" rx="7.5" ry="1.8" fill="#2A0E0B" stroke="#D9767A" stroke-width="2.6"/>',
  hair:()=>piece(circ(0,-262,5),BAL,0.6)};
 const D2={seed:93,skin:'#E8BD98',browC:'#6A4A30',...camoKit,

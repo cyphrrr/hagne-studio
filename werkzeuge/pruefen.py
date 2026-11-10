@@ -81,8 +81,14 @@ def pruefe(db, lib):
         if abs(a['bis'] - b['von']) > 1e-6: W.append(f"Kamera: Lücke oder Überlappung bei {a['bis']} / {b['von']} s")
     if kam and kam[-1]['bis'] < dauer: W.append('Kamera: letzte Einstellung endet vor dem Episodenende (bleibt stehen)')
     sprecher = {d.get('wer') for d in db.get('dialog', []) if d.get('wer')}
-    pegel = (db.get('analyse') or {}).get('pegel', {})
-    if sprecher and not pegel: W.append("Keine Pegeldaten unter 'analyse' – Münder plappern gleichmäßig statt nach dem Ton")
+    an = db.get('analyse') or {}
+    pegel, mb = an.get('pegel', {}), an.get('mundbilder', {})
+    for k, c in mb.items():
+        cues = c.get('mouthCues', c) if isinstance(c, dict) else c
+        bad = sorted({q.get('value') for q in cues} - set('ABCDEFGHX'))
+        if bad: F.append(f"analyse.mundbilder.{k}: unbekannte Mundbilder {bad} (erlaubt A–H, X)")
+    if sprecher and not pegel and not mb:
+        W.append("Keine Ton-Analyse – Mundbilder kommen gleichmäßig verteilt aus dem Text, ohne Text plappern die Münder")
     return F, W
 
 def kontaktbogen(pfad, db, zeiten, ziel):
