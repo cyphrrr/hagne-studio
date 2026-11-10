@@ -275,12 +275,14 @@ function build(id,handR){const p=P;seed=p.seed;let s='';const sk=p.skin;
  s+='<g id="'+id+'-bl">'+flat(rect(-8.5,-2.3,17,4.6),p.browC,1)+'</g><g id="'+id+'-br">'+flat(rect(-8.5,-2.3,17,4.6),p.browC,1)+'</g>';
  s+=NOSE_V2();
  s+='<ellipse cx="-22" cy="-186" rx="6" ry="3.5" fill="#E24B4A" opacity="0.28"/><ellipse cx="22" cy="-186" rx="6" ry="3.5" fill="#E24B4A" opacity="0.28"/>';
+ /* Bart passt sich den Mundbildern an: Seiten und Kinnbart liegen hinter dem Mund und lassen ihm Platz (bis x ±13, y −159),
+    der Schnurrbart sitzt schmal zwischen Nase (−184) und Oberlippe (−178) */
+ s+=flat(seg(-17.5,-181,-14.5,-160,4.6),p.beardC,0.5)+flat(seg(17.5,-181,14.5,-160,4.6),p.beardC,0.5);
+ s+=piece(roundPoly([[-14,-162],[14,-162],[10,-150],[0,-145],[-10,-150]],[3,3,3,4,3]),p.beardC,0.9);
+ s+='<path d="M-6 -155 l1.5 4 M2 -153 l1 4 M7 -156 l-1 4" stroke="#3E2814" stroke-width="1.1" fill="none"/>';
  s+='<ellipse id="'+id+'-m" cx="0" cy="-172" rx="8.5" ry="1.6" fill="#2A0E0B" stroke="#E9C7A8" stroke-width="1.2"/>';
  s+=mundformen(id);
- s+=piece([[-15,-183],[15,-183],[16,-177],[5,-178.5],[-5,-178.5],[-16,-177]],p.beardC,0.8);
- s+=flat(seg(-14.5,-179,-10.5,-164,4.6),p.beardC,0.5)+flat(seg(14.5,-179,10.5,-164,4.6),p.beardC,0.5);
- s+=piece(roundPoly([[-12,-167],[12,-167],[10,-153],[0,-147],[-10,-153]],[2,2,3,4,3]),p.beardC,0.9);
- s+='<path d="M-6 -160 l1.5 4 M2 -158 l1 4 M7 -161 l-1 4" stroke="#3E2814" stroke-width="1.1" fill="none"/>';
+ s+=piece([[-16,-184.5],[16,-184.5],[18,-180],[6,-181.2],[-6,-181.2],[-18,-180]],p.beardC,0.6);
  s+=piece([[-38,-231],[-37,-248],[-25,-261],[0,-266],[25,-261],[37,-248],[38,-231]],p.capC,1.4);
  s+=flat([[-23,-232],[-21,-254],[0,-259],[21,-254],[23,-232]],p.capL,0.8);
  s+='<path d="M-30 -236 Q-34 -250 -22 -258 M30 -236 Q34 -250 22 -258" stroke="'+p.capD+'" stroke-width="1" fill="none"/>';

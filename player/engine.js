@@ -23,7 +23,7 @@ function build(){
 
 /* Szenen: jede Szene hat eigene Kulisse, Requisiten und Stellplätze; beim Wechsel wird hart geschnitten.
    Ohne "szenen" gilt "kulisse" für die ganze Folge. */
-let SZ=null,KUL,BES;
+let SZ=null,KUL,BES,MB={};
 function szeneAt(T){const S=DB.szenen;if(!S)return -1;for(let i=0;i<S.length;i++)if(T>=S[i].von&&T<S[i].bis)return i;return T<S[0].von?0:S.length-1;}
 function buehne(i){SZ=i;const sc=i>=0?DB.szenen[i]:null;
  KUL=(sc&&sc.kulisse)||DB.kulisse;
@@ -48,6 +48,7 @@ function buehne(i){SZ=i;const sc=i>=0?DB.szenen[i]:null;
  $('chars').innerHTML=items.map(i=>i.svg).join('');
  BES.forEach(a=>{const Fg=FIGUREN[a.figur];if(Fg&&Fg.post)Fg.post(a.id);});
  OBJ.forEach(a=>{a.el=$('obj-'+a.idx);});GEG.forEach(g=>{g.el=$('gg-'+g.i);});
+ MB={};BES.forEach(a=>{const Fg=FIGUREN[a.figur];if(Fg&&Fg.spricht)MB[a.id]=mundbilderEinbauen(a.id);});
  RIGS={};BES.forEach(a=>{const Fg=FIGUREN[a.figur];if(Fg)RIGS[a.id]=Fg.rig(a.id);});
  drawLogos();}
 
@@ -67,6 +68,31 @@ function poseAt(actor,T,f,world){
 
 /* Lippen: Pegel je Bild aus dem Abschnitt "analyse" (je Figur oder für den ganzen Mix) */
 function talking(id,T){return DB.dialog.some(d=>d.wer===id&&T>=d.von&&T<d.bis);}
+function dialogAt(id,T){return DB.dialog.find(d=>d.wer===id&&T>=d.von&&T<d.bis);}
+/* Mundbilder (A–H, X) beim Sprechen. Reihenfolge der Quellen:
+   1. analyse.mundbilder[id] – Ausgabe von Rhubarb Lip Sync ({ "versatz": s, "mouthCues": [{start,end,value}] })
+   2. der text des Satzes – Laut für Laut gleichmäßig über von–bis verteilt; gibt es Pegel, schließt der Mund in leisen Bildern (X)
+   3. ohne text (laut) – Pegel bzw. gleichmäßiges Plappern auf X/B/C/D */
+const MB_ZWEI={sch:'B',ch:'B',ck:'B',au:'D',ei:'D',ai:'D',eu:'E','äu':'E',ie:'B',qu:'F',ph:'G'};
+function mbLaut(c){if('a'.includes(c))return 'D';if('eä'.includes(c))return 'C';if('iyj'.includes(c))return 'B';if('oö'.includes(c))return 'E';if('uü'.includes(c))return 'F';
+ if('mbp'.includes(c))return 'A';if('fvw'.includes(c))return 'G';if('ln'.includes(c))return 'H';return 'B';}
+const MB_TEXT=new Map();
+function mbAusText(text){if(MB_TEXT.has(text))return MB_TEXT.get(text);const t=text.toLowerCase(),L=[];let i=0;
+ while(i<t.length){const c=t[i];let z=t.slice(i,i+3)==='sch'?'sch':t.slice(i,i+2);
+  if(MB_ZWEI[z]){L.push([MB_ZWEI[z],z.length>2?1.6:1.4]);i+=z.length;continue;}
+  if(/[a-zäöüß0-9]/.test(c))L.push([mbLaut(c),1]);else if(/[.,!?;:…–]/.test(c))L.push(['X',1.8]);else if(/\s/.test(c))L.push(['X',0.5]);
+  i++;}
+ /* gleiche Bilder hintereinander zusammenfassen */
+ const M=[];L.forEach(q=>{const l=M[M.length-1];if(l&&l[0]===q[0])l[1]+=q[1];else M.push(q.slice());});
+ const sum=M.reduce((s,q)=>s+q[1],0)||1;let acc=0;const R_=M.map(q=>{acc+=q[1];return [acc/sum,q[0]];});MB_TEXT.set(text,R_);return R_;}
+function hatPegel(id){const P=(DB.analyse&&DB.analyse.pegel)||{};return !!(P[id]||P.mix);}
+function mundbildAt(id,d,T,f){
+ const C=DB.analyse&&DB.analyse.mundbilder&&DB.analyse.mundbilder[id];
+ if(C){const t=T-(C.versatz||0),q=(C.mouthCues||C).find(q=>t>=q.start&&t<q.end);return q?q.value:'X';}
+ const k=openAt(id,f);
+ if(d.text){if(hatPegel(id)&&k<0.12)return 'X';const u=(T-d.von)/Math.max(0.01,d.bis-d.von),S=mbAusText(d.text);
+  for(const q of S)if(u<q[0])return q[1];return 'X';}
+ return k<0.12?'X':k<0.35?'B':k<0.65?'C':'D';}
 function openAt(id,f){const P=(DB.analyse&&DB.analyse.pegel)||{},e=P[id]||P.mix;if(!e){const h=hs(f*1.7+id.length*13);return h<0.25?0:0.3+h*0.7;}
  const v=e.v[f-(e.o||0)];return clamp(((v===undefined?-999:v)-(e.null_db!==undefined?e.null_db:-40))/(e.spanne||22));}
 
@@ -153,7 +179,8 @@ function renderAt(Tin){const fps=DB.episode.fps||12,f=Math.floor(Tin*fps),T=f/fp
  const pass1=world;world={};BES.forEach(a=>{world[a.id]=poseAt(a,T,f,pass1);});
  BES.forEach(a=>{const Fg=FIGUREN[a.figur];if(!Fg)return;const o=world[a.id];o._f=f;
    if(Fg.spricht&&!o.mFix&&!o.off&&talking(a.id,T))Fg.lippen(o,openAt(a.id,f));
-   Fg.apply(RIGS[a.id],o,a);});
+   Fg.apply(RIGS[a.id],o,a);
+   if(MB[a.id]){let k=null;if(!o.off){if(o.mb)k=o.mb;else if(!o.mFix){const d=dialogAt(a.id,T);if(d)k=mundbildAt(a.id,d,T,f);}}mundbildZeigen(MB[a.id],k);}});
  const amp=stompAmp(T);
  (KUL.requisiten||[]).forEach((r,i)=>{const g=document.querySelector('#rq-'+i+' [data-bebt]');if(g)g.setAttribute('transform','translate(0 '+(-amp*(r.bebt||0)).toFixed(1)+')');});
  GEG.forEach(g=>{const p=gegAt(g,T,world);g.el.setAttribute('transform','translate('+p.x.toFixed(1)+','+p.y.toFixed(1)+') rotate('+p.r+') scale(0.92)');});
