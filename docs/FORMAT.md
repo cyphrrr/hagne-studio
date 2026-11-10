@@ -89,7 +89,9 @@ Ohne `szenen` gilt `kulisse` für die ganze Folge. Mit `szenen` wird bei jedem W
 
 ### dialog
 
-`{ "von", "bis", "wer", "text" }` → Sprechblase + Lippen. Optional `"blase": [von, bis]`, wenn die Blase anders stehen soll als gesprochen wird (z. B. kurz nach dem Satz stehen bleiben). Ohne `text` (z. B. `"laut": "lachen"`) bewegen sich nur die Lippen. Gibt es keine Pegeldaten unter `analyse` (Folge ohne Ton), plappern die Münder gleichmäßig.
+`{ "von", "bis", "wer", "text" }` → Sprechblase + Lippen. Optional `"blase": [von, bis]`, wenn die Blase anders stehen soll als gesprochen wird (z. B. kurz nach dem Satz stehen bleiben). Ohne `text` (z. B. `"laut": "lachen"`) bewegen sich nur die Lippen.
+
+**Mundbilder beim Sprechen:** Alle sprechenden Figuren nutzen denselben Satz aus neun Mundbildern nach Rhubarb Lip Sync – `X` Ruhe, `A` M B P, `B` K S T I, `C` E Ä, `D` A, `E` O, `F` U W, `G` F V, `H` L N (`bibliothek/figuren-v2.js`, `MUNDBILDER`). Der Player wählt sie so: 1. gibt es `analyse.mundbilder` für die Figur, gelten diese (Rhubarb); 2. sonst kommt jedes Bild aus dem `text`, Laut für Laut gleichmäßig über `von`–`bis` verteilt – gibt es Pegel, schließt der Mund in leisen Bildern; 3. ohne `text` folgt der Mund dem Pegel bzw. plappert gleichmäßig. `mFix: true` lässt den Mund in Ruhe (z. B. Grinsen beim Rufen), Pose-Feld `mb` (`"A"`–`"H"`, `"X"`) setzt ein Mundbild von Hand. Passt eine Figur nicht zu den Mundbildern, wird die Figur angepasst, nicht der Mund.
 
 Frage aus dem Off (ohne Figur im Bild): `{ "von", "bis", "aus_dem_off": "links" | "rechts", "text", "hoehe" }` – kursive Blase am Bildrand, der Zipfel zeigt aus dem Bild (`hoehe` = y der Blase, Vorgabe 120). Liegt der Kopf des Sprechers über dem Bildrand (DrBier-Riese), hängt die Blase oben und zeigt nach oben aus dem Bild.
 
@@ -101,7 +103,11 @@ Bei Gesten mit mehreren Figuren ergibt sich die **Seite** automatisch: Jede Figu
 
 ### effekte
 
-`{ "typ": "stampf", "t": [Zeitpunkte], "staerke": 5, "schild": { "text", "pos": [[x,y],…], "winkel": […], "dauer" } }` – Kamera wackelt, Requisiten mit `bebt` hüpfen, optional ein Geräusch-Schild pro Schritt.
+`{ "typ": "stampf", "t": [Zeitpunkte], "staerke": 5, "schild": { "text", "pos": [[x,y],…], "winkel": […], "dauer", "farbe" } }` – Kamera wackelt, Requisiten mit `bebt` hüpfen, optional ein Geräusch-Schild pro Schritt.
+
+`{ "typ": "staub", "t": [Zeitpunkte], "wer": "ka", "dx": -26, "y": 390, "menge": 3, "breite": 14 }` – Staubwölkchen am Boden (bei Schritten, Bremsung, Stampfer). Ort = Figur zum Zeitpunkt plus `dx`, oder fest über `x`. Jede Wolke lebt etwa 1 s.
+
+`{ "typ": "spur", "von", "bis", "aus": [t0, t1], "linien": [[x1, y1, x2, y2, breite], …], "farbe" }` – Linien am Boden hinter den Figuren (Bremsspur), blendet zwischen `aus` t0 und t1 aus. Beispiel für alle drei: `probe-kickass.json`.
 
 ### kamera
 
@@ -109,7 +115,7 @@ Bei Gesten mit mehreren Figuren ergibt sich die **Seite** automatisch: Jede Figu
 
 ### schilder
 
-Geräusch-Schilder in Bildschirm-Koordinaten (746 × 420): `{ "von", "bis", "text": "*KLONK!*", "pos": [x, y], "winkel" }`.
+Geräusch-Schilder in Bildschirm-Koordinaten (746 × 420): `{ "von", "bis", "text": "*KLONK!*", "pos": [x, y], "winkel" }`. Optional `farbe` für den Text (z. B. `#C8382B` rot).
 
 ### blenden
 
@@ -120,6 +126,8 @@ Geräusch-Schilder in Bildschirm-Koordinaten (746 × 420): `{ "von", "bis", "tex
 ### analyse
 
 Wird vom Studio aus dem Ton erzeugt, nicht von Hand geschrieben. `pegel` je Figur-ID oder als `mix` für die ganze Spur: `{ "o": erstes Bild, "v": [dB je Bild], "null_db": Pegel für geschlossenen Mund, "spanne": dB bis ganz offen }`.
+
+`mundbilder` je Figur-ID (optional, für normale Folgen nicht nötig): Mundbilder mit festen Zeiten im Format von Rhubarb Lip Sync, `{ "versatz": Sekunde, "mouthCues": [{ "start", "end", "value" }] }`. Erlaubte Werte A–H und X; `pruefen.py` meldet andere. Ist der Abschnitt da, hat er Vorrang vor dem Text.
 
 ## Gesten-Katalog
 
@@ -180,9 +188,11 @@ Damit lassen sich die meisten Bewegungen ohne neue Geste beschreiben (Beispiel: 
 |---|---|---|
 | `pose` | nur `pose` | setzt feste Werte, z. B. `{ "mikro": true, "m": "n" }` für die Dauer der Aktion |
 | `uebergang` | `ab` {Feld: Wert}, `ziel` {Feld: Wert}, `rampe` (Vorgabe: ganze Aktion) | führt Zahlenfelder weich von `ab` nach `ziel` (fehlt `ab`, vom aktuellen Wert). Typisch: `aL`, `aLf`, `aR`, `aRf`, `head`, `px`, `flasche_kipp`. Für einen Rückweg einfach `ab` und `ziel` tauschen |
-| `wippen` | `tempo`, `weite`, `art` (`welle` oder `takt`) | Körper wippt leicht (Gewicht verlagern) bzw. im Takt (beim Trinken) |
+| `wippen` | `tempo`, `weite`, `art` (`welle`, `takt` oder `hopsen`) | Körper wippt leicht (Gewicht verlagern), im Takt (beim Trinken) oder hopst vor Freude |
 | `kopf-wiegen` | `tempo`, `weite`, `hoch` | Kopf wiegt beim Reden; mit `hoch` hüpft er dabei leicht |
 | `schwingen` | `feld`, `mitte`, `weite`, `tempo` | ein beliebiges Zahlenfeld pendelt (z. B. Flasche beim Schluck) |
+| `abwechseln` | `posen` [{Feld: Wert}, …], `bilder` (2) | Posen wechseln sich ab, je `bilder` Bilder lang (hektische Arme, zuckende Brauen) |
+| `rennen` | `von_x`, `nach_x`, `rampe`, `neigung` (8), `bilder` (2) | rennt in großen Schritten, lehnt sich vor, Beine und Arme wechseln (KickASS) |
 
 Bewährte Armwinkel für DocEvel [Schulter, Ellbogen]: links Scheine vor dem Bauch [−8, −50], rechts zählen [8, 50] (mit `schwingen` auf `aRf`, Mitte 48, Weite 10, Tempo 10); sein Aufdruck sitzt auf Brusthöhe. Augen rollen: `uebergang` nach `py` −4.5, `px` 3, `lid` 0.3. Beispiel: `probe-docevel.json`.
 
@@ -194,7 +204,7 @@ Bewährte Armwinkel für Deichshaf [Schulter, Ellbogen]: links Mikro am Kinn [�
 |---|---|---|
 | `arm-pose` | `arm` (`rechts`/`links`), `schulter`, `ellbogen`, `rampe` | dreht einen Arm in eine feste Pose; mit Ellbogengelenk (Deichshaf) knickt der Unterarm. Bewährt rechts: Prost [−60, −60], Tasse zum Mund [96, 94], Funk am Ohr [−172, 0]; links Daumen-Pose [50, 70] |
 | `faust-schuetteln` | – | Faust schütteln beim Ausraster (m0og) |
-| `rot-werden` | `von`, `wert` (0–1), `rampe` | Wangen werden rot (m0og) |
+| `rot-werden` | `ab` (Startwert, Vorgabe: aktueller), `wert` (0–1), `rampe` | Wangen werden rot bzw. mit `wert` 0 wieder blass (m0og) |
 | `trinken` | – | setzt die Flasche an, Augen zu (DrBier; beim Riesen verschwindet die Flasche oben aus dem Bild) |
 | `flasche-schuetteln` | – | leere Flasche schütteln (DrBier) |
 | `zeigefinger` | – | erhobener Zeigefinger beim Reden (DrBier) |
@@ -214,6 +224,8 @@ Eine Geste ist eine Funktion `(o, c) => { … }` in `bibliothek/gesten.js`. Sie 
 - `c.T` Zeit, `c.f` Bildnummer, `c.t` Zeit seit Beginn der Aktion, `c.d` Dauer der Aktion
 - `c.a` die Aktion selbst (alle Parameter), `c.self` die Figur aus der Besetzung, `c.seite` ±1 Richtung zu den anderen, `c.world` Posen aller Figuren
 
-**Pose-Felder:** `x`, `y`, Deichshaf: `mikro`, `mikro_kipp` (Handmikro links), `zettel` (rechts), `zeigefinger` (links), `thumb`/`thumbL` (Daumen hoch rechts/links), `flasche` (`"hand"` oder [x, y] im Bild), `flasche_kipp`, `m` auch `n` (gerade) und `o` (Schlürfen), `es` 0.12 = Augen zu, 0.45 = fröhlich;  DocEvel: `geld` (Fächer Scheine links), `geldR` (ein Schein rechts), `fallen` 0–1 (drei Scheine fallen zu Boden), `lid` 0–1 (Oberlid senkt sich, genervt), `m` auch `n` (neutral, Grundmund) und `p` (Mund zusammengezogen);  `rot` (Körper kippt um die Füße), `aLf`, `aRf` (Unterarm bei Ellbogen), `wangen` (m0og), `trinkt`, `schuetteln`, `zeigefinger` (DrBier), `spezial` (Spallter: `kratzen`/`riechen`), `head`, `hy`, `aL`, `aR`, `lL`, `lR` (Beine), `px`, `py` (Pupillen), `br` [4], `m` (Mund: Zahl = Öffnung, `s` schief, `g` grinsen, `y` lachen), `sy`, `sx` (Höhe und Breite des offenen Lachmunds), `schiel` 0–1 (Pupillen laufen auseinander, alle V2-Figuren aus dem Baukasten), `es` (Augen zukneifen, < 1), `ew` (Augen weiten, > 1), `shrug`, `thumb`, `handLeer` (Gegenstand in der Hand weg), `brillenarm` 0–1 und `brille_y` (PoBi), `swH` (Gegenstand in der Hand schwingt, Grad), `fp` (Facepalm-Arm, Winkel; 0 = aus), `glint` (Brillenblitz), `belts`, `swL`, `swR` (Spock), `hat` (Tarnhut), `mFix` (Lippen nicht vom Ton steuern lassen).
+**Pose-Felder:** `x`, `y`, Deichshaf: `mikro`, `mikro_kipp` (Handmikro links), `zettel` (rechts), `zeigefinger` (links), `thumb`/`thumbL` (Daumen hoch rechts/links), `flasche` (`"hand"` oder [x, y] im Bild), `flasche_kipp`, `m` auch `n` (gerade) und `o` (Schlürfen), `es` 0.12 = Augen zu, 0.45 = fröhlich, `tasse`, `tasse_kipp`, `dampf` (Kaffeetasse rechts), `funkeln` (Sternchen am linken Daumen); m0og: `glut` 0–1 (tiefer Zug), `kippe_y`, `rauch` false (Rauchfaden aus), `wolke` 0–1 (Rauchwolke), `mrx` (Mundbreite);  DocEvel: `geld` (Fächer Scheine links), `geldR` (ein Schein rechts), `fallen` 0–1 (drei Scheine fallen zu Boden), `lid` 0–1 (Oberlid senkt sich, genervt), `m` auch `n` (neutral, Grundmund) und `p` (Mund zusammengezogen);  `rot` (Körper kippt um die Füße), `aLf`, `aRf` (Unterarm bei Ellbogen), `wangen` (m0og), `trinkt`, `schuetteln`, `zeigefinger` (DrBier), `spezial` (Spallter: `kratzen`/`riechen`), `head`, `hy`, `aL`, `aR`, `lL`, `lR` (Beine), `px`, `py` (Pupillen), `br` [4], `m` (Mund: Zahl = Öffnung, `s` schief, `g` grinsen, `y` lachen), `sy`, `sx` (Höhe und Breite des offenen Lachmunds), `mb` (Mundbild A–H/X von Hand, siehe dialog), `schiel` 0–1 (Pupillen laufen auseinander, alle V2-Figuren aus dem Baukasten), `es` (Augen zukneifen, < 1), `ew` (Augen weiten, > 1), `shrug`, `thumb`, `handLeer` (Gegenstand in der Hand weg), `brillenarm` 0–1 und `brille_y` (PoBi), `swH` (Gegenstand in der Hand schwingt, Grad), `fp` (Facepalm-Arm, Winkel; 0 = aus), `glint` (Brillenblitz), `belts`, `swL`, `swR` (Spock), `hat` (Tarnhut), `mFix` (Lippen nicht vom Ton steuern lassen).
+
+Deichshafs Ruhemund ist das schiefe Grinsen. Senkt ein Drehbuch seine Brauen stark (Winkel ab 10, z. B. `genervt`) und gibt keinen Mund vor, wird der Mund von selbst neutral, damit er nicht bösartig wirkt. Ein gesetzter Mund (`m`) gilt immer.
 
 Regeln: Parameter mit sinnvollen Vorgaben, Richtung aus `c.seite` oder Start/Ziel ableiten statt fest verdrahten, und die neue Geste hier im Katalog eintragen.

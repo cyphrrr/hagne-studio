@@ -23,7 +23,7 @@ function build(){
 
 /* Szenen: jede Szene hat eigene Kulisse, Requisiten und Stellplätze; beim Wechsel wird hart geschnitten.
    Ohne "szenen" gilt "kulisse" für die ganze Folge. */
-let SZ=null,KUL,BES;
+let SZ=null,KUL,BES,MB={};
 function szeneAt(T){const S=DB.szenen;if(!S)return -1;for(let i=0;i<S.length;i++)if(T>=S[i].von&&T<S[i].bis)return i;return T<S[0].von?0:S.length-1;}
 function buehne(i){SZ=i;const sc=i>=0?DB.szenen[i]:null;
  KUL=(sc&&sc.kulisse)||DB.kulisse;
@@ -48,6 +48,7 @@ function buehne(i){SZ=i;const sc=i>=0?DB.szenen[i]:null;
  $('chars').innerHTML=items.map(i=>i.svg).join('');
  BES.forEach(a=>{const Fg=FIGUREN[a.figur];if(Fg&&Fg.post)Fg.post(a.id);});
  OBJ.forEach(a=>{a.el=$('obj-'+a.idx);});GEG.forEach(g=>{g.el=$('gg-'+g.i);});
+ MB={};BES.forEach(a=>{const Fg=FIGUREN[a.figur];if(Fg&&Fg.spricht)MB[a.id]=mundbilderEinbauen(a.id);});
  RIGS={};BES.forEach(a=>{const Fg=FIGUREN[a.figur];if(Fg)RIGS[a.id]=Fg.rig(a.id);});
  drawLogos();}
 
@@ -67,6 +68,31 @@ function poseAt(actor,T,f,world){
 
 /* Lippen: Pegel je Bild aus dem Abschnitt "analyse" (je Figur oder für den ganzen Mix) */
 function talking(id,T){return DB.dialog.some(d=>d.wer===id&&T>=d.von&&T<d.bis);}
+function dialogAt(id,T){return DB.dialog.find(d=>d.wer===id&&T>=d.von&&T<d.bis);}
+/* Mundbilder (A–H, X) beim Sprechen. Reihenfolge der Quellen:
+   1. analyse.mundbilder[id] – Ausgabe von Rhubarb Lip Sync ({ "versatz": s, "mouthCues": [{start,end,value}] })
+   2. der text des Satzes – Laut für Laut gleichmäßig über von–bis verteilt; gibt es Pegel, schließt der Mund in leisen Bildern (X)
+   3. ohne text (laut) – Pegel bzw. gleichmäßiges Plappern auf X/B/C/D */
+const MB_ZWEI={sch:'B',ch:'B',ck:'B',au:'D',ei:'D',ai:'D',eu:'E','äu':'E',ie:'B',qu:'F',ph:'G'};
+function mbLaut(c){if('a'.includes(c))return 'D';if('eä'.includes(c))return 'C';if('iyj'.includes(c))return 'B';if('oö'.includes(c))return 'E';if('uü'.includes(c))return 'F';
+ if('mbp'.includes(c))return 'A';if('fvw'.includes(c))return 'G';if('ln'.includes(c))return 'H';return 'B';}
+const MB_TEXT=new Map();
+function mbAusText(text){if(MB_TEXT.has(text))return MB_TEXT.get(text);const t=text.toLowerCase(),L=[];let i=0;
+ while(i<t.length){const c=t[i];let z=t.slice(i,i+3)==='sch'?'sch':t.slice(i,i+2);
+  if(MB_ZWEI[z]){L.push([MB_ZWEI[z],z.length>2?1.6:1.4]);i+=z.length;continue;}
+  if(/[a-zäöüß0-9]/.test(c))L.push([mbLaut(c),1]);else if(/[.,!?;:…–]/.test(c))L.push(['X',1.8]);else if(/\s/.test(c))L.push(['X',0.5]);
+  i++;}
+ /* gleiche Bilder hintereinander zusammenfassen */
+ const M=[];L.forEach(q=>{const l=M[M.length-1];if(l&&l[0]===q[0])l[1]+=q[1];else M.push(q.slice());});
+ const sum=M.reduce((s,q)=>s+q[1],0)||1;let acc=0;const R_=M.map(q=>{acc+=q[1];return [acc/sum,q[0]];});MB_TEXT.set(text,R_);return R_;}
+function hatPegel(id){const P=(DB.analyse&&DB.analyse.pegel)||{};return !!(P[id]||P.mix);}
+function mundbildAt(id,d,T,f){
+ const C=DB.analyse&&DB.analyse.mundbilder&&DB.analyse.mundbilder[id];
+ if(C){const t=T-(C.versatz||0),q=(C.mouthCues||C).find(q=>t>=q.start&&t<q.end);return q?q.value:'X';}
+ const k=openAt(id,f);
+ if(d.text){if(hatPegel(id)&&k<0.12)return 'X';const u=(T-d.von)/Math.max(0.01,d.bis-d.von),S=mbAusText(d.text);
+  for(const q of S)if(u<q[0])return q[1];return 'X';}
+ return k<0.12?'X':k<0.35?'B':k<0.65?'C':'D';}
 function openAt(id,f){const P=(DB.analyse&&DB.analyse.pegel)||{},e=P[id]||P.mix;if(!e){const h=hs(f*1.7+id.length*13);return h<0.25?0:0.3+h*0.7;}
  const v=e.v[f-(e.o||0)];return clamp(((v===undefined?-999:v)-(e.null_db!==undefined?e.null_db:-40))/(e.spanne||22));}
 
@@ -97,11 +123,11 @@ function camAt(T){const f=Math.floor(T*12);const S=DB.kamera;let sh=S[S.length-1
  return {cx,cy,s,str:'translate('+(W/2).toFixed(1)+' '+(H/2).toFixed(1)+') rotate('+rot.toFixed(2)+') scale('+s.toFixed(3)+') translate('+(-cx).toFixed(1)+' '+(-cy).toFixed(1)+')'};}
 function toScreen(c,x,y){return [(x-c.cx)*c.s+W/2,(y-c.cy)*c.s+H/2];}
 
-function signSvg(txt,x,y,a,key){seed=700+key*13;const w=Math.round(txt.length*8.2+26);
+function signSvg(txt,x,y,a,key,farbe){seed=700+key*13;const w=Math.round(txt.length*8.2+26);
  return '<g transform="rotate('+a+' '+(x+w/2)+' '+(y+10)+')">'+piece(rect(x,y,w,22),'#FBFAF5',1.2)+
- '<text x="'+(x+w/2)+'" y="'+(y+16)+'" text-anchor="middle" font-size="14" font-weight="800" fill="#2C2C2A" '+F+'>'+txt+'</text>'+tape(x-7,y-4,20,8,-30)+'</g>';}
-function allSigns(){const L=(DB.schilder||[]).map(s=>[s.von,s.bis,s.text,s.pos[0],s.pos[1],s.winkel||0]);
- (DB.effekte||[]).forEach(e=>{if(!e.schild)return;const S=e.schild;e.t.forEach((t,i)=>{const p=S.pos[i%S.pos.length];L.push([t,t+(S.dauer||0.36),S.text,p[0],p[1],S.winkel[i%S.winkel.length]]);});});
+ '<text x="'+(x+w/2)+'" y="'+(y+16)+'" text-anchor="middle" font-size="14" font-weight="800" fill="'+(farbe||'#2C2C2A')+'" '+F+'>'+txt+'</text>'+tape(x-7,y-4,20,8,-30)+'</g>';}
+function allSigns(){const L=(DB.schilder||[]).map(s=>[s.von,s.bis,s.text,s.pos[0],s.pos[1],s.winkel||0,s.farbe]);
+ (DB.effekte||[]).forEach(e=>{if(!e.schild)return;const S=e.schild;e.t.forEach((t,i)=>{const p=S.pos[i%S.pos.length];L.push([t,t+(S.dauer||0.36),S.text,p[0],p[1],S.winkel[i%S.winkel.length],S.farbe]);});});
  return L;}
 /* Frage aus dem Off: Blase am linken oder rechten Bildrand, Zipfel zeigt aus dem Bild, Text kursiv */
 function offBubbleSvg(d,key){const links=d.aus_dem_off!=='rechts',w=Math.round(d.text.length*7.2+30),y=d.hoehe||120;seed=300+key*11;
@@ -117,6 +143,20 @@ function bubbleSvg(c,d,key){if(d.aus_dem_off)return offBubbleSvg(d,key);const a=
  let s=piece([[bx-10,y+h-2],[bx+10,y+h-2],[tx+2,Math.max(y+h+12,ty-6)]],'#FBFAF5',1.2)+piece(rect(x,y,w,h),'#FBFAF5',2);
  L.forEach((t,i)=>{s+='<text x="'+(x+w/2).toFixed(1)+'" y="'+(y+23+i*18).toFixed(1)+'" text-anchor="middle" font-size="14" fill="#2C2C2A" '+F+'>'+t+'</text>';});
  return s+tape(x-6,y-4,22,8,-35);}
+
+/* Effekte am Boden (Weltkoordinaten): "staub" = Wölkchen bei Schritten und Bremsungen, "spur" = Linien am Boden (Bremsspur).
+   staub: t [Zeitpunkte], wer + dx oder x, y (Boden), menge, breite. Jede Wolke lebt etwa 1 s, alles aus hs() – gleich bei jedem Abspielen.
+   spur: von, bis, aus [t0, t1] (ausblenden), linien [[x1,y1,x2,y2,breite], …], farbe. Liegt hinter den Figuren. */
+function staubX(e,t){if(e.x!==undefined)return e.x;e._x=e._x||{};if(e._x[t]===undefined){const a=ACT[e.wer];e._x[t]=a?poseAt(a,t,Math.floor(t*12),{}).x:0;}return e._x[t]+(e.dx||0);}
+function effekteAt(T){let vorn='',hinten='';
+ (DB.effekte||[]).forEach((e,ei)=>{
+  if(e.typ==='staub')e.t.forEach((t0,ti)=>{if(T<t0||T>=t0+1.2)return;const n=Math.round((T-t0)*12),x=staubX(e,t0),y=e.y||390;
+    for(let j=0;j<(e.menge||3);j++){const h=k=>hs(ei*97+ti*31+j*7+k*1.37);const a=0.95-0.085*n;if(a<=0)continue;
+      seed=900+ti*7+j;const px=x+(h(1)-.5)*(e.breite||14)+(h(3)-.5)*2.2*n,py=y-h(2)*5-h(4)*1.4*n;
+      vorn+=flat(circ(px,py,4+h(5)*4+0.55*n),'rgba(222,206,180,'+(a*0.85).toFixed(2)+')',1);}});
+  if(e.typ==='spur'&&T>=e.von&&T<e.bis){const A=e.aus?clamp(1-(T-e.aus[0])/(e.aus[1]-e.aus[0])):1;if(A<=0)return;
+    hinten+='<g opacity="'+A.toFixed(2)+'">'+e.linien.map(l=>ln(l[0],l[1],l[2],l[3],e.farbe||'#4A3A2E',l[4]||3)).join('')+'</g>';}});
+ $('fx').innerHTML=vorn;$('fxb').innerHTML=hinten;}
 
 /* Blenden: Schwarz-/Weißblende und Texttafeln über dem Bild */
 function buildBlenden(){let s='';(DB.blenden||[]).forEach((b,i)=>{
@@ -139,13 +179,15 @@ function renderAt(Tin){const fps=DB.episode.fps||12,f=Math.floor(Tin*fps),T=f/fp
  const pass1=world;world={};BES.forEach(a=>{world[a.id]=poseAt(a,T,f,pass1);});
  BES.forEach(a=>{const Fg=FIGUREN[a.figur];if(!Fg)return;const o=world[a.id];o._f=f;
    if(Fg.spricht&&!o.mFix&&!o.off&&talking(a.id,T))Fg.lippen(o,openAt(a.id,f));
-   Fg.apply(RIGS[a.id],o,a);});
+   Fg.apply(RIGS[a.id],o,a);
+   if(MB[a.id]){let k=null;if(!o.off){if(o.mb)k=o.mb;else if(!o.mFix){const d=dialogAt(a.id,T);if(d)k=mundbildAt(a.id,d,T,f);}}mundbildZeigen(MB[a.id],k);}});
  const amp=stompAmp(T);
  (KUL.requisiten||[]).forEach((r,i)=>{const g=document.querySelector('#rq-'+i+' [data-bebt]');if(g)g.setAttribute('transform','translate(0 '+(-amp*(r.bebt||0)).toFixed(1)+')');});
  GEG.forEach(g=>{const p=gegAt(g,T,world);g.el.setAttribute('transform','translate('+p.x.toFixed(1)+','+p.y.toFixed(1)+') rotate('+p.r+') scale(0.92)');});
  OBJ.forEach(a=>{const b=objAt(a,T);show(a.el,!!b);if(b)a.el.setAttribute('transform','translate('+b.x.toFixed(1)+','+b.y.toFixed(1)+') rotate('+b.r.toFixed(1)+') scale(0.92)');});
+ if($('fx'))effekteAt(T);
  const cm=camAt(T);$('cam').setAttribute('transform',cm.str);
- let sg='';SIGNS.forEach((q,i)=>{if(T>=q[0]&&T<q[1])sg+=signSvg(q[2],q[3],q[4],q[5],i);});$('signs').innerHTML=sg;
+ let sg='';SIGNS.forEach((q,i)=>{if(T>=q[0]&&T<q[1])sg+=signSvg(q[2],q[3],q[4],q[5],i,q[6]);});$('signs').innerHTML=sg;
  let bb='';DB.dialog.forEach((d,i)=>{const b=d.blase||[d.von,d.bis];if(d.text&&T>=b[0]&&T<b[1])bb+=bubbleSvg(cm,d,i);});$('bubble').innerHTML=bb;
  blendenAt(T);}
 window.renderAt=renderAt;

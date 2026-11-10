@@ -29,11 +29,73 @@ function handItem(id,name,y){return name&&GEGENSTAENDE[name]?'<g id="'+id+'-hr" 
 function mundformen(id){return '<g id="'+id+'-mfs" style="display:none"><path d="M-11 -173 Q0 -169 9 -174 Q12 -176 14 -180" stroke="#2A0E0B" stroke-width="2.4" fill="none" stroke-linecap="round"/><path d="M15 -175 l2.5 2" stroke="#8A4A30" stroke-width="1.3" stroke-linecap="round"/></g>'+
  '<g id="'+id+'-mfg" style="display:none"><path d="M-16 -178 Q0 -168 17 -180 Q15 -166 1 -161 Q-13 -164 -16 -178Z" fill="#2A0E0B"/><path d="M-14 -177 Q0 -170 15 -179 L14 -174 Q0 -168 -13 -173Z" fill="#FFFDF6"/></g>'+
  '<g id="'+id+'-mfy" style="display:none"><ellipse cx="1" cy="-170" rx="8" ry="7" fill="#2A0E0B"/><path d="M-6 -175 Q1 -178 8 -175" stroke="#FFFDF6" stroke-width="2" fill="none"/><ellipse cx="1" cy="-166" rx="4" ry="2" fill="#C2504A"/></g>';}
+/* ==== Mundbilder beim Sprechen (Satz nach Rhubarb Lip Sync, A–H + X) ====
+   Gleiche Formen und Farben für alle Figuren. Der Player hängt sie hinter den Mund jeder sprechenden Figur
+   (mundbilderEinbauen) und zeigt beim Reden immer genau eines davon (mundbildZeigen); passt eine Figur nicht dazu,
+   wird die Figur angepasst, nicht der Mund (z. B. DrBiers Bart, Mundloch der Sturmhaube).
+   X Ruhe · A M B P · B K S T I · C E Ä · D A · E O · F U W · G F V · H L N */
+const MB_D='#2A0E0B',MB_T='#FFFDF6',MB_Z='#C2504A',MB_L='#E9C7A8',MB_LL='#8A4A30';
+const mbP=(d,f,x)=>'<path d="'+d+'" fill="'+(f||'none')+'" '+(x||'')+'/>';
+const MB_RAND='stroke="'+MB_L+'" stroke-width="1.2" stroke-linejoin="round"';
+const MUNDBILDER={
+ X:()=>mbP('M-9 -172 Q0 -171 9 -172',null,'stroke="'+MB_D+'" stroke-width="2.4" stroke-linecap="round"'),
+ A:()=>mbP('M-8.5 -172 Q0 -172.8 8.5 -172',null,'stroke="'+MB_D+'" stroke-width="3" stroke-linecap="round"')+mbP('M-5 -168.6 Q0 -167.2 5 -168.6',null,'stroke="'+MB_LL+'" stroke-width="1.3" stroke-linecap="round"')+mbP('M-10.5 -173.2 l-1.2 1.6 M10.5 -173.2 l1.2 1.6',null,'stroke="'+MB_LL+'" stroke-width="1.1" stroke-linecap="round"'),
+ B:()=>mbP('M-13 -174 Q0 -176 13 -174 Q11 -166.5 0 -166 Q-11 -166.5 -13 -174Z',MB_D,MB_RAND)+mbP('M-11.6 -174 Q0 -175.7 11.6 -174 L11 -171.6 Q0 -172.9 -11 -171.6Z',MB_T)+mbP('M-8.5 -167.6 Q0 -166.8 8.5 -167.6 L7.8 -169.2 Q0 -168.3 -7.8 -169.2Z',MB_T),
+ C:()=>mbP('M-11.5 -175 Q0 -177 11.5 -175 Q11 -166 0 -164 Q-11 -166 -11.5 -175Z',MB_D,MB_RAND)+mbP('M-10.1 -174.8 Q0 -176.4 10.1 -174.8 L9.6 -172.4 Q0 -173.6 -9.6 -172.4Z',MB_T)+'<ellipse cx="0" cy="-166.2" rx="4.5" ry="1.4" fill="'+MB_Z+'"/>',
+ D:()=>mbP('M-12 -176 Q0 -178 12 -176 Q12 -163 0 -159.5 Q-12 -163 -12 -176Z',MB_D,MB_RAND)+mbP('M-10.6 -175.8 Q0 -177.4 10.6 -175.8 L10 -172.6 Q0 -173.9 -10 -172.6Z',MB_T)+'<ellipse cx="0" cy="-163" rx="6.2" ry="2.7" fill="'+MB_Z+'"/>',
+ E:()=>'<ellipse cx="0" cy="-170" rx="7" ry="7.6" fill="'+MB_D+'" stroke="'+MB_L+'" stroke-width="1.6"/>'+mbP('M-4.6 -175.2 Q0 -176.6 4.6 -175.2 L4 -173.6 Q0 -174.6 -4 -173.6Z',MB_T)+'<ellipse cx="0" cy="-165.4" rx="3.6" ry="1.6" fill="'+MB_Z+'"/>',
+ F:()=>'<ellipse cx="0" cy="-171" rx="5.6" ry="5" fill="'+MB_LL+'"/><ellipse cx="0" cy="-171" rx="2.8" ry="2.6" fill="'+MB_D+'"/>'+mbP('M-3.4 -175 Q0 -176 3.4 -175',null,'stroke="'+MB_L+'" stroke-width="1" stroke-linecap="round"'),
+ G:()=>mbP('M-10 -173.6 Q0 -175.2 10 -173.6 Q0 -169.2 -10 -173.6Z',MB_D,MB_RAND)+mbP('M-8 -174 Q0 -175.2 8 -174 L7.5 -170.9 Q0 -170.2 -7.5 -170.9Z',MB_T)+mbP('M-8.5 -169 Q0 -166.4 8.5 -169',null,'stroke="'+MB_LL+'" stroke-width="1.6" stroke-linecap="round"'),
+ H:()=>mbP('M-11 -175 Q0 -177 11 -175 Q10 -164 0 -162.5 Q-10 -164 -11 -175Z',MB_D,MB_RAND)+mbP('M-9.6 -174.8 Q0 -176.4 9.6 -174.8 L9.1 -172.4 Q0 -173.6 -9.1 -172.4Z',MB_T)+mbP('M-6 -163.4 Q-3.5 -171.6 0 -172 Q3.5 -171.6 6 -163.4Z',MB_Z)};
+/* Mund-Elemente einer Figur: direkte Kinder des Kopfs mit diesen Endungen (V2, V2X, Deichshaf, DocEvel) */
+const MUND_TEILE=['m','ms','mg','mo','mn','mt','mp','msc','mfs','mfg','mfy'];
+function mundbilderEinbauen(id){const h=$(id+'-h');if(!h)return null;
+ const teile=MUND_TEILE.map(k=>$(id+'-'+k)).filter(e=>e&&e.parentNode===h);if(!teile.length)return null;
+ let s='<g id="'+id+'-mb">';Object.keys(MUNDBILDER).forEach(k=>{s+='<g id="'+id+'-mb'+k+'" style="display:none">'+MUNDBILDER[k]()+'</g>';});
+ teile[teile.length-1].insertAdjacentHTML('afterend',s+'</g>');
+ const bilder={};Object.keys(MUNDBILDER).forEach(k=>{bilder[k]=$(id+'-mb'+k);});return {teile,bilder};}
+/* Ein Mundbild zeigen (k = 'A'…'H'/'X') oder mit null alle ausblenden; die Figur behält dann ihren eigenen Mund */
+function mundbildZeigen(mb,k){if(!mb)return;const an=!!(k&&mb.bilder[k]);
+ Object.keys(mb.bilder).forEach(b=>show(mb.bilder[b],an&&b===k));if(an)mb.teile.forEach(e=>show(e,false));}
 function shrugArm(side,shirt,sk){const a1=-35*side,a2=-115*side;
  let s='<g transform="translate('+(side*SHOULDER.x)+' '+SHOULDER.y+') rotate('+a1+')">'+piece(sleevePts(SHOULDER.r,35),shirt)+piece(rr(-6,31,12,16,4.5),sk);
  s+='<g transform="translate(0 44) rotate('+a2+')">'+piece(sleevePts(6,24),sk)+piece(ell(0,29,8,9.5),sk,1);
  s+=flat(seg(-5,34,-6,42,3.4),sk,0.3)+flat(seg(-1.5,36,-1.5,45,3.4),sk,0.3)+flat(seg(2.5,36,3.5,44,3.4),sk,0.3)+flat(seg(6,32,9,38,3.4),sk,0.3);
  return s+'</g></g>';}
+/* ==== Augen (ein Satz für alle Figuren, wie die Mundbilder) ====
+   Hochovale, leicht zueinander geneigt und eng beieinander, kleine Pupille, kein Collage-Schatten.
+   AUGE.x/y = Mitte eines Auges, rx/ry = Halbachsen, neig = Neigung in Grad, pupille = Radius, braue/braueY = Mitte einer Braue.
+   Brillen und alles, was um die Augen sitzt, richtet sich nach diesen Werten – nicht umgekehrt.
+   augen(id, zusatz) liefert die Gruppe id-e mit den Pupillen in id-p; zusatz landet über den Pupillen (z. B. ein Lid). */
+const AUGE={x:10.6,y:-204.2,rx:6.6,ry:8.4,neig:10,pupille:1.5,braue:12.6,braueY:-220,weiss:'#FFFDF6',schwarz:'#1F1B18'};
+function augeForm(seite,extra){const x=seite*AUGE.x;
+ return '<ellipse cx="'+x+'" cy="'+AUGE.y+'" rx="'+AUGE.rx+'" ry="'+AUGE.ry+'" transform="rotate('+(-seite*AUGE.neig)+' '+x+' '+AUGE.y+')"'+(extra||'')+'/>';}
+function augen(id,zusatz){
+ /* Die alten Augen waren zwei Collage-Kreise und haben dabei Zufallszahlen verbraucht. Die verbrauchen wir weiter,
+    damit Brauen, Bart und Haare jeder Figur exakt so bleiben wie bisher. */
+ poly(circ(-14,-204,7.5),1.2);poly(circ(14,-204,7.5),1.2);
+ const px=(AUGE.x*0.9).toFixed(1),py=(AUGE.y+0.6).toFixed(1),f=' fill="'+AUGE.schwarz+'"';
+ return '<g id="'+id+'-e">'+augeForm(-1,' fill="'+AUGE.weiss+'"')+augeForm(1,' fill="'+AUGE.weiss+'"')+
+  '<g id="'+id+'-p"><circle cx="-'+px+'" cy="'+py+'" r="'+AUGE.pupille+'"'+f+'/><circle cx="'+px+'" cy="'+py+'" r="'+AUGE.pupille+'"'+f+'/></g>'+(zusatz||'')+'</g>';}
+
+/* ==== Brillen (sitzen immer genau um die Augen) ====
+   Zwei Gläser mit abgerundeten Ecken, dazwischen ein Steg, außen Bügel. Es gibt zwei schwarze Rahmen:
+   BRILLE.dick und BRILLE.duenn. Eine Figur nimmt einen davon – brille('dick') – oder gibt eigene Werte mit,
+   z. B. eine andere Farbe: brille('duenn',{farbe:'#C9A04A'}).
+   Felder: farbe, rahmen (Strichstärke), steg, buegel, glas (Tönung, optional), ecke (Rundung), aussen (Luft neben dem Auge).
+   brilleMasse(b) liefert die Kanten eines Glases (i innen, a außen, o oben, u unten, jeweils Strichmitte) für eigene Formen. */
+const BRILLE={dick:{farbe:'#1A1410',rahmen:2.8,steg:2.4,buegel:2.2,ecke:4.5},
+ duenn:{farbe:'#1E1E22',rahmen:1.7,steg:1.6,buegel:1.6,ecke:5,glas:'rgba(220,235,245,0.14)'}};
+function brilleMasse(b){const t=AUGE.neig*Math.PI/180,bx=Math.hypot(AUGE.rx*Math.cos(t),AUGE.ry*Math.sin(t)),by=Math.hypot(AUGE.rx*Math.sin(t),AUGE.ry*Math.cos(t)),h=b.rahmen/2;
+ return {i:AUGE.x-bx+0.1-h,a:AUGE.x+bx+(b.aussen===undefined?2.6:b.aussen)+h,o:AUGE.y-by-0.5-h,u:AUGE.y+by+0.5+h};}
+function brilleSteg(b,m){const g=m.i-b.rahmen/2+0.3,y=AUGE.y-2.5;
+ return '<path d="M'+(-g).toFixed(1)+' '+y.toFixed(1)+' Q0 '+(y-2.6).toFixed(1)+' '+g.toFixed(1)+' '+y.toFixed(1)+'" fill="none" stroke="'+b.farbe+'" stroke-width="'+b.steg+'"/>';}
+function brilleBuegel(b,m){const y=AUGE.y-4;
+ return '<path d="M'+(-m.a).toFixed(1)+' '+y.toFixed(1)+' L-37 '+(y-2.5).toFixed(1)+' M'+m.a.toFixed(1)+' '+y.toFixed(1)+' L37 '+(y-2.5).toFixed(1)+'" stroke="'+b.farbe+'" stroke-width="'+b.buegel+'"/>';}
+function brille(art,opt){const b=Object.assign({},typeof art==='string'?BRILLE[art]:art,opt||{}),m=brilleMasse(b),f=n=>n.toFixed(1);
+ const glas=x=>'<rect x="'+f(x)+'" y="'+f(m.o)+'" width="'+f(m.a-m.i)+'" height="'+f(m.u-m.o)+'" rx="'+b.ecke+'" fill="'+(b.glas||'none')+'" stroke="'+b.farbe+'" stroke-width="'+b.rahmen+'"/>';
+ return glas(-m.a)+glas(m.i)+brilleSteg(b,m)+brilleBuegel(b,m);}
+
 /* Optionale Teile: shoe (Schuhfarbe), legExtra(side) (Muster auf dem Bein), sleeve/cuff (Jacke mit langen Ärmeln),
    armDeko(side) (Muster auf dem Ärmel), armHand(side,id) (Teil an der Hand), overTorso(id) (Jacke, Rig), collar() (Kragen), foot(side) (eigener Fuß statt Schuh, z. B. Badelatschen), funkArm(shirt,sk) (angewinkelter Arm mit Handsprecher, Pose-Feld funkarm),
    noLogo bzw. logoY/logoSize/logoMax, mouth(id) (eigener Mund), keineMundformen (Mund ist verdeckt oder sitzt in einem Loch) */
@@ -56,7 +118,7 @@ if(p.collar)s+=p.collar();
 s+='<g id="'+p.id+'-h">';
 s+=piece(HEAD_V2,sk,2.6);
 if(p.under)s+=p.under(p.id);
-s+='<g id="'+p.id+'-e">'+piece(circ(-14,-204,7.5),'#FFFDF6',1.2)+piece(circ(14,-204,7.5),'#FFFDF6',1.2)+'<g id="'+p.id+'-p"><circle cx="-13" cy="-203" r="3" fill="#1F1B18"/><circle cx="15" cy="-203" r="3" fill="#1F1B18"/></g></g>';
+s+=augen(p.id);
 s+='<g id="'+p.id+'-bl">'+flat(rect(-8.5,-2.3,17,4.6),p.browC,1)+'</g><g id="'+p.id+'-br">'+flat(rect(-8.5,-2.3,17,4.6),p.browC,1)+'</g>';
 s+=NOSE_V2();
 if(p.beard)s+=p.beard();
@@ -80,8 +142,13 @@ const CY={seed:37,thumb:true,skin:'#F2C9A0',shirt:'#262624',pants:'#3A4A62',brow
  under:()=>piece(rect(-37,-232,7,28),'#5A3A22',1)+piece(rect(30,-232,7,28),'#5A3A22',1),
  beard:beardFull('#5A3A22','#9A9890','#3E2716'),
  hair:()=>piece([[-41,-224],[-37,-244],[-12,-254],[22,-253],[42,-242],[46,-229]],'#6B6259',1.4)+piece([[-6,-230],[48,-232],[54,-225],[-2,-223]],'#4E4741',1)+'<path d="M-30 -240 Q6 -250 38 -238" fill="none" stroke="#7E756B" stroke-width="1.5" stroke-dasharray="3 3"/>',
- acc:()=>'<rect x="-26" y="-213" width="23" height="17" rx="2" fill="none" stroke="#141210" stroke-width="4.5"/><rect x="3" y="-213" width="23" height="17" rx="2" fill="none" stroke="#141210" stroke-width="4.5"/><path d="M-3 -206 h6" stroke="#141210" stroke-width="4"/>'};
+ acc:()=>brille('dick')};
 
+/* PoBis Halbrandbrille: dünne helle Gläser, oben ein dicker dunkler Rand, Steg und Bügel wie bei allen */
+function pobiBrille(){const b={farbe:'#2A2624',rahmen:1.3,steg:1.8,buegel:2.2},m=brilleMasse(b),f=n=>n.toFixed(1),w=m.a-m.i;
+ const glas=x=>'<rect x="'+f(x)+'" y="'+f(m.o)+'" width="'+f(w)+'" height="'+f(m.u-m.o)+'" rx="5" fill="rgba(220,235,245,0.18)" stroke="#9EA4A9" stroke-width="1.3"/>';
+ const rand=s=>'M'+f(s*m.a)+' '+f(m.o+7)+' Q'+f(s*m.a)+' '+f(m.o-0.6)+' '+f(s*(m.a-6))+' '+f(m.o-0.6)+' L'+f(s*(m.i+6))+' '+f(m.o-0.6)+' Q'+f(s*m.i)+' '+f(m.o-0.6)+' '+f(s*m.i)+' '+f(m.o+7);
+ return glas(-m.a)+glas(m.i)+'<path d="'+rand(-1)+' '+rand(1)+'" fill="none" stroke="#2A2624" stroke-width="3.6" stroke-linecap="round"/>'+brilleSteg(b,m)+brilleBuegel(b,m);}
 const PHAIR='#A3A19C',PHAIR_D='#7C7A75',PHAIR_L='#C6C4BE',PBEARD='#8E8C87';
 const PB={seed:61,brillenArm:true,skin:'#F3CDB0',shirt:'#2F855A',pants:'#3A4A62',browC:'#6E6C67',
  under:()=>piece(rect(-37,-230,7,34),PHAIR_D,1)+piece(rect(30,-230,7,34),PHAIR_D,1),
@@ -94,11 +161,7 @@ const PB={seed:61,brillenArm:true,skin:'#F3CDB0',shirt:'#2F855A',pants:'#3A4A62'
   s+='<path d="M-14 -251 L-13 -239" stroke="#E4C2A6" stroke-width="1.8" stroke-linecap="round"/>';
   s+='<path d="M-8 -248 Q12 -254 34 -244 M-6 -243 Q14 -248 37 -236 M-28 -244 Q-24 -246 -19 -248" fill="none" stroke="'+PHAIR_L+'" stroke-width="1.4" stroke-linecap="round"/>';return s;},
  acc:id=>'<g id="'+id+'-gl">'+
-  '<rect x="-26" y="-213" width="22" height="17" rx="5" fill="rgba(220,235,245,0.18)" stroke="#9EA4A9" stroke-width="1.3"/>'+
-  '<rect x="4" y="-213" width="22" height="17" rx="5" fill="rgba(220,235,245,0.18)" stroke="#9EA4A9" stroke-width="1.3"/>'+
-  '<path d="M-27 -208 Q-27 -214 -20 -214 L-10 -214 Q-3 -214 -3 -208 M3 -208 Q3 -214 10 -214 L20 -214 Q27 -214 27 -208" fill="none" stroke="#2A2624" stroke-width="4.2" stroke-linecap="round"/>'+
-  '<path d="M-3 -207 Q0 -210 3 -207" fill="none" stroke="#9EA4A9" stroke-width="1.6"/>'+
-  '<path d="M-27 -209 L-36 -211 M27 -209 L36 -211" stroke="#2A2624" stroke-width="2.4"/></g>'};
+  pobiBrille()+'</g>'};
 
 /* Sonderkörper DrBier-Riese (V2-Körper, Kopf nie im Bild): Schultergelenk, runder Körper, linker Arm trinkt oben */
 const RLEG=126,RTOR=136,RAX=80,RUP=RLEG+RTOR,RSH=-155-RUP,RHIP=-66-RLEG;
@@ -112,7 +175,7 @@ s+=armLang(id+'-ar',1,shirt,sk,RSH,RAX);
 return s;}
 
 function show(el,on){if(el)el.style.display=on?'':'none';}
-function rigV2(id,browY){const g=k=>$(id+'-'+k);return {browY:browY||-218,btl:g('btl'),btr:g('btr'),btlr:g('btl-r'),btrr:g('btr-r'),g:$(id),h:g('h'),e:g('e'),p:g('p'),bl:g('bl'),br:g('br'),m:g('m'),al:g('al'),ar:g('ar'),sl:g('sl'),sr:g('sr'),ll:g('ll'),lr:g('lr'),th:g('th'),
+function rigV2(id,browY){const g=k=>$(id+'-'+k);return {browY:browY||AUGE.braueY,btl:g('btl'),btr:g('btr'),btlr:g('btl-r'),btrr:g('btr-r'),g:$(id),h:g('h'),e:g('e'),p:g('p'),bl:g('bl'),br:g('br'),m:g('m'),al:g('al'),ar:g('ar'),sl:g('sl'),sr:g('sr'),ll:g('ll'),lr:g('lr'),th:g('th'),
  mfs:g('mfs'),mfg:g('mfg'),mfy:g('mfy'),gl:g('gl'),bga:g('bga'),hr:g('hr'),hrc:g('hrc'),gt:g('gt'),hat:g('hat'),fpw:g('fpw'),fp:g('fp'),fka:g('fka'),hsp:g('hsp')};}
 /* Pose für alle V2-Figuren. Felder: x, y, rot (Körper kippt um die Füße), head, hy, aL, aR, lL, lR, px, py,
    es (Augen zukneifen, <1), ew (Augen weiten, >1), m (Zahl = Mundöffnung, 's'/'g'/'y' = Mundform), sx/sy (Breite/Höhe des Lachmunds 'y'), schiel 0–1, br, shrug, thumb,
@@ -144,7 +207,7 @@ function poseV2(c,o,baseY){
  if(c.hr){show(c.hr,!o.handLeer);c.hrc.setAttribute('transform','rotate('+(-(o.aR||0)+(o.swH||0)).toFixed(1)+')');}
  if(c.gt)show(c.gt,!!o.glint);
  if(c.hat)c.hat.setAttribute('transform','translate(0 '+(o.hat||0).toFixed(1)+')');
- const b=o.br||[0,0,0,0];const by=c.browY||-218;c.bl.setAttribute('transform','translate(-15 '+(by+b[0])+') rotate('+b[1]+')');c.br.setAttribute('transform','translate(15 '+(by+b[2])+') rotate('+(-b[3])+')');}
+ const b=o.br||[0,0,0,0];const by=c.browY||AUGE.braueY;c.bl.setAttribute('transform','translate('+(-AUGE.braue)+' '+(by+b[0])+') rotate('+b[1]+')');c.br.setAttribute('transform','translate('+AUGE.braue+' '+(by+b[2])+') rotate('+(-b[3])+')');}
 
 const LIPPEN_V2=(o,k)=>{o.m=k>0.15?1.6+k*6:1.6;};
 const FIGUREN={
@@ -182,14 +245,14 @@ const SP={seed:71,skin:'#EFC3A0',shirt:'#2F855A',pants:'#1F2026',shoe:'#151416',
   s+='<path d="M-22 -234 Q-22 -246 -12 -253 M-10 -236 Q-8 -248 0 -255 M4 -236 Q6 -248 14 -254 M18 -234 Q22 -244 28 -249" fill="none" stroke="'+HAIR_S+'" stroke-width="1.5" stroke-linecap="round"/>';
   s+='<path d="M-30 -230 Q-33 -238 -29 -245 M31 -230 Q34 -238 30 -245" fill="none" stroke="'+HAIR_S+'" stroke-width="1.2" stroke-linecap="round" opacity="0.8"/>';return s;},
  acc:id=>'<g>'+
-  '<path d="M-28 -212 L-4 -212 L-5 -202 Q-8 -196 -16 -196 Q-26 -196 -27 -203Z" fill="#121214" stroke="#2A2A2E" stroke-width="1.4"/>'+
-  '<path d="M4 -212 L28 -212 L27 -203 Q26 -196 16 -196 Q8 -196 5 -202Z" fill="#121214" stroke="#2A2A2E" stroke-width="1.4"/>'+
-  '<path d="M-4 -210 Q0 -213 4 -210" stroke="#2A2A2E" stroke-width="2" fill="none"/>'+
-  '<path d="M-28 -210 L-37 -213 M28 -210 L37 -213" stroke="#2A2A2E" stroke-width="2.4"/>'+
-  '<path d="M-21 -210 L-25 -201 M-16 -210 L-19 -204 M11 -210 L7 -201 M16 -210 L13 -204" stroke="rgba(255,255,255,0.32)" stroke-width="1.6" stroke-linecap="round"/>'+
+  '<path d="M-27 -214.6 L-2 -214.6 L-2.8 -201 Q-5.5 -193.6 -14.5 -193.6 Q-25 -193.6 -26 -202Z" fill="#121214" stroke="#2A2A2E" stroke-width="1.4"/>'+
+  '<path d="M2 -214.6 L27 -214.6 L26 -202 Q25 -193.6 14.5 -193.6 Q5.5 -193.6 2.8 -201Z" fill="#121214" stroke="#2A2A2E" stroke-width="1.4"/>'+
+  '<path d="M-2.4 -211.5 Q0 -214 2.4 -211.5" stroke="#2A2A2E" stroke-width="2" fill="none"/>'+
+  '<path d="M-27 -212 L-37 -215 M27 -212 L37 -215" stroke="#2A2A2E" stroke-width="2.4"/>'+
+  '<path d="M-20 -212 L-24 -201 M-15 -212 L-18 -205 M11 -212 L7 -201 M16 -212 L13 -205" stroke="rgba(255,255,255,0.32)" stroke-width="1.6" stroke-linecap="round"/>'+
   '<g id="'+id+'-gt" style="display:none"><path d="M20 -216 l1.8 4.6 4.6 1.8 -4.6 1.8 -1.8 4.6 -1.8 -4.6 -4.6 -1.8 4.6 -1.8Z" fill="#FFFDF6"/></g></g>'};
 
-FIGUREN['Spock']={build:a=>makeChar(Object.assign({},SP,{id:a.id,seated:a.haltung==='sitzt',handR:a.hand_rechts})),rig:id=>rigV2(id,-221),apply:(r,o,a)=>poseV2(r,o,a.boden),
+FIGUREN['Spock']={build:a=>makeChar(Object.assign({},SP,{id:a.id,seated:a.haltung==='sitzt',handR:a.hand_rechts})),rig:id=>rigV2(id,-222.5),apply:(r,o,a)=>poseV2(r,o,a.boden),
  spricht:true,lippen:(o,k)=>{if(k>=0.18){o.m='y';o.sy=0.35+0.9*k;}}};
 
 /* ----- Bierdiebe (aus FIGUR-BIERDIEBE.html), Version 2: Ei-Kopf, Schultergelenk, Tarnmuster auf Ärmeln, Beinen und Hemd ----- */
@@ -201,13 +264,13 @@ const camoKit={shirt:CAMO_BASE,pants:CAMO_BASE,shoe:'#2A2624',noLogo:true,
  legExtra:sx=>camo(sx<0?-21:6,-70,15,56,9,4),
  armDeko:()=>camo(-6,3,12,30,5,4)};
 const BAL='#1C1C1E';
-/* Sturmhaube folgt dem Ei-Kopf; die Rippen werden auf die Haube zugeschnitten */
+/* Sturmhaube folgt dem Ei-Kopf; die Rippen werden auf die Haube zugeschnitten. Das Mundloch ist so groß, dass auch das weit offene Mundbild (D) hineinpasst. */
 const HOOD_V2=roundPoly([[-41,-205],[-37,-241],[-21,-257],[0,-261],[21,-257],[37,-241],[42,-205],[33,-164],[13,-151],[-13,-151],[-33,-164]],[14,12,10,8,10,12,14,14,8,8,14]);
 const D1={seed:81,skin:'#F2C9A6',browC:BAL,...camoKit,keineMundformen:true,
  under:id=>{let s=piece(rect(-13,-172,26,22),BAL,0.8)+piece(HOOD_V2,BAL,1.6);
   s+='<clipPath id="'+id+'-hk"><path d="M'+HOOD_V2.map(q=>q[0].toFixed(1)+' '+q[1].toFixed(1)).join(' L')+'Z"/></clipPath><g clip-path="url(#'+id+'-hk)">';
   for(let x=-30;x<=30;x+=7.5)s+='<path d="M'+x+' -252 L'+(x*1.06).toFixed(1)+' -150" stroke="#2A2A2E" stroke-width="1.1"/>';
-  s+='</g>'+piece(ell(-14,-204,11.5,10),'#F2C9A6',1)+piece(ell(14,-204,11.5,10),'#F2C9A6',1)+piece(ell(1,-172,11,8),'#F2C9A6',1);return s;},
+  s+='</g>'+piece(ell(-AUGE.x-1,AUGE.y,10.8,11.4),'#F2C9A6',1)+piece(ell(AUGE.x+1,AUGE.y,10.8,11.4),'#F2C9A6',1)+piece(ell(1,-169.5,15,11.5),'#F2C9A6',1);return s;},
  mouth:id=>'<ellipse id="'+id+'-m" cx="1" cy="-172" rx="7.5" ry="1.8" fill="#2A0E0B" stroke="#D9767A" stroke-width="2.6"/>',
  hair:()=>piece(circ(0,-262,5),BAL,0.6)};
 const D2={seed:93,skin:'#E8BD98',browC:'#6A4A30',...camoKit,
@@ -240,8 +303,7 @@ const MC={seed:53,skin:'#F2C9A0',shirt:MPOLO,pants:'#3A4A62',browC:'#4A2F1C',
    [-20,-248,7.5],[-2,-254,8],[16,-249,7.5],[-10,-241,6.5],[7,-241,6.5],[26,-240,6],[-28,-239,6],
    [-35,-226,6.5],[-23,-230,7],[-9,-233,7],[5,-233,7],[19,-231,7],[32,-227,6.5]].forEach(l=>{s+=locke(l[0],l[1],l[2]);});
   return s;},
- acc:()=>'<rect x="-26" y="-213" width="23" height="17" rx="2" fill="none" stroke="#1A1410" stroke-width="4.2"/><rect x="3" y="-213" width="23" height="17" rx="2" fill="none" stroke="#1A1410" stroke-width="4.2"/><path d="M-3 -206 h6" stroke="#1A1410" stroke-width="3.8"/>'+
-  '<path d="M-26 -209 L-37 -211 M26 -209 L37 -211" stroke="#1A1410" stroke-width="2.4"/>'};
+ acc:()=>brille('dick')};
 FIGUREN['Marlec']={build:a=>makeChar(Object.assign({},MC,{id:a.id,seated:a.haltung==='sitzt',handR:a.hand_rechts})),rig:rigV2,apply:(r,o,a)=>poseV2(r,o,a.boden),spricht:true,lippen:LIPPEN_V2};
 
 /* ----- RamShadow, Version 2: flacher schwarzer Irokese, Rest des Kopfes stoppelig rasiert, dünne eckige Brille, glatt rasiert,
@@ -285,8 +347,7 @@ const RS={seed:59,skin:'#F0C4A0',shirt:RS_SHIRT,pants:'#1F2026',browC:'#5E564C',
   s+='<path d="'+d+'" stroke="#4A4542" stroke-width="1.3" stroke-linecap="round" opacity="0.75"/>';
   const K=[[-10,-231],[-12,-246],[-10,-256],[-6,-254],[-4,-262],[0,-258],[4,-262],[6,-254],[10,-256],[12,-246],[10,-231]];
   s+=piece(roundPoly(K,[3,3,1,2,1,2,1,2,1,3,3]),RS_HAIR,0.7)+'<path d="M-5 -236 L-6 -252 M0 -236 L0 -255 M5 -236 L6 -252" stroke="'+RS_HAIR_L+'" stroke-width="1.3" stroke-linecap="round" fill="none"/>';return s;},
- acc:()=>'<rect x="-26" y="-212" width="23" height="16" rx="2" fill="rgba(220,235,245,0.14)" stroke="#1E1E22" stroke-width="3"/><rect x="3" y="-212" width="23" height="16" rx="2" fill="rgba(220,235,245,0.14)" stroke="#1E1E22" stroke-width="3"/>'+
-  '<path d="M-3 -206 h6" stroke="#1E1E22" stroke-width="2.6"/><path d="M-26 -208 L-37 -210 M26 -208 L37 -210" stroke="#1E1E22" stroke-width="2.2"/>',
+ acc:()=>brille('duenn'),
  /* Tattoo auf dem Unterarm (vor der Hand) */
  armHand:()=>rsTattoo(0,53,0,37),
  /* Cargo-Hose: Beintasche außen und Kniepolster */

@@ -55,6 +55,18 @@
   {
    "id": "PROBE-RAMSHADOW",
    "datei": "probe-ramshadow.json"
+  },
+  {
+   "id": "PROBE-DEICHSHAF",
+   "datei": "probe-deichshaf.json"
+  },
+  {
+   "id": "PROBE-M0OG",
+   "datei": "probe-m0og.json"
+  },
+  {
+   "id": "PROBE-KICKASS",
+   "datei": "probe-kickass.json"
   }
  ]
 }

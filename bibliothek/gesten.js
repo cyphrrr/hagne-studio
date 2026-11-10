@@ -102,7 +102,7 @@ Object.assign(GESTEN,{
  'arm-pose':(o,c)=>{const a=c.a,r=a.rampe!==undefined?a.rampe:0.3,k=r>0?ease(c.t/r):1,L=a.arm==='links';
    if(L){o.aL=lerp(o.aL||0,a.schulter||0,k);o.aLf=lerp(o.aLf||0,a.ellbogen||0,k);}else{o.aR=lerp(o.aR||0,a.schulter||0,k);o.aRf=lerp(o.aRf||0,a.ellbogen||0,k);}},
  'faust-schuetteln':(o,c)=>{const f=c.f;o.aR=-60+(hs(f)-0.5)*30;o.aL=8;o.head=(o.head||0)+(hs(f+3)-0.5)*4;const j=(hs(f+7)-0.5)*6;o.br=[4,28+j,4,28-j];},
- 'rot-werden':(o,c)=>{o.wangen=lerp(c.a.von||0,c.a.wert!==undefined?c.a.wert:0.6,c.t/(c.a.rampe||c.d));},
+ 'rot-werden':(o,c)=>{const a=c.a;o.wangen=lerp(a.ab!==undefined?a.ab:(o.wangen||0),a.wert!==undefined?a.wert:0.6,c.t/(a.rampe||c.d));},
  'trinken':(o,c)=>{o.trinkt=true;o.es=0.12;o.head=-4;o.br=[-5,-6,-5,-6];o.mFix=true;o.m=1.6;},
  'flasche-schuetteln':(o,c)=>{o.trinkt=true;o.schuetteln=true;o.px=-3;o.py=-2;o.br=[-7,-14,-7,-14];o.m=3;o.mFix=true;},
  'zeigefinger':(o,c)=>{o.zeigefinger=true;o.aR=-65+Math.sin(c.T*5)*6;o.head=Math.sin(c.T*3)*4;o.br=[-3,10,-3,10];},
@@ -125,9 +125,15 @@ Object.assign(GESTEN,{
    Object.keys(z).forEach(n=>{const v0=ab[n]!==undefined?ab[n]:(o[n]||0);o[n]=v0+(z[n]-v0)*k;});},
  /* Körper wippt: "welle" = gerundeter Sinus (Vorgabe), "takt" = abwechselnd 0 und weite */
  'wippen':(o,c)=>{const a=c.a,w=a.weite!==undefined?a.weite:1,tp=a.tempo||1.3;
-   o.y=(o.y||0)+(a.art==='takt'?(Math.floor(c.T*tp)%2)*w:Math.round(Math.sin(c.T*tp)*w));},
+   o.y=(o.y||0)+(a.art==='takt'?(Math.floor(c.T*tp)%2)*w:a.art==='hopsen'?-Math.round(Math.abs(Math.sin(c.T*tp))*w):Math.round(Math.sin(c.T*tp)*w));},
  /* Kopf wiegt hin und her; "hoch" lässt ihn dabei leicht hüpfen */
  'kopf-wiegen':(o,c)=>{const a=c.a,s=Math.sin(c.T*(a.tempo||3));o.head=s*(a.weite!==undefined?a.weite:2);if(a.hoch)o.hy=-Math.round(Math.abs(s)*a.hoch);},
+ /* Mehrere Posen wechseln sich ab, je "bilder" Bilder lang (z. B. Arme beim hektischen Reden, Brauen-Zucken) */
+ 'abwechseln':(o,c)=>{const P=c.a.posen,q=Math.floor(c.f/(c.a.bilder||2));Object.assign(o,P[q%P.length]);},
+ /* Rennen in großen Schritten von von_x nach nach_x (linear über die Aktion): Beine und Arme wechseln alle "bilder" Bilder, Körper lehnt sich vor */
+ 'rennen':(o,c)=>{const a=c.a,dir=sgn(a.nach_x-a.von_x),st=Math.floor(c.f/(a.bilder||2))%2,n=a.neigung!==undefined?a.neigung:8;
+   o.x=lerp(a.von_x,a.nach_x,clamp(c.t/(a.rampe||c.d)));o.rot=n*dir;o.y=(o.y||0)+(st?-4:0);o.px=3*dir;o.py=-0.5;o.es=0.8;o.br=[4,22,4,22];o.m=4;o.mFix=true;
+   if(st){o.lL=24*dir;o.lR=-4*dir;o.aR=-55;o.aL=-10;}else{o.lL=4*dir;o.lR=-24*dir;o.aR=10;o.aL=55;}},
  /* Ein beliebiges Zahlenfeld pendelt um "mitte" */
  'schwingen':(o,c)=>{const a=c.a;o[a.feld]=(a.mitte||0)+Math.sin(c.T*(a.tempo||3))*(a.weite!==undefined?a.weite:1);}
 });

@@ -16,7 +16,7 @@ Mit dem Media-Team **im Dialog, Schritt für Schritt**: erst grob die Idee bzw. 
 1. Idee klären: Wer spielt mit (nur Figuren aus der Bibliothek oder neue nach Steckbrief), welche Kulisse, welcher Gag, wie lang (meist 20–60 s).
 2. Kurzes Szenenbuch in Worten zeigen (Takte mit Zeiten). Erst nach OK das JSON schreiben.
 3. Nur Gesten, Figuren und Requisiten verwenden, die es gibt. Fehlt etwas, sagen und vorschlagen, es zu bauen (siehe D).
-4. Ohne Ton: Dialog mit `text` schreiben, die Münder plappern dann gleichmäßig. Mit Ton: Tonspur als `ton.mix`, Pegel unter `analyse` berechnen (siehe B).
+4. Ohne Ton: Dialog mit `text` schreiben, die Mundbilder kommen dann aus dem Text. Mit Ton: Tonspur als `ton.mix`, Pegel unter `analyse` berechnen (siehe B). Die Mundbilder kommen auch dann aus dem Text, der Pegel schließt nur den Mund in leisen Momenten.
 
 **B · Folge aus einem eigenen Clip**
 1. Schnitte und Standbilder ziehen: `ffmpeg -i clip.mp4 -vf "select='gt(scene,0.3)',showinfo" -fps_mode vfr bild_%03d.png`, Bilder ansehen.

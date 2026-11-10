@@ -36,7 +36,7 @@ Schritt für Schritt vorgehen und nach jedem Schritt kurz zeigen und fragen.
 | 8 | Klebestreifen am Kinn | `tape(-40,-160,30,9,-28)` am Ende von `makeChar` | **entfällt ersatzlos** |
 | 9 | Ellbogen | Arm immer gestreckt | **Ellbogengelenk** (`armJ`): Unterarm dreht um den Ellbogen, Arm kann einknicken |
 
-**Unverändert bleiben:** ROUGH = 0.2, der Collage-Schatten in `piece()`, Augen, Brauen, Mund, Farben, Frisuren, Accessoires, Logo und das Klebeband in Kulissen und Sprechblasen. Frisuren, Bärte und Accessoires werden nur darauf geprüft, ob sie zur schmaleren Kinnpartie passen.
+**Unverändert bleiben:** ROUGH = 0.2, der Collage-Schatten in `piece()`, Mund, Farben, Frisuren, Accessoires, Logo und das Klebeband in Kulissen und Sprechblasen. Frisuren, Bärte und Accessoires werden nur darauf geprüft, ob sie zur schmaleren Kinnpartie passen.
 
 ---
 
@@ -193,3 +193,15 @@ Version 2 heißt bei Sonderkörpern, die Prinzipien anzuwenden, nicht die Maße 
 - [ ] Sonder-Posen starten am Schultergelenk
 - [ ] keine JS-Fehler, 12 fps unverändert
 - [ ] unter demselben Pfad zurück ins Projekt geschrieben, Kopfkommentar mit „Version 2“
+
+## Augen und Brillen (seit November 2026)
+
+Alle Figuren haben denselben Augensatz, so wie sie dieselben Mundbilder haben. Er steht einmal in `bibliothek/figuren-v2.js`:
+
+- **Augen:** `augen(id)` zeichnet zwei hochovale, leicht zueinander geneigte Augen ohne Collage-Schatten mit kleiner Pupille. Die Maße stehen in `AUGE` (Mitte, Halbachsen, Neigung, Pupille, Brauenposition). Wer die Augen ändern will, ändert nur `AUGE`.
+- **Brauen** sitzen auf `AUGE.braue` / `AUGE.braueY`.
+- **Brillen:** `brille('dick')` und `brille('duenn')` sind die beiden schwarzen Rahmen. Zwei Gläser mit abgerundeten Ecken, Steg, Bügel. Die Brille rechnet ihre Größe aus `AUGE` und sitzt damit immer um die Augen. Andere Farbe: `brille('duenn',{farbe:'#C9A04A'})` (m0og).
+- **Eigene Brillenformen** (PoBi Halbrand, DocEvel rund, Spock Sonnenbrille) bleiben erlaubt, brauchen aber Steg und Bügel und müssen die Augen ganz umschließen. Maße dafür liefert `brilleMasse()`.
+- **Regel:** Passt eine Brille oder Maske nicht zu den Augen, wird sie angepasst – nicht die Augen.
+
+Wer trägt was: dick – cypheR, Marlec. Dünn – RamShadow, Spallter (dunkelbraun), m0og (gold).

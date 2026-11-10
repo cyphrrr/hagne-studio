@@ -1,0 +1,39 @@
+{
+ "format": "hagne-drehbuch/0.2",
+ "episode": {"id": "PROBE-DEICHSHAF", "titel": "Figurenprobe: Deichshaf – Wir sind die Besten!", "dauer": 10.0, "fps": 12, "bild": "16:9", "schleife": true},
+ "kulisse": {"id": "HALLE-AUSSEN-01", "licht": "tag"},
+ "besetzung": [
+  {"id": "ds", "figur": "Deichshaf", "x": 340, "boden": 390, "namensschild": true}
+ ],
+ "dialog": [
+  {"von": 5.4, "bis": 8.6, "wer": "ds", "text": "Wir sind die Besten!"}
+ ],
+ "aktionen": [
+  {"von": 0, "bis": 10, "wer": "ds", "geste": "pose", "pose": {"tasse": true, "aL": 6, "aLf": 0, "aR": -18, "aRf": 0}, "notiz": "Kaffee in der rechten Hand"},
+  {"von": 0, "bis": 5.4, "wer": "ds", "geste": "wippen", "tempo": 1.3},
+  {"von": 5.4, "bis": 8.6, "wer": "ds", "geste": "wippen", "art": "hopsen", "tempo": 5, "weite": 2},
+  {"von": 8.6, "bis": 10, "wer": "ds", "geste": "wippen", "tempo": 1.3},
+  {"von": 0, "bis": 2, "wer": "ds", "geste": "schwingen", "feld": "aR", "mitte": -18, "weite": 2, "tempo": 1.5, "pose": {"head": 1.5}},
+  {"von": 0, "bis": 2, "wer": "ds", "geste": "umherschauen", "tempo": 1.3},
+  {"von": 2, "bis": 2.6, "wer": "ds", "geste": "uebergang", "ab": {"aR": -18, "aRf": 0, "tasse_kipp": 0, "head": 0}, "ziel": {"aR": 96, "aRf": 94, "tasse_kipp": 12, "head": -2}, "rampe": 0.6, "pose": {"m": "o", "mFix": true, "dampf": false, "br": [-2, -4, -2, -4]}, "notiz": "Tasse hoch"},
+  {"von": 2.6, "bis": 4.2, "wer": "ds", "geste": "schwingen", "feld": "tasse_kipp", "mitte": 12, "weite": 3, "tempo": 3, "pose": {"aR": 96, "aRf": 94, "m": "o", "mFix": true, "es": 0.12, "head": -3, "hy": -1, "dampf": false, "br": [-4, -6, -4, -6]}, "notiz": "Schluck"},
+  {"von": 4.2, "bis": 4.8, "wer": "ds", "geste": "uebergang", "ab": {"aR": 96, "aRf": 94, "tasse_kipp": 12}, "ziel": {"aR": -18, "aRf": 0, "tasse_kipp": 0}, "rampe": 0.6, "pose": {"br": [-2, 4, -2, 4]}},
+  {"von": 4.8, "bis": 5.4, "wer": "ds", "geste": "uebergang", "ab": {"aR": -18, "aRf": 0, "aL": 6, "aLf": 0}, "ziel": {"aR": -60, "aRf": -60, "aL": 50, "aLf": 70}, "rampe": 0.6, "pose": {"thumbL": true, "m": "g", "mFix": true, "es": 0.45, "br": [-5, 0, -5, 0]}, "notiz": "Daumen hoch, Prost"},
+  {"von": 5.4, "bis": 8.6, "wer": "ds", "geste": "pose", "pose": {"aRf": -60, "aL": 50, "thumbL": true, "m": "g", "mFix": true, "br": [-6, 0, -6, 0]}},
+  {"von": 5.4, "bis": 8.6, "wer": "ds", "geste": "schwingen", "feld": "aR", "mitte": -60, "weite": 3, "tempo": 4},
+  {"von": 5.4, "bis": 8.6, "wer": "ds", "geste": "abwechseln", "posen": [{"aLf": 70}, {"aLf": 77}], "bilder": 3},
+  {"von": 5.4, "bis": 8.6, "wer": "ds", "geste": "kopf-wiegen", "tempo": 5, "weite": 3, "hoch": 1.5},
+  {"von": 5.4, "bis": 7.8, "wer": "ds", "geste": "pose", "pose": {"es": 0.45}},
+  {"von": 5.4, "bis": 6.1, "wer": "ds", "geste": "pose", "pose": {"funkeln": true}},
+  {"von": 7.0, "bis": 7.5, "wer": "ds", "geste": "pose", "pose": {"funkeln": true}},
+  {"von": 8.6, "bis": 10, "wer": "ds", "geste": "uebergang", "ab": {"aR": -60, "aRf": -60, "aL": 50, "aLf": 70}, "ziel": {"aR": -18, "aRf": 0, "aL": 6, "aLf": 0}, "rampe": 0.8},
+  {"von": 8.6, "bis": 9.0, "wer": "ds", "geste": "pose", "pose": {"thumbL": true}},
+  {"von": 8.6, "bis": 9.05, "wer": "ds", "geste": "pose", "pose": {"m": "g", "mFix": true}}
+ ],
+ "kamera": [
+  {"von": 0, "bis": 10.0, "start": [340, 229, 1.1], "ende": [340, 229, 1.1]}
+ ],
+ "schilder": [
+  {"von": 2.6, "bis": 4.2, "text": "*schlürf*", "pos": [439.3, 59.3], "winkel": -5}
+ ]
+}
