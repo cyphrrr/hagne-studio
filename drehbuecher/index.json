@@ -53,6 +53,10 @@
    "datei": "probe-marlec.json"
   },
   {
+   "id": "PROBE-RAMSHADOW",
+   "datei": "probe-ramshadow.json"
+  },
+  {
    "id": "PROBE-DEICHSHAF",
    "datei": "probe-deichshaf.json"
   },
