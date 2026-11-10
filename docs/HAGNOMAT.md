@@ -37,7 +37,8 @@ Farben und vorhandene Teile in den Tabellen unten haben den Stand 2026-11. Bei Z
 |---|---|---|
 | hell | `#F6D2B0`, `#F4CFAE`, `#F3CDB0`, `#F2C9A0`, `#F0C4A0` | m0og, PoBi, cypheR, KickASS |
 | hell, etwas wärmer | `#EFC3A0`, `#E8BD98` | Spock, Bierdieb |
-| mittel | `#C68A5E` | DocEvel |
+| mittel | `#D9A47A` | Deichshaf, DocEvel |
+| mittel, dunkler | `#C68A5E` | noch keine Figur |
 | dunkel | noch keine Figur, Vorschlag `#8D5A3B` oder `#6B4129` | – |
 
 | Haar / Bart | Werte im Baukasten | Beispiel |
