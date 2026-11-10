@@ -35,9 +35,9 @@ Farben und vorhandene Teile in den Tabellen unten haben den Stand 2026-11. Bei Z
 
 | Hautton | Werte im Baukasten | Beispiel |
 |---|---|---|
-| hell | `#F6D2B0`, `#F4CFAE`, `#F3CDB0`, `#F2C9A0`, `#F0C4A0` | m0og, PoBi, cypheR, KickASS |
+| hell | `#F6D2B0`, `#F4CFAE`, `#F3CDB0`, `#F2C9A0`, `#F0C4A0` | m0og, PoBi, cypheR, DocEvel, KickASS |
 | hell, etwas wärmer | `#EFC3A0`, `#E8BD98` | Spock, Bierdieb |
-| mittel | `#C68A5E` | DocEvel |
+| mittel | `#D9A47A`, `#C68A5E` | Deichshaf |
 | dunkel | noch keine Figur, Vorschlag `#8D5A3B` oder `#6B4129` | – |
 
 | Haar / Bart | Werte im Baukasten | Beispiel |
@@ -48,7 +48,7 @@ Farben und vorhandene Teile in den Tabellen unten haben den Stand 2026-11. Bei Z
 | blond | Brauen `#B8943E` | m0og |
 | grau-braun | `#6B6259` | cypheR |
 | grau | `#A3A19C` | PoBi |
-| silbergrau | `#AEB0B3` | DocEvel |
+| hell silbergrau | `#D2D1CB`, Brauen `#98948A` | DocEvel |
 
 Brauen sind meist etwas dunkler als das Haar, Bart oft auch.
 
@@ -77,10 +77,10 @@ Noch frei sind zum Beispiel orange, gelb, lila, weiß und bordeaux. **Blau besse
 | Brille, dicker schwarzer Rahmen | cypheR, Marlec |
 | Brille, dünner schwarzer Rahmen | RamShadow |
 | eckige Goldbrille | m0og |
-| kleine Rundbrille | DocEvel |
+| schmale rechteckige Metallbrille (silber) | DocEvel |
 | Brille, dünner dunkelbrauner Rahmen | Spallter |
 | Vollbart | cypheR, PoBi, Spallter (kurz) |
-| Dreitagebart / Stoppeln | Deichshaf, DocEvel |
+| Dreitagebart / Stoppeln | Deichshaf |
 | Kappe | DrBier („MAKE HAGNE GREAT AGAIN“) |
 | Tarnhut, Sturmhaube | Bierdiebe |
 | Funk am Ohr | KickASS |
@@ -89,7 +89,7 @@ Noch frei sind zum Beispiel orange, gelb, lila, weiß und bordeaux. **Blau besse
 | Cargo-Hose mit Kniepolstern, Arbeitsschutzschuhe | RamShadow |
 | Linien-Tattoo am Unterarm | RamShadow |
 | Badelatschen mit Socken | Marlec |
-| kurz stachelig | DocEvel |
+| sehr kurz, oben leicht aufgestellt | DocEvel |
 | Glatze | Bierdieb-Sturmhaube (darunter) |
 | Irokese (flach, Kopf stoppelig rasiert) | RamShadow |
 | Kippe mit Rauch | m0og |
