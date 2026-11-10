@@ -36,7 +36,7 @@ Schritt für Schritt vorgehen und nach jedem Schritt kurz zeigen und fragen.
 | 8 | Klebestreifen am Kinn | `tape(-40,-160,30,9,-28)` am Ende von `makeChar` | **entfällt ersatzlos** |
 | 9 | Ellbogen | Arm immer gestreckt | **Ellbogengelenk** (`armJ`): Unterarm dreht um den Ellbogen, Arm kann einknicken |
 
-**Unverändert bleiben:** ROUGH = 0.2, der Collage-Schatten in `piece()`, Mund, Farben, Frisuren, Accessoires, Logo und das Klebeband in Kulissen und Sprechblasen. Frisuren, Bärte und Accessoires werden nur darauf geprüft, ob sie zur schmaleren Kinnpartie passen.
+**Unverändert bleiben:** ROUGH = 0.2, der Collage-Schatten in `piece()`, Mund, Farben, Frisuren, Accessoires, Logo (immer auf Brusthöhe, y −127) und das Klebeband in Kulissen und Sprechblasen. Frisuren, Bärte und Accessoires werden nur darauf geprüft, ob sie zur schmaleren Kinnpartie passen.
 
 ---
 

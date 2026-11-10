@@ -9,7 +9,7 @@ Referenzen: `drehbuecher/e02-turnierbuero.json` (ruhig, Sprechblasen, V2-Figuren
 - **Zeiten** in Sekunden ab Szenenbeginn. Der Player rastet auf **12 fps** ein (Legetrick).
 - **Bühne:** 680 × 420 Weltkoordinaten. x nach rechts, y nach unten. Der Boden der Figuren liegt meist bei y 390 (vorne 420).
 - **Später gewinnt:** Überlappen sich Aktionen einer Figur, setzt die weiter unten stehende ihre Werte zuletzt.
-- **Spitznamen** statt Klarnamen, Shirt-Aufdruck immer `['ju:nien]`.
+- **Spitznamen** statt Klarnamen, Shirt-Aufdruck immer `['ju:nien]` auf Brusthöhe (V2-Rumpf: y −127).
 - Alles ist deterministisch – gleiche Zeit, gleiches Bild. Kein `Math.random()` in der Bibliothek, sondern `R()` (mit `seed`) oder `hs(n)`.
 
 ## Aufbau

@@ -98,7 +98,7 @@ function brille(art,opt){const b=Object.assign({},typeof art==='string'?BRILLE[a
 
 /* Optionale Teile: shoe (Schuhfarbe), legExtra(side) (Muster auf dem Bein), sleeve/cuff (Jacke mit langen Ärmeln),
    armDeko(side) (Muster auf dem Ärmel), armHand(side,id) (Teil an der Hand), overTorso(id) (Jacke, Rig), collar() (Kragen), foot(side) (eigener Fuß statt Schuh, z. B. Badelatschen), funkArm(shirt,sk) (angewinkelter Arm mit Handsprecher, Pose-Feld funkarm),
-   noLogo bzw. logoY/logoSize/logoMax, mouth(id) (eigener Mund), keineMundformen (Mund ist verdeckt oder sitzt in einem Loch) */
+   noLogo bzw. logoY/logoSize/logoMax (logoY Grundwert −127 = Brusthöhe; der Aufdruck gehört immer auf die Brust), logoVorne (Aufdruck über overTorso, wenn Jacke oder Rig die Brust verdecken), mouth(id) (eigener Mund), keineMundformen (Mund ist verdeckt oder sitzt in einem Loch) */
 function makeChar(p){seed=p.seed;let s='';const sk=p.skin,SH=p.shoe||'#2A2624';
 const legX=side=>p.legExtra?p.legExtra(side):'';
 if(!p.seated){
@@ -109,8 +109,10 @@ const hand=side=>p.armHand?p.armHand(side,p.id):'';
 s+=armAt(p.id+'-al',-1,armShirt,sk,'',hand(-1),armQ(-1));
 s+='<g id="'+p.id+'-sl" style="display:none">'+shrugArm(-1,armShirt,sk)+'</g>';
 s+=piece(TORSO_V2,p.shirt);
-if(!p.noLogo)s+='<g data-logo="1" data-t="translate(0 '+(p.logoY||-102)+')" data-size="'+(p.logoSize||15)+'" data-max="'+(p.logoMax||64)+'"></g>';
+const logo=p.noLogo?'':'<g data-logo="1" data-t="translate(0 '+(p.logoY||-127)+')" data-size="'+(p.logoSize||15)+'" data-max="'+(p.logoMax||64)+'"></g>';
+if(!p.logoVorne)s+=logo;
 if(p.overTorso)s+=p.overTorso(p.id);
+if(p.logoVorne)s+=logo;
 s+=armAt(p.id+'-ar',1,armShirt,sk,p.thumb?'<g id="'+p.id+'-th" style="display:none">'+piece(rr(-3.2,60,6.4,15,3),sk,0.4)+'</g>':'',hand(1)+handItem(p.id,p.handR),armQ(1));
 s+='<g id="'+p.id+'-sr" style="display:none">'+shrugArm(1,armShirt,sk)+'</g>';
 s+=piece(box(-8,-168,16,16),sk);
@@ -170,7 +172,7 @@ s+='<g id="'+id+'-ll">'+piece(box(-17,-72-RLEG,13,66+RLEG),pants)+piece(shoe(-27
 s+='<g id="'+id+'-lr">'+piece(box(4,-72-RLEG,13,66+RLEG),pants)+piece(shoe(2,-10,25,11),'#2A2624')+'</g>';
 s+=armLang(id+'-al',-1,shirt,sk,RSH,RAX,'<g id="'+id+'-hb" transform="translate(0 '+(108.5+RAX)+')">'+rBottle()+'</g>');
 s+=piece(roundPoly([[-27,RSH],[27,RSH],[33,RHIP],[-33,RHIP]],[11,11,4,4]),shirt);
-s+='<g data-logo="1" data-t="translate(0 '+(RSH+58)+')" data-size="14" data-max="50"></g>';
+s+='<g data-logo="1" data-t="translate(0 '+(RSH+38)+')" data-size="14" data-max="50"></g>';
 s+=armLang(id+'-ar',1,shirt,sk,RSH,RAX);
 return s;}
 
@@ -232,7 +234,7 @@ function belt(){const d='M0 2 C9 18 -8 34 1 50 C9 62 -4 72 0 82';
  '<rect x="-7.5" y="80" width="15" height="12" rx="2.5" fill="none" stroke="'+BUCKLE+'" stroke-width="2.8"/>'+
  '<path d="M0 81 L0 91" stroke="'+BUCKLE+'" stroke-width="1.8"/>';}
 const SP={seed:71,skin:'#EFC3A0',shirt:'#2F855A',pants:'#1F2026',shoe:'#151416',browC:'#15151A',
- sleeve:JK,cuff:'#3A3638',logoY:-103,logoSize:12,logoMax:36,
+ sleeve:JK,cuff:'#3A3638',logoY:-127,logoSize:12,logoMax:36,
  armHand:(sx,id)=>anDerHand(id,sx<0?'btl':'btr',belt()),
  overTorso:()=>{let s=piece(roundPoly([[-36,-157],[-18,-157],[-25,-58],[-46,-58]],[12,2,2,3]),JK,1.6)+piece(roundPoly([[36,-157],[18,-157],[25,-58],[46,-58]],[12,2,2,3]),JK,1.6);
   s+=piece([[-19,-159],[-7,-160],[-23,-126]],JK_L,0.8)+piece([[19,-159],[7,-160],[23,-126]],JK_L,0.8);
@@ -324,7 +326,7 @@ function rsSprecher(x,y){return piece(rr(x-7,y-10,14,20,3.5),'#2E2F35',0.6)+'<pa
 /* Tattoo: feine Linie mit Pfeilspitze Richtung Ellbogen, von (x1,y1) unten nach (x2,y2) oben */
 function rsTattoo(x1,y1,x2,y2){const dx=x2-x1,dy=y2-y1,L=Math.hypot(dx,dy),ux=dx/L,uy=dy/L;
  return ln(x1,y1,x2,y2,RS_INK,1.1)+'<path d="M'+(x2-ux*4-uy*2.5).toFixed(1)+' '+(y2-uy*4+ux*2.5).toFixed(1)+' L'+x2.toFixed(1)+' '+y2.toFixed(1)+' L'+(x2-ux*4+uy*2.5).toFixed(1)+' '+(y2-uy*4-ux*2.5).toFixed(1)+'" fill="none" stroke="'+RS_INK+'" stroke-width="1.1" stroke-linejoin="round"/>';}
-const RS={seed:59,skin:'#F0C4A0',shirt:RS_SHIRT,pants:'#1F2026',browC:'#5E564C',logoY:-93,logoSize:13,logoMax:52,
+const RS={seed:59,skin:'#F0C4A0',shirt:RS_SHIRT,pants:'#1F2026',browC:'#5E564C',logoY:-127,logoSize:13,logoMax:52,logoVorne:true,
  /* Polokragen wie Marlec, in Schwarz mit hellerer Kante */
  collar:()=>flat(rect(-3.2,-153,6.4,18),RS_POLO_D,0.4)+'<circle cx="0" cy="-145" r="1.3" fill="#55565D"/><circle cx="0" cy="-139" r="1.3" fill="#55565D"/>'+
   piece([[-25,-157],[-7,-166],[-1,-150],[-13,-143]],RS_POLO_K,0.7)+piece([[25,-157],[7,-166],[1,-150],[13,-143]],RS_POLO_K,0.7),

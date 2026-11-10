@@ -50,7 +50,7 @@ Den Kontaktbogen selbst ansehen, bevor er gezeigt wird. Der Kontaktbogen braucht
 
 ## Regeln
 
-- Nur Spitznamen, nie Klarnamen. Shirt-Aufdruck immer `['ju:nien]`.
+- Nur Spitznamen, nie Klarnamen. Shirt-Aufdruck immer `['ju:nien]`, und zwar immer auf **Brusthöhe** (oberes Drittel des Rumpfs, im V2-Rumpf y −127 – der Grundwert in `makeChar`). Nicht auf den Bauch setzen; bei neuen Figuren `logoY` nur ändern, wenn der Rumpf eine andere Form hat, dann aber wieder auf die Brust.
 - Neue Figuren immer Version 2, ohne Klebestreifen am Kinn.
 - **Nie ins Repo:** Rohvideos, Fotos echter Personen, Zugangsdaten oder Tokens. Das Repo ist öffentlich.
 - Fotos für den Hagnomat nur im Chat ansehen, nicht speichern, zuschneiden oder in Dateien einbetten. Ins Repo geht nur der Text-Steckbrief. Sobald der Steckbrief steht, alle erreichbaren Kopien des Fotos sofort löschen und das bestätigen.
