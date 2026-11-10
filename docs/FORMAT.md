@@ -101,7 +101,11 @@ Bei Gesten mit mehreren Figuren ergibt sich die **Seite** automatisch: Jede Figu
 
 ### effekte
 
-`{ "typ": "stampf", "t": [Zeitpunkte], "staerke": 5, "schild": { "text", "pos": [[x,y],…], "winkel": […], "dauer" } }` – Kamera wackelt, Requisiten mit `bebt` hüpfen, optional ein Geräusch-Schild pro Schritt.
+`{ "typ": "stampf", "t": [Zeitpunkte], "staerke": 5, "schild": { "text", "pos": [[x,y],…], "winkel": […], "dauer", "farbe" } }` – Kamera wackelt, Requisiten mit `bebt` hüpfen, optional ein Geräusch-Schild pro Schritt.
+
+`{ "typ": "staub", "t": [Zeitpunkte], "wer": "ka", "dx": -26, "y": 390, "menge": 3, "breite": 14 }` – Staubwölkchen am Boden (bei Schritten, Bremsung, Stampfer). Ort = Figur zum Zeitpunkt plus `dx`, oder fest über `x`. Jede Wolke lebt etwa 1 s.
+
+`{ "typ": "spur", "von", "bis", "aus": [t0, t1], "linien": [[x1, y1, x2, y2, breite], …], "farbe" }` – Linien am Boden hinter den Figuren (Bremsspur), blendet zwischen `aus` t0 und t1 aus. Beispiel für alle drei: `probe-kickass.json`.
 
 ### kamera
 
@@ -109,7 +113,7 @@ Bei Gesten mit mehreren Figuren ergibt sich die **Seite** automatisch: Jede Figu
 
 ### schilder
 
-Geräusch-Schilder in Bildschirm-Koordinaten (746 × 420): `{ "von", "bis", "text": "*KLONK!*", "pos": [x, y], "winkel" }`.
+Geräusch-Schilder in Bildschirm-Koordinaten (746 × 420): `{ "von", "bis", "text": "*KLONK!*", "pos": [x, y], "winkel" }`. Optional `farbe` für den Text (z. B. `#C8382B` rot).
 
 ### blenden
 
@@ -180,9 +184,11 @@ Damit lassen sich die meisten Bewegungen ohne neue Geste beschreiben (Beispiel: 
 |---|---|---|
 | `pose` | nur `pose` | setzt feste Werte, z. B. `{ "mikro": true, "m": "n" }` für die Dauer der Aktion |
 | `uebergang` | `ab` {Feld: Wert}, `ziel` {Feld: Wert}, `rampe` (Vorgabe: ganze Aktion) | führt Zahlenfelder weich von `ab` nach `ziel` (fehlt `ab`, vom aktuellen Wert). Typisch: `aL`, `aLf`, `aR`, `aRf`, `head`, `px`, `flasche_kipp`. Für einen Rückweg einfach `ab` und `ziel` tauschen |
-| `wippen` | `tempo`, `weite`, `art` (`welle` oder `takt`) | Körper wippt leicht (Gewicht verlagern) bzw. im Takt (beim Trinken) |
+| `wippen` | `tempo`, `weite`, `art` (`welle`, `takt` oder `hopsen`) | Körper wippt leicht (Gewicht verlagern), im Takt (beim Trinken) oder hopst vor Freude |
 | `kopf-wiegen` | `tempo`, `weite`, `hoch` | Kopf wiegt beim Reden; mit `hoch` hüpft er dabei leicht |
 | `schwingen` | `feld`, `mitte`, `weite`, `tempo` | ein beliebiges Zahlenfeld pendelt (z. B. Flasche beim Schluck) |
+| `abwechseln` | `posen` [{Feld: Wert}, …], `bilder` (2) | Posen wechseln sich ab, je `bilder` Bilder lang (hektische Arme, zuckende Brauen) |
+| `rennen` | `von_x`, `nach_x`, `rampe`, `neigung` (8), `bilder` (2) | rennt in großen Schritten, lehnt sich vor, Beine und Arme wechseln (KickASS) |
 
 Bewährte Armwinkel für DocEvel [Schulter, Ellbogen]: links Scheine vor dem Bauch [−8, −50], rechts zählen [8, 50] (mit `schwingen` auf `aRf`, Mitte 48, Weite 10, Tempo 10); sein Aufdruck sitzt auf Brusthöhe. Augen rollen: `uebergang` nach `py` −4.5, `px` 3, `lid` 0.3. Beispiel: `probe-docevel.json`.
 
@@ -194,7 +200,7 @@ Bewährte Armwinkel für Deichshaf [Schulter, Ellbogen]: links Mikro am Kinn [�
 |---|---|---|
 | `arm-pose` | `arm` (`rechts`/`links`), `schulter`, `ellbogen`, `rampe` | dreht einen Arm in eine feste Pose; mit Ellbogengelenk (Deichshaf) knickt der Unterarm. Bewährt rechts: Prost [−60, −60], Tasse zum Mund [96, 94], Funk am Ohr [−172, 0]; links Daumen-Pose [50, 70] |
 | `faust-schuetteln` | – | Faust schütteln beim Ausraster (m0og) |
-| `rot-werden` | `von`, `wert` (0–1), `rampe` | Wangen werden rot (m0og) |
+| `rot-werden` | `ab` (Startwert, Vorgabe: aktueller), `wert` (0–1), `rampe` | Wangen werden rot bzw. mit `wert` 0 wieder blass (m0og) |
 | `trinken` | – | setzt die Flasche an, Augen zu (DrBier; beim Riesen verschwindet die Flasche oben aus dem Bild) |
 | `flasche-schuetteln` | – | leere Flasche schütteln (DrBier) |
 | `zeigefinger` | – | erhobener Zeigefinger beim Reden (DrBier) |
@@ -214,6 +220,6 @@ Eine Geste ist eine Funktion `(o, c) => { … }` in `bibliothek/gesten.js`. Sie 
 - `c.T` Zeit, `c.f` Bildnummer, `c.t` Zeit seit Beginn der Aktion, `c.d` Dauer der Aktion
 - `c.a` die Aktion selbst (alle Parameter), `c.self` die Figur aus der Besetzung, `c.seite` ±1 Richtung zu den anderen, `c.world` Posen aller Figuren
 
-**Pose-Felder:** `x`, `y`, Deichshaf: `mikro`, `mikro_kipp` (Handmikro links), `zettel` (rechts), `zeigefinger` (links), `thumb`/`thumbL` (Daumen hoch rechts/links), `flasche` (`"hand"` oder [x, y] im Bild), `flasche_kipp`, `m` auch `n` (gerade) und `o` (Schlürfen), `es` 0.12 = Augen zu, 0.45 = fröhlich;  DocEvel: `geld` (Fächer Scheine links), `geldR` (ein Schein rechts), `fallen` 0–1 (drei Scheine fallen zu Boden), `lid` 0–1 (Oberlid senkt sich, genervt), `m` auch `n` (neutral, Grundmund) und `p` (Mund zusammengezogen);  `rot` (Körper kippt um die Füße), `aLf`, `aRf` (Unterarm bei Ellbogen), `wangen` (m0og), `trinkt`, `schuetteln`, `zeigefinger` (DrBier), `spezial` (Spallter: `kratzen`/`riechen`), `head`, `hy`, `aL`, `aR`, `lL`, `lR` (Beine), `px`, `py` (Pupillen), `br` [4], `m` (Mund: Zahl = Öffnung, `s` schief, `g` grinsen, `y` lachen), `sy`, `sx` (Höhe und Breite des offenen Lachmunds), `schiel` 0–1 (Pupillen laufen auseinander, alle V2-Figuren aus dem Baukasten), `es` (Augen zukneifen, < 1), `ew` (Augen weiten, > 1), `shrug`, `thumb`, `handLeer` (Gegenstand in der Hand weg), `brillenarm` 0–1 und `brille_y` (PoBi), `swH` (Gegenstand in der Hand schwingt, Grad), `fp` (Facepalm-Arm, Winkel; 0 = aus), `glint` (Brillenblitz), `belts`, `swL`, `swR` (Spock), `hat` (Tarnhut), `mFix` (Lippen nicht vom Ton steuern lassen).
+**Pose-Felder:** `x`, `y`, Deichshaf: `mikro`, `mikro_kipp` (Handmikro links), `zettel` (rechts), `zeigefinger` (links), `thumb`/`thumbL` (Daumen hoch rechts/links), `flasche` (`"hand"` oder [x, y] im Bild), `flasche_kipp`, `m` auch `n` (gerade) und `o` (Schlürfen), `es` 0.12 = Augen zu, 0.45 = fröhlich, `tasse`, `tasse_kipp`, `dampf` (Kaffeetasse rechts), `funkeln` (Sternchen am linken Daumen); m0og: `glut` 0–1 (tiefer Zug), `kippe_y`, `rauch` false (Rauchfaden aus), `wolke` 0–1 (Rauchwolke), `mrx` (Mundbreite);  DocEvel: `geld` (Fächer Scheine links), `geldR` (ein Schein rechts), `fallen` 0–1 (drei Scheine fallen zu Boden), `lid` 0–1 (Oberlid senkt sich, genervt), `m` auch `n` (neutral, Grundmund) und `p` (Mund zusammengezogen);  `rot` (Körper kippt um die Füße), `aLf`, `aRf` (Unterarm bei Ellbogen), `wangen` (m0og), `trinkt`, `schuetteln`, `zeigefinger` (DrBier), `spezial` (Spallter: `kratzen`/`riechen`), `head`, `hy`, `aL`, `aR`, `lL`, `lR` (Beine), `px`, `py` (Pupillen), `br` [4], `m` (Mund: Zahl = Öffnung, `s` schief, `g` grinsen, `y` lachen), `sy`, `sx` (Höhe und Breite des offenen Lachmunds), `schiel` 0–1 (Pupillen laufen auseinander, alle V2-Figuren aus dem Baukasten), `es` (Augen zukneifen, < 1), `ew` (Augen weiten, > 1), `shrug`, `thumb`, `handLeer` (Gegenstand in der Hand weg), `brillenarm` 0–1 und `brille_y` (PoBi), `swH` (Gegenstand in der Hand schwingt, Grad), `fp` (Facepalm-Arm, Winkel; 0 = aus), `glint` (Brillenblitz), `belts`, `swL`, `swR` (Spock), `hat` (Tarnhut), `mFix` (Lippen nicht vom Ton steuern lassen).
 
 Regeln: Parameter mit sinnvollen Vorgaben, Richtung aus `c.seite` oder Start/Ziel ableiten statt fest verdrahten, und die neue Geste hier im Katalog eintragen.

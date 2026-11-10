@@ -73,16 +73,34 @@ FIGUREN['KickASS']=V2X({seed:11,skin:'#F0C4A0',shirt:'#5E6640',pants:'#22201E',b
 })();
 
 /* ==== m0og: blond, runde Goldbrille, Kippe mit Rauch, rotes Shirt, wird beim Schimpfen rot ==== */
-FIGUREN['m0og']=V2X({seed:23,skin:'#F6D2B0',shirt:'#C8382B',pants:'#3A4A62',flush:true,browC:'#B8943E',
- over:id=>flat(rect(-10,-182,20,3),'rgba(214,180,96,0.75)',0.6)+'<g id="'+id+'-cig"><path d="M7 -174 L7 -171 L30 -163 L31 -168 Z" fill="#FBFAF5" stroke="#D3D1C7" stroke-width="0.6"/><circle cx="31" cy="-165.5" r="2.4" fill="#E24B4A"/><path id="'+id+'-smoke" d="M32 -170 q-5 -8 1 -14 q6 -6 0 -14" fill="none" stroke="#E8E6E0" stroke-width="2" stroke-linecap="round" opacity="0.8"/></g>',
+const M0OG=V2X({seed:23,skin:'#F6D2B0',shirt:'#C8382B',pants:'#3A4A62',flush:true,browC:'#B8943E',
+ over:id=>flat(rect(-10,-182,20,3),'rgba(214,180,96,0.75)',0.6)+'<g id="'+id+'-cig"><path d="M7 -174 L7 -171 L30 -163 L31 -168 Z" fill="#FBFAF5" stroke="#D3D1C7" stroke-width="0.6"/><circle id="'+id+'-glow" cx="31" cy="-165.5" r="2.4" fill="#E24B4A"/><path id="'+id+'-smoke" d="M32 -170 q-5 -8 1 -14 q6 -6 0 -14" fill="none" stroke="#E8E6E0" stroke-width="2" stroke-linecap="round" opacity="0.8"/></g>',
  hair:()=>piece([[-37,-225],[-36,-244],[-18,-252],[0,-254],[18,-252],[36,-244],[37,-225],[28,-230],[18,-226],[6,-231],[-6,-226],[-18,-231],[-28,-226]],'#D9B85C',1.4),
  acc:()=>'<circle cx="-14" cy="-204" r="10" fill="none" stroke="#C9A04A" stroke-width="2.5"/><circle cx="14" cy="-204" r="10" fill="none" stroke="#C9A04A" stroke-width="2.5"/><path d="M-4 -205 h8" stroke="#C9A04A" stroke-width="2.5"/>'});
+/* Erweiterung aus FIGUR-M0OG: glut 0–1 (tiefer Zug, Glut hell und flackernd), kippe_y (Kippe wippt), rauch false (Rauchfaden aus),
+   wolke 0–1 (Rauchwolke steigt vom Mund nach rechts oben und verblasst), mrx (Mundbreite) */
+FIGUREN['m0og']=Object.assign({},M0OG,{
+ build:a=>{let s=M0OG.build(a);const sv=seed;seed=32;
+  s+='<g id="'+a.id+'-puff" opacity="0">'+flat(circ(0,0,7),'rgba(232,230,224,0.9)',1)+flat(circ(9,-4,6),'rgba(232,230,224,0.85)',1)+flat(circ(-6,-7,5),'rgba(232,230,224,0.85)',1)+flat(circ(4,-12,6.5),'rgba(232,230,224,0.8)',1)+'</g>';
+  seed=sv;return s;},
+ rig:id=>Object.assign(M0OG.rig(id),{cig:$(id+'-cig'),glow:$(id+'-glow'),puff:$(id+'-puff')}),
+ apply:(c,o,a)=>{M0OG.apply(c,o,a);const f=o._f||0,g=o.glut||0;
+  /* Attribute nur anfassen, wenn sie vom Grundzustand abweichen – so bleiben Folgen ohne diese Felder bildgleich */
+  const set=(el,k,v,grund)=>{if(v===grund)el.removeAttribute(k);else el.setAttribute(k,v);};
+  if(g>0){c.glow.setAttribute('r',(2.4+1.6*g).toFixed(1));c.glow.setAttribute('fill',Math.floor(f/2)%2?'#FF7A3D':'#FFB347');c._glut=true;}
+  else if(c._glut){c.glow.setAttribute('r','2.4');c.glow.setAttribute('fill','#E24B4A');c._glut=false;}
+  set(c.cig,'transform',o.kippe_y?'translate(0 '+o.kippe_y.toFixed(1)+')':'','');
+  c.smoke.setAttribute('opacity',o.rauch===false?0:0.8);
+  c.m.setAttribute('rx',o.mrx||9);
+  const w=o.wolke;if(w===undefined||w>=1){c.puff.setAttribute('opacity',0);}
+  else{c.puff.setAttribute('opacity',(0.9*(1-w)).toFixed(2));c.puff.setAttribute('transform','translate('+(8+38*w).toFixed(1)+' '+(-174-46*w).toFixed(1)+') scale('+(0.35+1.25*w).toFixed(2)+')');}}});
 
 /* ==== Deichshaf: grau-braune Haare, Dreitagebart, schwarzes Shirt, Ellbogengelenk ====
    Fassung aus E03 „Werbunk“ (Grundlage FOYER-01). Kann stehen oder von vorn sitzen (haltung "sitzt", Oberkörper sinkt um 32),
    hat ein Ansteckmikro und in den Händen: Handmikro links (mikro, mikro_kipp), Zeigefinger links (zeigefinger),
    Zettel rechts (zettel), Daumen hoch rechts (thumb) und links (thumbL). Die Teile in der Hand bleiben aufrecht.
    Grüne Bierflasche: flasche "hand" (rechte Hand) oder [x,y] als fester Platz im Bild, Neigung flasche_kipp.
+   Kaffeetasse (FIGUR-DEICHSHAF): tasse true = in der rechten Hand, tasse_kipp, dampf false = kein Dampf; funkeln = Sternchen am linken Daumen.
    Münder: m = 's' Lächeln (Grund), 'g' Grinsen, 'o' Schlürfen, 'n' gerade; eine Zahl ab 2 = Sprechmund mit dieser Öffnung. */
 (()=>{
 const SKIN='#D9A47A',HAIR_N='#7D7064',HAIR_G='#A39A90',HAIR_D='#5C5248';
@@ -109,11 +127,22 @@ function micHand(){return piece(rr(-2.2,-8,4.4,16,1.8),'#1A1A1A',0.4)+piece(circ
 /* Zettel (Moderationskarte), Ursprung = Faust, Daumen liegt vorne drauf */
 function paperHand(){return piece(rr(-11,-26,22,28,1.5),'#FBFAF5',0.6)+'<path d="M-7 -20 h14 M-7 -15 h12 M-7 -10 h14 M-7 -5 h9" stroke="#8A8A86" stroke-width="1"/>'+
  piece(rr(-4,-4,8,9,3.5),SKIN,0.4);}
-function thumbUp(id){return '<g id="'+id+'" style="display:none">'+piece(rr(-5,-20,7.5,15,3.6),SKIN,0.7)+'<path d="M-5 -1 h11 M-5 3 h11" stroke="rgba(120,60,30,0.5)" stroke-width="1" stroke-linecap="round"/></g>';}
+function thumbUp(id,spk){return '<g id="'+id+'" style="display:none">'+piece(rr(-5,-20,7.5,15,3.6),SKIN,0.7)+'<path d="M-5 -1 h11 M-5 3 h11" stroke="rgba(120,60,30,0.5)" stroke-width="1" stroke-linecap="round"/>'+
+ (spk?'<g id="'+spk+'" style="display:none"><path d="M9 -28 l1.6 4 4 1.6 -4 1.6 -1.6 4 -1.6 -4 -4 -1.6 4 -1.6Z" fill="#FFF3B0"/><path d="M-14 -24 l1 2.5 2.5 1 -2.5 1 -1 2.5 -1 -2.5 -2.5 -1 2.5 -1Z" fill="#FFF3B0"/></g>':'')+'</g>';}
+/* Kaffeetasse (FIGUR-DEICHSHAF): Ursprung = Hand am Henkel, Tassenkörper zur Körpermitte, Dampf darüber */
+function mug(id){const MUG='#161618',MUG_E='#55555C';let s='';
+ s+=flat(rr(-23,-13,22,25,4),MUG_E,0.6)+piece(rr(-22,-12,20,23,3.5),MUG,1);
+ s+='<path d="M-2.5 -7 C7 -8 7 5 -2.5 4.5" fill="none" stroke="'+MUG_E+'" stroke-width="5"/><path d="M-2.5 -7 C7 -8 7 5 -2.5 4.5" fill="none" stroke="'+MUG+'" stroke-width="3.2"/>';
+ s+=flat(ell(-12,-12,10,2.4),'#3A3A40',0.3)+flat(ell(-12,-12,7.5,1.5),'#4A2C1A',0.2);
+ s+='<path d="M-19 -8 L-19 7" stroke="rgba(255,255,255,0.18)" stroke-width="1.6" stroke-linecap="round"/>';
+ s+='<g data-logo="1" data-t="translate(-12 3)" data-size="7" data-max="16"></g>';
+ s+=piece(rr(-3,-5,9,10,3.5),SKIN,0.6)+'<path d="M-2 -1.5 h6 M-2 1.8 h6" stroke="rgba(120,60,30,0.45)" stroke-width="0.8"/>';
+ s+='<g id="'+id+'-st"><path d="M-16 -17 q-4 -5 0 -10 q4 -5 0 -10" fill="none" stroke="#F4F2EC" stroke-width="2" stroke-linecap="round" opacity="0.75"/><path d="M-8 -16 q-4 -5 0 -9 q4 -5 0 -9" fill="none" stroke="#F4F2EC" stroke-width="1.6" stroke-linecap="round" opacity="0.6"/></g>';
+ return s;}
 function handPos(th,e){const a=th*Math.PI/180,b=(th+e)*Math.PI/180;
  return [SHOULDER.x-ELBOW*Math.sin(a)-FORE*Math.sin(b),SHOULDER.y+ELBOW*Math.cos(a)+FORE*Math.cos(b)];}
 function armExtra(id,sx){return '<g transform="translate(0 '+FORE+')">'+
- (sx<0?'<g id="'+id+'-ptL" style="display:none">'+piece(rr(-2.6,4,5.2,15,2.6),SKIN,0.5)+'</g><g id="'+id+'-cL"><g id="'+id+'-mic" style="display:none">'+micHand()+'</g>'+thumbUp(id+'-thL')+'</g>'
+ (sx<0?'<g id="'+id+'-ptL" style="display:none">'+piece(rr(-2.6,4,5.2,15,2.6),SKIN,0.5)+'</g><g id="'+id+'-cL"><g id="'+id+'-mic" style="display:none">'+micHand()+'</g>'+thumbUp(id+'-thL',id+'-spk')+'</g>'
       :'<g id="'+id+'-cR"><g id="'+id+'-paper" style="display:none">'+paperHand()+'</g>'+thumbUp(id+'-thR')+'</g>')+'</g>';}
 function hair(){let s=piece(roundPoly([[-40,-214],[-40,-232],[-34,-246],[-20,-254],[0,-257],[20,-254],[34,-246],[40,-232],[40,-214],[36,-222],[30,-229],[20,-233],[8,-231],[-2,-234],[-14,-231],[-26,-232],[-34,-224]],3),HAIR_N,1.1);
  s+='<path d="M-28 -241 l3 -5 M-16 -247 l3 -5 M-4 -250 l3 -5 M8 -249 l3 -5 M20 -245 l3 -5 M-22 -236 l2 -4 M2 -239 l2 -4 M14 -237 l2 -4 M30 -237 l2 -4" stroke="'+HAIR_G+'" stroke-width="1.5" stroke-linecap="round"/>';
@@ -150,13 +179,15 @@ function build(a){const id=a.id,seated=a.haltung==='sitzt',sk=SKIN;seed=53;let s
  s+=mouth(id);
  s+=hair();
  s+='</g>';
- s+='<g id="'+id+'-front"><g id="'+id+'-bot">'+bottle(id+'-botg')+'<g id="'+id+'-grip">'+piece(rr(-7.5,-5,15,10,4),SKIN,0.5)+'<path d="M-6.5 -1.6 h13 M-6.5 1.8 h13" stroke="rgba(120,60,30,0.45)" stroke-width="0.8"/></g></g></g>';
- s+='</g>';
+ s+='<g id="'+id+'-front"><g id="'+id+'-bot">'+bottle(id+'-botg')+'<g id="'+id+'-grip">'+piece(rr(-7.5,-5,15,10,4),SKIN,0.5)+'<path d="M-6.5 -1.6 h13 M-6.5 1.8 h13" stroke="rgba(120,60,30,0.45)" stroke-width="0.8"/></g></g>';
+ /* Tasse mit eigenem Zufall, damit sich an den übrigen Teilen nichts verschiebt */
+ {const sv=seed;seed=60;s+='<g id="'+id+'-mug">'+mug(id)+'</g>';seed=sv;}
+ s+='</g></g>';
  return s;}
 function rig(id){const g=k=>$(id+'-'+k);
  return {g:$(id),h:g('h'),e:g('e'),p:g('p'),bl:g('bl'),br:g('br'),al:g('al'),ar:g('ar'),alf:g('al-f'),arf:g('ar-f'),
   ms:g('ms'),mg:g('mg'),mo:g('mo'),mt:g('mt'),mn:g('mn'),paper:g('paper'),thL:g('thL'),thR:g('thR'),cL:g('cL'),cR:g('cR'),mic:g('mic'),ptL:g('ptL'),
-  bot:g('bot'),grip:g('grip')};}
+  bot:g('bot'),grip:g('grip'),mug:g('mug'),st:g('st'),spk:g('spk')};}
 function apply(r,o,a){const aL=o.aL||0,aLf=o.aLf||0,aR=o.aR||0,aRf=o.aRf||0,f=o._f||0,seated=a.haltung==='sitzt';
  r.g.setAttribute('transform','translate('+o.x.toFixed(1)+','+(a.boden+(o.y||0)).toFixed(1)+') scale(0.92)'+(o.rot?' rotate('+o.rot.toFixed(1)+')':''));
  r.h.setAttribute('transform','translate(0 '+(o.hy||0)+') rotate('+(o.head||0).toFixed(1)+' 0 -195)');
@@ -174,7 +205,10 @@ function apply(r,o,a){const aL=o.aL||0,aLf=o.aLf||0,aR=o.aR||0,aRf=o.aRf||0,f=o.
  if(!o.flasche){show(r.bot,false);}else{show(r.bot,true);let x,y;
   if(o.flasche==='hand'){const hp=handPos(aR,aRf);x=hp[0];y=hp[1];show(r.grip,true);}
   else{x=(o.flasche[0]-o.x)/0.92;y=(o.flasche[1]-a.boden)/0.92-(seated?DY:0);show(r.grip,false);}
-  r.bot.setAttribute('transform','translate('+x.toFixed(1)+' '+y.toFixed(1)+') rotate('+(o.flasche_kipp||0).toFixed(1)+')');}}
+  r.bot.setAttribute('transform','translate('+x.toFixed(1)+' '+y.toFixed(1)+') rotate('+(o.flasche_kipp||0).toFixed(1)+')');}
+ show(r.mug,!!o.tasse);show(r.spk,!!o.funkeln);
+ if(o.tasse){const hp=handPos(aR,aRf);r.mug.setAttribute('transform','translate('+hp[0].toFixed(1)+' '+hp[1].toFixed(1)+') rotate('+(o.tasse_kipp||0).toFixed(1)+')');
+  show(r.st,o.dampf!==false);r.st.setAttribute('transform','translate('+(Math.floor(f/3)%2?1.2:-1.2)+' '+(-(Math.floor(f/2)%3))+')');}}
 FIGUREN['Deichshaf']={build,rig,apply,spricht:true,lippen:(o,k)=>{if(k>0.12)o.m=1.5+6*k;},kopfhoehe:a=>a.haltung==='sitzt'?262-DY:262};
 })();
 

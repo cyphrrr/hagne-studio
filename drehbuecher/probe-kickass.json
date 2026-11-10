@@ -1,0 +1,38 @@
+{
+ "format": "hagne-drehbuch/0.2",
+ "episode": {"id": "PROBE-KICKASS", "titel": "Figurenprobe: KickASS – Ich bin überall!", "dauer": 10.0, "fps": 12, "bild": "16:9", "schleife": true},
+ "kulisse": {"id": "HALLE-AUSSEN-01", "licht": "tag"},
+ "besetzung": [
+  {"id": "ka", "figur": "KickASS", "x": 360, "boden": 390, "kopf": -2, "brauen": [1, 9, 1, 9], "namensschild": true}
+ ],
+ "dialog": [
+  {"von": 1.2, "bis": 3.0, "wer": "ka", "text": "Funk an alle: Ich bin überall!"},
+  {"von": 6.3, "bis": 8.6, "wer": "ka", "text": "Läuft alles? Muss alles laufen!"}
+ ],
+ "aktionen": [
+  {"von": 0, "bis": 1.2, "wer": "ka", "geste": "umherschauen", "tempo": 4, "muster": [-2.5, 0, 2.5], "notiz": "hektisch"},
+  {"von": 1.2, "bis": 3.0, "wer": "ka", "geste": "arm-pose", "arm": "rechts", "schulter": -172, "rampe": 0, "pose": {"aL": 14, "head": 3, "px": -1}, "notiz": "Funk-Knopf am Ohr"},
+  {"von": 1.2, "bis": 3.0, "wer": "ka", "geste": "abwechseln", "posen": [{"br": [-8, -6, -2, 8]}, {"br": [-8, 0, -8, 0]}], "bilder": 6},
+  {"von": 3.0, "bis": 3.3, "wer": "ka", "geste": "pose", "pose": {"rot": -6, "lL": 6, "lR": -6, "aR": -30, "aL": 30, "px": 3, "es": 0.7, "br": [4, 20, 4, 20], "m": 1.2, "mFix": true}, "notiz": "Anlauf"},
+  {"von": 3.3, "bis": 4.6, "wer": "ka", "geste": "rennen", "von_x": 360, "nach_x": 790, "notiz": "rechts raus"},
+  {"von": 4.6, "bis": 5.8, "wer": "ka", "geste": "rennen", "von_x": -90, "nach_x": 320, "notiz": "links wieder rein – überall!"},
+  {"von": 5.8, "bis": 6.3, "wer": "ka", "geste": "uebergang", "ab": {"x": 320, "rot": -10, "lR": -26, "lL": 8}, "ziel": {"x": 360, "rot": 0, "lR": 0, "lL": 0}, "rampe": 0.5, "pose": {"ew": 1.2, "px": 2, "br": [-9, 0, -9, 0], "m": 6, "mFix": true}, "notiz": "Vollbremsung"},
+  {"von": 5.8, "bis": 6.3, "wer": "ka", "geste": "abwechseln", "posen": [{"aR": -95, "aL": 75}, {"aR": -85, "aL": 62}, {"aR": -92, "aL": 68}], "bilder": 1},
+  {"von": 6.3, "bis": 8.6, "wer": "ka", "geste": "abwechseln", "posen": [{"aR": -80, "aL": 10}, {"aR": -25, "aL": 35}], "bilder": 2},
+  {"von": 6.3, "bis": 8.6, "wer": "ka", "geste": "abwechseln", "posen": [{"br": [-8, -6, -2, 8]}, {"br": [-8, 0, -8, 0]}], "bilder": 6},
+  {"von": 7.1, "bis": 7.35, "wer": "ka", "geste": "uebergang", "ab": {"lR": 0}, "ziel": {"lR": -34}, "rampe": 0.25, "pose": {"y": -2, "aR": -40}, "notiz": "Stiefel hoch"},
+  {"von": 7.35, "bis": 7.9, "wer": "ka", "geste": "pose", "pose": {"br": [4, 22, 4, 22]}},
+  {"von": 8.6, "bis": 10, "wer": "ka", "geste": "umherschauen", "tempo": 4, "muster": [-2.5, 0, 2.5]}
+ ],
+ "kamera": [
+  {"von": 0, "bis": 10.0, "start": [340, 229, 1.1], "ende": [340, 229, 1.1]}
+ ],
+ "schilder": [],
+ "effekte": [
+  {"typ": "stampf", "t": [7.35], "staerke": 3, "schild": {"text": "WUMMS!", "pos": [[470.1, 325.5]], "winkel": [-3], "dauer": 0.55, "farbe": "#C8382B"}},
+  {"typ": "staub", "t": [3.334, 3.501, 3.668, 3.834, 4.001, 4.168, 4.334, 4.501, 4.668, 4.834, 5.001, 5.168, 5.334, 5.501, 5.668], "wer": "ka", "dx": -26, "y": 390, "menge": 3, "breite": 14},
+  {"typ": "staub", "t": [5.834, 5.918, 6.001, 6.084, 6.168, 6.251], "wer": "ka", "dx": 30, "y": 390, "menge": 2, "breite": 16},
+  {"typ": "staub", "t": [7.36], "wer": "ka", "dx": 40, "y": 390, "menge": 7, "breite": 36},
+  {"typ": "spur", "von": 5.8, "bis": 10, "aus": [8.6, 9.8], "linien": [[300, 392, 386, 391, 3], [306, 395, 392, 394, 2.4]]}
+ ]
+}
