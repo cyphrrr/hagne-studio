@@ -74,10 +74,11 @@ Noch frei sind zum Beispiel orange, gelb, lila, weiß und bordeaux. **Blau besse
 
 | Teil | gibt es schon bei |
 |---|---|
-| eckige Brille | cypheR |
-| runde Goldbrille | m0og |
+| Brille, dicker schwarzer Rahmen | cypheR, Marlec |
+| Brille, dünner schwarzer Rahmen | RamShadow |
+| eckige Goldbrille | m0og |
 | kleine Rundbrille | DocEvel |
-| Brille | Spallter |
+| Brille, dünner dunkelbrauner Rahmen | Spallter |
 | Vollbart | cypheR, PoBi, Spallter (kurz) |
 | Dreitagebart / Stoppeln | Deichshaf, DocEvel |
 | Kappe | DrBier („MAKE HAGNE GREAT AGAIN“) |

@@ -26,7 +26,7 @@ function makeCharV2x(p){seed=p.seed;let s='';const sk=p.skin,id=p.id;
  s+='<g id="'+id+'-h">';
  s+=piece(HEAD_V2,sk,2.6);
  if(p.under)s+=p.under(id);
- s+='<g id="'+id+'-e">'+piece(circ(-14,-204,7.5),'#FFFDF6',1.2)+piece(circ(14,-204,7.5),'#FFFDF6',1.2)+'<g id="'+id+'-p"><circle cx="-13" cy="-203" r="3" fill="#1F1B18"/><circle cx="15" cy="-203" r="3" fill="#1F1B18"/></g></g>';
+ s+=augen(id);
  s+='<g id="'+id+'-bl">'+flat(rect(-8.5,-2.3,17,4.6),p.browC,1)+'</g><g id="'+id+'-br">'+flat(rect(-8.5,-2.3,17,4.6),p.browC,1)+'</g>';
  s+=NOSE_V2();
  if(p.flush)s+='<g id="'+id+'-fl" opacity="0"><ellipse cx="-21" cy="-184" rx="7" ry="4" fill="#E24B4A"/><ellipse cx="21" cy="-184" rx="7" ry="4" fill="#E24B4A"/></g>';
@@ -72,11 +72,11 @@ FIGUREN['KickASS']=V2X({seed:11,skin:'#F0C4A0',shirt:'#5E6640',pants:'#22201E',b
  acc:()=>piece(rect(35,-207,7,11),'#2A2624',0.8)+'<path d="M39 -196 l-4 4 l5 3 l-5 3 l5 3 l-5 3 l5 3 l-5 3 l5 3 L32 -162" fill="none" stroke="#2A2624" stroke-width="1.6" stroke-linejoin="round"/>'});
 })();
 
-/* ==== m0og: blond, runde Goldbrille, Kippe mit Rauch, rotes Shirt, wird beim Schimpfen rot ==== */
+/* ==== m0og: blond, eckige Goldbrille mit Bügeln, Kippe mit Rauch, rotes Shirt, wird beim Schimpfen rot ==== */
 const M0OG=V2X({seed:23,skin:'#F6D2B0',shirt:'#C8382B',pants:'#3A4A62',flush:true,browC:'#B8943E',
  over:id=>flat(rect(-10,-182,20,3),'rgba(214,180,96,0.75)',0.6)+'<g id="'+id+'-cig"><path d="M7 -174 L7 -171 L30 -163 L31 -168 Z" fill="#FBFAF5" stroke="#D3D1C7" stroke-width="0.6"/><circle id="'+id+'-glow" cx="31" cy="-165.5" r="2.4" fill="#E24B4A"/><path id="'+id+'-smoke" d="M32 -170 q-5 -8 1 -14 q6 -6 0 -14" fill="none" stroke="#E8E6E0" stroke-width="2" stroke-linecap="round" opacity="0.8"/></g>',
  hair:()=>piece([[-37,-225],[-36,-244],[-18,-252],[0,-254],[18,-252],[36,-244],[37,-225],[28,-230],[18,-226],[6,-231],[-6,-226],[-18,-231],[-28,-226]],'#D9B85C',1.4),
- acc:()=>'<circle cx="-14" cy="-204" r="10" fill="none" stroke="#C9A04A" stroke-width="2.5"/><circle cx="14" cy="-204" r="10" fill="none" stroke="#C9A04A" stroke-width="2.5"/><path d="M-4 -205 h8" stroke="#C9A04A" stroke-width="2.5"/>'});
+ acc:()=>brille('duenn',{farbe:'#C9A04A',glas:null})});
 /* Erweiterung aus FIGUR-M0OG: glut 0–1 (tiefer Zug, Glut hell und flackernd), kippe_y (Kippe wippt), rauch false (Rauchfaden aus),
    wolke 0–1 (Rauchwolke steigt vom Mund nach rechts oben und verblasst), mrx (Mundbreite) */
 FIGUREN['m0og']=Object.assign({},M0OG,{
@@ -172,7 +172,7 @@ function build(a){const id=a.id,seated=a.haltung==='sitzt',sk=SKIN;seed=53;let s
  s+='<g id="'+id+'-h">';
  s+=piece(HEAD_V2,sk,2.6);
  s+=piece(rect(-39,-226,5,15),'#958B80',0.8)+piece(rect(34,-226,5,15),'#958B80',0.8);
- s+='<g id="'+id+'-e">'+piece(circ(-14,-204,7.5),'#FFFDF6',1.2)+piece(circ(14,-204,7.5),'#FFFDF6',1.2)+'<g id="'+id+'-p"><circle cx="-13" cy="-203" r="3" fill="#1F1B18"/><circle cx="15" cy="-203" r="3" fill="#1F1B18"/></g></g>';
+ s+=augen(id);
  s+='<g id="'+id+'-bl">'+flat(rect(-8.5,-2.3,17,4.6),BROW,1)+'</g><g id="'+id+'-br">'+flat(rect(-8.5,-2.3,17,4.6),BROW,1)+'</g>';
  s+=NOSE_V2();
  s+=stubble();
@@ -195,9 +195,12 @@ function apply(r,o,a){const aL=o.aL||0,aLf=o.aLf||0,aR=o.aR||0,aRf=o.aRf||0,f=o.
  r.ar.setAttribute('transform','rotate('+aR.toFixed(1)+')');r.arf.setAttribute('transform','rotate('+aRf.toFixed(1)+')');
  r.cL.setAttribute('transform','rotate('+(-(aL+aLf)+(o.mikro_kipp||0)).toFixed(1)+')');r.cR.setAttribute('transform','rotate('+(-(aR+aRf)).toFixed(1)+')');
  show(r.thL,!!o.thumbL);show(r.thR,!!o.thumb);show(r.mic,!!o.mikro);show(r.ptL,!!o.zeigefinger);show(r.paper,!!o.zettel);
- let m=o.m===undefined?'s':o.m;if(typeof m==='number')m=m>=2?'t':'s';else if(m==='y')m='g';
+ const b=o.br||[0,0,0,0];
+ /* Ruhemund ist das schiefe Grinsen. Mit tief gesenkten Brauen (genervt, wütend) sähe das bösartig aus:
+    gibt das Drehbuch keinen Mund vor, wird er dann neutral. */
+ let m=o.m===undefined?(Math.max(b[1],b[3])>=10?'n':'s'):o.m;if(typeof m==='number')m=m>=2?'t':'s';else if(m==='y')m='g';
  show(r.ms,m==='s');show(r.mg,m==='g');show(r.mo,m==='o');show(r.mt,m==='t');show(r.mn,m==='n');if(m==='t')r.mt.setAttribute('ry',o.m.toFixed(1));
- const b=o.br||[0,0,0,0];r.bl.setAttribute('transform','translate(-15 '+(-218+b[0])+') rotate('+b[1]+')');r.br.setAttribute('transform','translate(15 '+(-218+b[2])+') rotate('+(-b[3])+')');
+ r.bl.setAttribute('transform','translate('+(-AUGE.braue)+' '+(AUGE.braueY+b[0])+') rotate('+b[1]+')');r.br.setAttribute('transform','translate('+AUGE.braue+' '+(AUGE.braueY+b[2])+') rotate('+(-b[3])+')');
  r.p.setAttribute('transform','translate('+(o.px||0)+' '+(o.py||0)+')');
  /* Blinzeln deterministisch aus der Bildnummer, nur bei offenen Augen */
  let es=o.es===undefined?1:o.es;const ew=o.ew||1;if(es===1&&ew===1&&((f*7919)%61)<2)es=0.12;
@@ -231,7 +234,7 @@ function build(id){const p=P;seed=p.seed;let s='';const sk=p.skin;
  s+=armT(id+'-ar',1,p.shirt,sk);
  s+=piece(rr(-5,-169,10,15,3),sk,1);
  s+='<g id="'+id+'-h">'+piece(HEAD_V2,sk,2.6);
- s+='<g id="'+id+'-e">'+piece(circ(-14,-204,7.5),'#FFFDF6',1.2)+piece(circ(14,-204,7.5),'#FFFDF6',1.2)+'<g id="'+id+'-p"><circle cx="-13" cy="-203" r="3" fill="#1F1B18"/><circle cx="15" cy="-203" r="3" fill="#1F1B18"/></g></g>';
+ s+=augen(id);
  s+='<g id="'+id+'-bl">'+flat(rect(-8.5,-2.3,17,4.6),p.browC,1)+'</g><g id="'+id+'-br">'+flat(rect(-8.5,-2.3,17,4.6),p.browC,1)+'</g>';
  s+=NOSE_V2();
  s+=piece(roundPoly([[-35,-185],[-29,-182],[-19,-179],[19,-179],[29,-182],[35,-185],[30,-167],[14,-154],[0,-150],[-14,-154],[-30,-167]],[2,3,3,3,3,2,9,8,7,8,9]),p.beardC,1.6);
@@ -240,7 +243,7 @@ function build(id){const p=P;seed=p.seed;let s='';const sk=p.skin;
  s+=mundformen(id);
  s+=piece([[-36,-224],[-35,-240],[-22,-249],[0,-252],[22,-250],[35,-241],[37,-224],[30,-229],[20,-226],[10,-230],[0,-227],[-10,-230],[-20,-226],[-29,-229]],p.hairC,1.2);
  s+='<path d="M-24 -242 l3 -4 M-10 -246 l2 -4 M6 -247 l2 -4 M20 -244 l3 -4" stroke="#8E6C46" stroke-width="1.4" fill="none"/>';
- s+='<rect x="-24.5" y="-213" width="21" height="17" rx="5" fill="none" stroke="#3A3530" stroke-width="1.8"/><rect x="3.5" y="-213" width="21" height="17" rx="5" fill="none" stroke="#3A3530" stroke-width="1.8"/><path d="M-3.5 -206 Q0 -209 3.5 -206 M-24.5 -207 L-34 -210 M24.5 -207 L35 -210" fill="none" stroke="#3A3530" stroke-width="1.6"/>';
+ s+=brille('duenn',{farbe:'#3A3530',rahmen:1.8,glas:null});
  s+='</g>';
  s+='<g id="'+id+'-as" style="display:none">'+bentArm(id+'-as',p.shirt,sk,30.5,53.7,flat(rr(-1.7,57,3.4,9,1.7),sk,0.3))+'</g>';
  return s;}
@@ -271,7 +274,7 @@ function build(id,handR){const p=P;seed=p.seed;let s='';const sk=p.skin;
  s+='<g id="'+id+'-h">';
  s+=piece(HEAD_V2,sk,2.6);
  s+=piece(rect(-36,-232,6,16),p.hairC,1)+piece(rect(30,-232,6,16),p.hairC,1);
- s+='<g id="'+id+'-e">'+piece(circ(-14,-204,7.5),'#FFFDF6',1.2)+piece(circ(14,-204,7.5),'#FFFDF6',1.2)+'<g id="'+id+'-p"><circle cx="-13" cy="-203" r="3" fill="#1F1B18"/><circle cx="15" cy="-203" r="3" fill="#1F1B18"/></g></g>';
+ s+=augen(id);
  s+='<g id="'+id+'-bl">'+flat(rect(-8.5,-2.3,17,4.6),p.browC,1)+'</g><g id="'+id+'-br">'+flat(rect(-8.5,-2.3,17,4.6),p.browC,1)+'</g>';
  s+=NOSE_V2();
  s+='<ellipse cx="-22" cy="-186" rx="6" ry="3.5" fill="#E24B4A" opacity="0.28"/><ellipse cx="22" cy="-186" rx="6" ry="3.5" fill="#E24B4A" opacity="0.28"/>';
@@ -336,9 +339,9 @@ function hair(){const top=[];for(let i=0;i<=12;i++){const x=-33+i*5.5;top.push([
  s+='<path d="M-24 -240 l-2 -8 M-8 -242 l0 -9 M8 -242 l1 -9 M24 -240 l2 -8" stroke="'+HAIR_L+'" stroke-width="1.4" stroke-linecap="round"/>';
  s+='<path d="M-16 -238 l-1 -11 M0 -240 l0.5 -12 M16 -238 l1.5 -10 M-30 -234 l-2 -7" stroke="'+HAIR_K+'" stroke-width="2.2" stroke-linecap="round"/>';
  s+='<path d="M-4 -236 l-1 -7 M30 -235 l2 -6" stroke="'+HAIR_K+'" stroke-width="1.5" stroke-linecap="round" opacity="0.8"/>';return s;}
-function glasses(){return '<g><circle cx="-14" cy="-204" r="8.6" fill="rgba(220,235,245,0.16)" stroke="#2B2B2D" stroke-width="1.9"/><circle cx="14" cy="-204" r="8.6" fill="rgba(220,235,245,0.16)" stroke="#2B2B2D" stroke-width="1.9"/>'+
- '<path d="M-5.4 -205 Q0 -208 5.4 -205" stroke="#2B2B2D" stroke-width="1.7" fill="none"/><path d="M-22.6 -205 L-37 -208 M22.6 -205 L37 -208" stroke="#2B2B2D" stroke-width="1.7"/>'+
- '<path d="M-18 -209 l-3 4 M10 -209 l-3 4" stroke="rgba(255,255,255,0.45)" stroke-width="1.3" stroke-linecap="round"/></g>';}
+function glasses(){return '<g><circle cx="-11.3" cy="-204.2" r="9.5" fill="rgba(220,235,245,0.16)" stroke="#2B2B2D" stroke-width="1.9"/><circle cx="11.3" cy="-204.2" r="9.5" fill="rgba(220,235,245,0.16)" stroke="#2B2B2D" stroke-width="1.9"/>'+
+ '<path d="M-2 -206 Q0 -208.4 2 -206" stroke="#2B2B2D" stroke-width="1.7" fill="none"/><path d="M-20.8 -205 L-37 -208 M20.8 -205 L37 -208" stroke="#2B2B2D" stroke-width="1.7"/>'+
+ '<path d="M-16 -210 l-3 4 M7 -210 l-3 4" stroke="rgba(255,255,255,0.45)" stroke-width="1.3" stroke-linecap="round"/></g>';}
 function mouth(id){return '<g id="'+id+'-mn"><path d="M-9 -172 Q0 -171 9 -172.6" stroke="#2A0E0B" stroke-width="2.3" fill="none" stroke-linecap="round"/></g>'+
  '<g id="'+id+'-mp" style="display:none"><path d="M-6 -172 Q0 -171 6 -172" stroke="#2A0E0B" stroke-width="2.4" fill="none" stroke-linecap="round"/>'+
   '<path d="M-8.5 -174.5 l-0.8 4.5 M8.5 -174.5 l0.8 4.5 M-3.5 -166.8 q3.5 1.4 7 0" stroke="#8A4A30" stroke-width="1.1" fill="none" stroke-linecap="round"/></g>'+
@@ -356,9 +359,8 @@ function build(a){const id=a.id,sk=SKIN;seed=131;let s='';
  s+=piece(box(-8,-168,16,16),sk);
  s+='<g id="'+id+'-h">'+piece(HEAD_V2,sk,2.6);
  s+=piece(rect(-39,-226,5,15),HAIR_T,0.8)+piece(rect(34,-226,5,15),HAIR_T,0.8);
- s+='<clipPath id="'+id+'-ec"><circle cx="-14" cy="-204" r="7.6"/><circle cx="14" cy="-204" r="7.6"/></clipPath>';
- s+='<g id="'+id+'-e">'+piece(circ(-14,-204,7.5),'#FFFDF6',1.2)+piece(circ(14,-204,7.5),'#FFFDF6',1.2)+'<g id="'+id+'-p"><circle cx="-13" cy="-203" r="3" fill="#1F1B18"/><circle cx="15" cy="-203" r="3" fill="#1F1B18"/></g>'+
-  '<g clip-path="url(#'+id+'-ec)"><rect id="'+id+'-lid" x="-24" y="-212" width="48" height="0" fill="'+sk+'"/></g></g>';
+ s+='<clipPath id="'+id+'-ec">'+augeForm(-1)+augeForm(1)+'</clipPath>';
+ s+=augen(id,'<g clip-path="url(#'+id+'-ec)"><rect id="'+id+'-lid" x="-24" y="'+(AUGE.y-AUGE.ry-0.4)+'" width="48" height="0" fill="'+sk+'"/></g>');
  s+='<g id="'+id+'-bl">'+flat(rect(-8.5,-2.3,17,4.6),BROW,1)+'</g><g id="'+id+'-br">'+flat(rect(-8.5,-2.3,17,4.6),BROW,1)+'</g>';
  s+=NOSE_V2()+stubble()+mouth(id)+hair()+glasses();
  s+='</g>';
@@ -377,9 +379,9 @@ function apply(r,o,a){const aL=o.aL||0,aLf=o.aLf||0,aR=o.aR||0,aRf=o.aRf||0,f=o.
  show(r.fan,!!o.geld);show(r.one,!!o.geldR);
  let m=o.m===undefined?'n':o.m;if(typeof m==='number')m=m>=2?'t':'n';else if(m==='y')m='g';
  show(r.mn,m==='n');show(r.mp,m==='p');show(r.msc,m==='s');show(r.mg,m==='g');show(r.mt,m==='t');if(m==='t')r.mt.setAttribute('ry',o.m.toFixed(1));
- const b=o.br||[0,0,0,0];r.bl.setAttribute('transform','translate(-15 '+(-218+b[0])+') rotate('+b[1]+')');r.br.setAttribute('transform','translate(15 '+(-218+b[2])+') rotate('+(-b[3])+')');
+ const b=o.br||[0,0,0,0];r.bl.setAttribute('transform','translate('+(-AUGE.braue)+' '+(AUGE.braueY+b[0])+') rotate('+b[1]+')');r.br.setAttribute('transform','translate('+AUGE.braue+' '+(AUGE.braueY+b[2])+') rotate('+(-b[3])+')');
  r.p.setAttribute('transform','translate('+(o.px||0)+' '+(o.py||0)+')');
- r.lid.setAttribute('height',(16*clamp(o.lid||0)).toFixed(1));
+ r.lid.setAttribute('height',((2*AUGE.ry+0.8)*clamp(o.lid||0)).toFixed(1));
  let es=o.es===undefined?1:o.es;const ew=o.ew||1;if(es===1&&ew===1&&!o.lid&&((f*7919)%67)<2)es=0.12;
  r.e.setAttribute('transform',(es!==1||ew!==1)?'translate(0 -204) scale('+ew+' '+(es*ew).toFixed(2)+') translate(0 204)':'');
  const k0=o.fallen||0;show(r.fall,k0>0);
