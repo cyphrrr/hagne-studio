@@ -39,7 +39,7 @@ Referenzen: `drehbuecher/e02-turnierbuero.json` (ruhig, Sprechblasen, V2-Figuren
 |---|---|
 | `id` | Kulisse aus `bibliothek/kulissen.js`: `HALLE-VOLL-01` (Halle mit Gästen), `HALLE-LEER-01` (Halle ohne Gäste), `HALLE-AUSSEN-01` (Vorplatz), `FOYER-01` (Säulen, Klinker), `THEKE-01` (Foyer mit Theken), `FELSHANG-01` (Hang unterhalb der Halle) |
 | `licht` | `nacht` (dunkle Schatten, Halle) oder `tag` (warme, helle Schatten) |
-| `requisiten` | Liste: `{ "id", "x", "z", … }`. Vorhanden: `gaming-stuhl`, `tisch-turnierbuero` (`bebt`: hüpft beim Stampfen), `busch` (`x`, `boden`, `breite`, `seed`), `tresen` (Theke „Bier kalt“, zu THEKE-01), `tisch-pc` (Spieltisch mit PC, zu HALLE-LEER-01), `stuhl-gruen` (`x`, `boden`: Lehne hinter einer sitzenden Figur, `z` −1), `tischmikro` (`x`, `y`: Mikrofonkopf, z. B. auf einer Flasche) |
+| `requisiten` | Liste: `{ "id", "x", "z", … }`. Vorhanden: `gaming-stuhl`, `tisch-turnierbuero` (`bebt`: hüpft beim Stampfen), `busch` (`x`, `boden`, `breite`, `seed`), `tresen` (Theke „Bier kalt“, zu THEKE-01), `tisch-pc` (Spieltisch mit PC, zu HALLE-LEER-01), `stuhl-gruen` (`x`, `boden`: Lehne hinter einer sitzenden Figur, `z` −1), `tischmikro` (`x`, `y`: Mikrofonkopf, z. B. auf einer Flasche), `lan-platz` (`x`, `boden`, `kante`, `breite`, `schild`: Tischstück mit Monitor-Rückseite, hinter dem eine sitzende Figur bis zur Nase verschwindet; `kante` = Höhe der Monitor-Oberkante über dem Boden, Vorgabe 178 = knapp unter den Augen; `schild` = Zettel auf der Rückseite; `z` größer als die Figur; mehrere Plätze im Abstand `breite` ergeben eine Tischreihe – Beispiel: `flame-of-duty.json`) |
 
 ### szenen (mehrere Schauplätze)
 
