@@ -58,3 +58,18 @@ REQUISITEN['stuhl-gruen']={absolut:true,build:r=>{seed=88;const X=r.x,S=0.92,Y=r
  s+=piece(rr(-50,-52,100,9,3),GD,0.6);
  s+=ln(-44,-44,-50,-2,G,4)+ln(44,-44,50,-2,G,4)+ln(-36,-44,-30,-2,GD,3)+ln(36,-44,30,-2,GD,3);
  return s+'</g>';}};
+/* LAN-Platz von hinten: Tischstück mit Monitor-Rückseite, hinter dem eine sitzende Figur bis zur Nase verschwindet.
+   x = Figur, boden = Boden der Figur, kante = Höhe der Monitor-Oberkante über dem Boden (178 = knapp unter den Augen),
+   breite = Tischstück (Plätze mit gleichem Abstand ergeben eine Tischreihe), schild = Zettel auf der Rückseite, seed. z größer als die Figur. */
+REQUISITEN['lan-platz']={absolut:true,build:r=>{seed=r.seed||(300+Math.round(r.x));const X=r.x,B=r.boden||420,K=r.kante||178,W=r.breite||160;
+ const yM=B-K,yT=B-112,mw=104,mh=yT-yM-10;let s='';
+ s+=piece(rect(X-W/2,yT,W,9),'#E6CB98',1.2)+piece(rect(X-W/2,yT+8,W,B-yT+30),'#A9834F',1)+ln(X-W/2+3,yT+9,X+W/2-3,yT+9,'#8C6A3C',1.6)+ln(X-W/2+4,yT+44,X+W/2-4,yT+45,'#96733F',1.2);
+ s+=ln(X-W/2+1,yT+12,X-W/2+1,B+30,'#8C6A3C',1.6);
+ s+=flat(ell(X,yT+2,30,4.5),'#141416',0.6)+piece(rr(X-8,yM+mh-6,16,20,2),'#1E1E20',0.5);
+ s+=piece(rr(X-mw/2,yM,mw,mh,5),'#2A2B30',1.2)+flat(rr(X-mw/2+12,yM+10,mw-24,mh-22,4),'#34363C',0.6);
+ for(let x=X-24;x<=X+24;x+=8)s+=ln(x,yM+mh-9,x,yM+mh-5,'#1B1C20',1.4);
+ s+='<circle cx="'+(X+mw/2-8)+'" cy="'+(yM+mh-6)+'" r="1.5" fill="#4F9CFF"/>';
+ s+='<path d="M'+(X+14)+' '+(yM+mh-4)+' C'+(X+30)+' '+(yT-8)+' '+(X+34)+' '+(yT+2)+' '+(X+40)+' '+(yT+1)+'" stroke="#141416" stroke-width="2.2" fill="none"/>';
+ if(r.schild){const w=Math.round(String(r.schild).length*6.4+16);s+='<g transform="rotate('+((hs(X*1.7)-.5)*8).toFixed(1)+' '+X+' '+(yM+mh/2)+')">'+piece(rect(X-w/2,yM+mh/2-9,w,17),'#FBFAF5',1)+
+  '<text x="'+X+'" y="'+(yM+mh/2+4)+'" text-anchor="middle" font-size="11" font-weight="800" fill="#2C2C2A" '+F+'>'+r.schild+'</text>'+tape(X-w/2-6,yM+mh/2-12,16,7,-30)+'</g>';}
+ return s;}};
