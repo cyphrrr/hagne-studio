@@ -71,6 +71,10 @@
   {
    "id": "PROBE-KICKASS",
    "datei": "probe-kickass.json"
+  },
+  {
+   "id": "PROBE-DONVITO",
+   "datei": "probe-donvito.json"
   }
  ]
 }

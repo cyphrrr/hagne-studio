@@ -1,5 +1,5 @@
 /* HAGNE-Studio · Bibliothek · Orga-Figuren
-   KickASS, m0og, Deichshaf (V2), DocEvel (V2, Ellbogen), Spallter (V2-Sonderkörper), DrBier (V2-Sonderkörper, einen Kopf größer).
+   KickASS, m0og, Deichshaf (V2), DocEvel (V2, Ellbogen), Spallter (V2-Sonderkörper), DrBier (V2-Sonderkörper, einen Kopf größer), DonVito (V2, Anzug, Ellbogen).
    Übernommen aus den Projekt-Dateien FIGUR-KICKASS, FIGUR-M0OG, FOYER-01 und EPISODE-WERBUNK (Deichshaf), FIGUR-SPALLTER, FIGUR-DRBIER.
    Jede Figur steckt in einem eigenen Block, damit sich Hilfsnamen nicht in die Quere kommen. */
 
@@ -402,4 +402,77 @@ function apply(r,o,a){const aL=o.aL||0,aLf=o.aLf||0,aR=o.aR||0,aRf=o.aRf||0,f=o.
    const w=lerp(Math.sin(k*11+i)*40,[8,-6,14][i],k),sy=lerp(1,0.4,clamp((k-0.85)/0.15));
    el.setAttribute('transform','translate('+x.toFixed(1)+' '+y.toFixed(1)+') rotate('+w.toFixed(1)+') scale(1 '+sy.toFixed(2)+')');});}}
 FIGUREN['DocEvel']={build,rig,apply,spricht:true,lippen:(o,k)=>{if(k>0.12)o.m=2+5*k;},kopfhoehe:262};
+})();
+
+/* ==== DonVito (V2, Ellbogen): kurze schwarze Haare mit grauen Schläfen, schwarzer Fedora, schmale schwarze Sonnenbrille,
+   Dreitagebart schwarz mit grauem Kinn, offenes schwarzes Sakko (lange Ärmel, weiße Manschetten), weißes Hemd, schmale schwarze Krawatte.
+   Aufdruck klein auf dem rechten Revers (Brusthöhe). Macke: verteilt Schichten zu unmöglichen Zeiten.
+   Abgrenzung zu Spock: Fedora, weißes Hemd mit Krawatte, graue Schläfen, Stoppeln, schmalere Brille.
+   Gebaut mit makeChar (Baukasten V2) und eigenen Armen über armFn: Ellbogengelenk nach Baustein 9, Ärmel bis zum Handgelenk.
+   Besetzung "klemmbrett": true = Klemmbrett „Schichtplan“ in der linken Hand (bleibt aufrecht).
+   Pose-Felder: aLf/aRf (Ellbogen), hat (Hut hebt sich, negativ = hoch), kb_kipp (Klemmbrett kippt, Grad), klemmbrett false (Klemmbrett weg). ==== */
+(()=>{
+const HAIR='#17161A',GRAU='#9A9792',GRAU_L='#BDBAB4',ANZ='#1B1A1E',ANZ_L='#2C2A30',ANZ_K='#4A4750',KANTE='#45434B',HEMD='#F4F2EC',HEMD_S='#D8D5CC',
+ KRAWATTE='#0E0E11',HUT='#1F1E23',HUT_L='#3A3840',BAND='#0D0D10',HAUT='#D9A47C';
+/* Klemmbrett: Hand hält die rechte Kante (Ursprung), Brett ragt nach außen */
+function klemmbrett(){let s=piece(rr(-30,-16,30,40,2.5),'#A8794A',0.8);
+ s+=piece(rr(-27,-10,24,31,1),'#FBFAF5',0.4);
+ s+='<text x="-27" y="-4" font-size="3.6" font-weight="800" fill="#2C2C2A" textLength="17.5" lengthAdjust="spacingAndGlyphs" '+F+'>SCHICHTPLAN</text>';
+ [1,5,9,13,17].forEach(y=>{s+=ln(-25,y,-6,y,'#B9B6AE',0.8);});
+ s+='<text x="-24.4" y="10.7" font-size="3.4" font-weight="700" fill="#2C2C2A" textLength="7.6" lengthAdjust="spacingAndGlyphs" '+F+'>04:30</text>';
+ s+='<ellipse cx="-20.6" cy="9.5" rx="5.6" ry="3.4" fill="none" stroke="#C8382B" stroke-width="1.1" transform="rotate(-6 -20.6 9.5)"/>';
+ s+=piece(rr(-20,-19,10,6,1.5),'#B9BEC4',0.3)+flat(rect(-18,-17.5,6,1.6),'#7E848B',0.2);return s;}
+/* Arm mit Ellbogen im Anzug: Oberarm-Ärmel bis zum Ellbogen (33), Unterarm-Ärmel mit weißer Manschette, Hand bei (0,28) im Unterarm.
+   Teile in der Hand (Klemmbrett, hand_rechts) liegen unter der Faust und werden in apply gegengedreht. Kanten, weil Ärmel und Sakko dunkel sind. */
+function armAnzug(handL,handR){return (id,side,shirt,sk,extra,vorHand,q,sx)=>{const inHand=side<0?handL(id):handR(id),fore=sleevePts(6,21);
+ return '<g transform="translate('+(side*(sx||SHOULDER.x))+' '+SHOULDER.y+')"><g id="'+id+'">'+
+  '<g transform="translate(0 '+ELBOW+')"><g id="'+id+'-f">'+piece(fore,ANZ)+'<path d="'+poly(fore,0.4)+'" fill="none" stroke="'+KANTE+'" stroke-width="1.2"/>'+
+   flat(rect(-6,17,12,4),HEMD,0.3)+piece(rr(-4.5,20,9,4,1.5),sk,0.3)+inHand+piece(circ(0,FORE,9),sk)+'</g></g>'+
+  piece(sleevePts(SHOULDER.r,35),ANZ)+'<path d="'+poly(sleevePts(SHOULDER.r,35),0.4)+'" fill="none" stroke="'+KANTE+'" stroke-width="1.3"/>'+
+  '</g></g>';};}
+const BREITE=0.86,X=v=>+(v*BREITE).toFixed(1);
+const DV={seed:47,breite:BREITE,skin:HAUT,shirt:HEMD,pants:ANZ,shoe:'#111013',browC:HAIR,sleeve:ANZ,cuff:HEMD,noLogo:true,
+ /* offenes Sakko: Hemdknöpfe, Krawatte, zwei Sakkohälften mit Revers, Taschenklappen, Aufdruck auf dem rechten Revers */
+ overTorso:()=>{let s='';[-140,-125,-110,-95,-80].forEach(y=>{s+='<circle cx="0" cy="'+y+'" r="1" fill="'+HEMD_S+'"/>';});
+  s+=piece([[-2.6,-150],[2.6,-150],[4.4,-100],[0,-93],[-4.4,-100]],KRAWATTE,0.4);
+  [-1,1].forEach(k=>{const P=pts=>pts.map(q=>[q[0]*k,q[1]]);
+   s+=piece(roundPoly(P([[X(37),-157],[13,-158],[17,-118],[X(22),-58],[X(46),-58]]),[12,2,1,2,3]),ANZ,1.4);
+   s+=piece(roundPoly(P([[13,-158],[X(25),-159],[X(31),-140],[X(25),-135],[17,-112]]),[1,3,2,2,1]),ANZ_L,0.8);
+   s+='<path d="M'+(X(25)*k)+' -135 L'+(X(31)*k)+' -140 M'+(17*k)+' -112 L'+(X(22)*k)+' -58" stroke="'+ANZ_K+'" stroke-width="1.1" fill="none"/>';
+   s+='<path d="M'+(X(38)*k)+' -146 Q'+(X(36)*k)+' -112 '+(X(40)*k)+' -80" stroke="'+ANZ_K+'" stroke-width="1.6" fill="none" opacity="0.7"/>'+ln(X(41)*k,-84,X(29)*k,-86,ANZ_K,1.6);});
+  s+='<circle cx="'+X(-24)+'" cy="-98" r="2" fill="#3A3840"/>';
+  s+='<g data-logo="1" data-t="translate('+X(23)+' -130) rotate(-66)" data-size="8" data-max="16"></g>';return s;},
+ /* weißer Hemdkragen und Krawattenknoten über dem Hals */
+ collar:()=>piece([[-11,-160],[-2,-153],[-9,-147],[-14,-155]],HEMD,0.5)+piece([[11,-160],[2,-153],[9,-147],[14,-155]],HEMD,0.5)+
+  piece(rr(-3.4,-156,6.8,7,2),KRAWATTE,0.3),
+ /* kurze Seiten: schwarz oben, grau an den Schläfen */
+ under:()=>piece(rect(-38,-231,6,8),HAIR,0.6)+piece(rect(32,-231,6,8),HAIR,0.6)+
+  piece(rect(-38,-224,6,13),GRAU,0.6)+piece(rect(32,-224,6,13),GRAU,0.6)+
+  '<path d="M-36 -221 v7 M-34 -222 v6 M36 -221 v7 M34 -222 v6" stroke="'+GRAU_L+'" stroke-width="0.9" stroke-linecap="round"/>',
+ /* Dreitagebart: Schatten auf Wangen und Kinn, Stoppeln, Kinn grau */
+ beard:()=>{let s=flat(roundPoly([[-36,-194],[-30,-190],[-21,-181],[21,-181],[30,-190],[36,-194],[32,-167],[17,-151],[0,-146],[-17,-151],[-32,-167]],[2,3,3,3,3,2,9,9,8,9,9]),'rgba(28,24,26,0.26)',0.6);
+  s+=flat(roundPoly([[-13,-161],[13,-161],[11,-151],[0,-146.5],[-11,-151]],[3,3,4,4,4]),'rgba(150,148,144,0.55)',0.4);
+  let d='',g='';for(let i=0;i<46;i++){const x=-31+R()*62,y=-190+R()*42;const k=Math.hypot(x/33,(y+170)/24);
+   if(k>1||(Math.abs(x)<13&&y<-166&&y>-180))continue;if(Math.abs(x)<12&&y>-161)g+='M'+x.toFixed(1)+' '+y.toFixed(1)+'h0.1';else d+='M'+x.toFixed(1)+' '+y.toFixed(1)+'h0.1';}
+  return s+'<path d="'+d+'" stroke="#1E1A1A" stroke-width="1.2" stroke-linecap="round" opacity="0.55"/><path d="'+g+'" stroke="'+GRAU_L+'" stroke-width="1.2" stroke-linecap="round"/>';},
+ /* Haarkappe (sieht man, wenn der Hut hochgeht), darüber der Fedora mit Delle und Band */
+ hair:id=>{let s=piece(roundPoly([[-38,-222],[-37,-240],[-26,-250],[0,-253],[26,-250],[37,-240],[38,-222],[30,-231],[0,-235],[-30,-231]],5),HAIR,0.8);
+  s+='<g id="'+id+'-hat"><g transform="translate(0 -3)">'+piece(roundPoly([[-28,-229],[-25,-257],[-13,-266],[-3,-262],[3,-262],[13,-266],[25,-257],[28,-229]],[2,6,5,2,2,5,6,2]),HUT,1.2);
+  s+='<path d="M-16 -262 Q-4 -255 0 -259 Q4 -255 16 -262" stroke="'+HUT_L+'" stroke-width="1.4" fill="none" stroke-linecap="round"/>';
+  s+=piece(rr(-28,-240,56,9,1),BAND,0.5)+'<path d="M-27 -239 L27 -239" stroke="'+HUT_L+'" stroke-width="0.8" opacity="0.7"/>';
+  s+=piece(roundPoly([[-52,-222],[-38,-232],[38,-232],[52,-222],[40,-224],[0,-226],[-40,-224]],[3,4,4,3,3,2,3]),HUT,1.2);
+  s+='<path d="M-49 -223 Q-38 -230 0 -230 Q38 -230 49 -223" stroke="'+HUT_L+'" stroke-width="1" fill="none" opacity="0.8"/></g></g>';return s;},
+ /* schmale, kantige Sonnenbrille: Gläser ganz dunkel, kleiner Lichtreflex */
+ acc:()=>{const b={farbe:'#0B0B0D',rahmen:2.6,steg:2.4,buegel:2.2,ecke:2.2,glas:'#121216',aussen:2.2},m=brilleMasse(b);
+  return brille(b)+'<path d="M'+(-m.a+3).toFixed(1)+' '+(m.o+3.5).toFixed(1)+' l3.5 -1.6 M'+(m.i+3).toFixed(1)+' '+(m.o+3.5).toFixed(1)+' l3.5 -1.6" stroke="rgba(255,255,255,0.4)" stroke-width="1.5" stroke-linecap="round"/>';}};
+const inHand=(id,k,inhalt)=>'<g id="'+id+'-'+k+'"><g transform="translate(0 '+FORE+')"><g id="'+id+'-'+k+'-r">'+inhalt+'</g></g></g>';
+FIGUREN['DonVito']={kopfhoehe:270,spricht:true,lippen:LIPPEN_V2,
+ build:a=>makeChar(Object.assign({},DV,{id:a.id,seated:a.haltung==='sitzt',
+  armFn:armAnzug(id=>a.klemmbrett?inHand(id.replace(/-al$/,''),'kb',klemmbrett()):'',
+                 id=>a.hand_rechts&&GEGENSTAENDE[a.hand_rechts]?inHand(id.replace(/-ar$/,''),'hd',GEGENSTAENDE[a.hand_rechts]()):'')})),
+ rig:id=>Object.assign(rigV2(id),{alf:$(id+'-al-f'),arf:$(id+'-ar-f'),kb:$(id+'-kb'),kbr:$(id+'-kb-r'),hd:$(id+'-hd'),hdr:$(id+'-hd-r')}),
+ apply:(r,o,a)=>{poseV2(r,o,a.boden);
+  r.alf.setAttribute('transform','rotate('+(o.aLf||0).toFixed(1)+')');r.arf.setAttribute('transform','rotate('+(o.aRf||0).toFixed(1)+')');
+  if(r.kb){show(r.kb,o.klemmbrett!==false);r.kbr.setAttribute('transform','rotate('+(-(o.aL||0)-(o.aLf||0)+(o.kb_kipp||0)).toFixed(1)+')');}
+  if(r.hd){show(r.hd,!o.handLeer);r.hdr.setAttribute('transform','rotate('+(-(o.aR||0)-(o.aRf||0)+(o.swH||0)).toFixed(1)+')');}}};
 })();
