@@ -17,7 +17,7 @@ function armV2(shirt,sk,vorHand,q){q=q||{};let s=piece(sleevePts(SHOULDER.r,35),
  if(q.aermel)s+=piece(rr(-7,31,14,23,3),q.aermel)+flat(rect(-7,51,14,3),q.manschette||'#3A3638',0.5)+piece(rr(-6,53,12,5,2),sk,0.5);
  else s+=piece(rr(-6,33,12,24,4.5),sk);
  return s+(vorHand||'')+piece(circ(0,61,9),sk);}
-function armAt(id,side,shirt,sk,extra,vorHand,q){return '<g transform="translate('+(side*SHOULDER.x)+' '+SHOULDER.y+')"><g id="'+id+'">'+armV2(shirt,sk,vorHand,q)+(extra||'')+'</g></g>';}
+function armAt(id,side,shirt,sk,extra,vorHand,q,sx){return '<g transform="translate('+(side*(sx||SHOULDER.x))+' '+SHOULDER.y+')"><g id="'+id+'">'+armV2(shirt,sk,vorHand,q)+(extra||'')+'</g></g>';}
 /* Langer, schmaler V2-Arm (DrBier, DrBier-Riese): lokal um das Schultergelenk, ext = Verlängerung des Unterarms */
 function armLang(id,side,shirt,sk,shY,ext,vorHand,extra){ext=ext||0;
  return '<g transform="translate('+(side*35.5)+' '+(shY+11.5)+')"><g id="'+id+'">'+piece(sleevePts(6.5,37.5),shirt)+piece(rr(-5.5,35.5,11,56+ext,4.5),sk)+(vorHand||'')+piece(circ(0,94.5+ext,8.5),sk)+(extra||'')+'</g></g>';}
@@ -57,8 +57,8 @@ function mundbilderEinbauen(id){const h=$(id+'-h');if(!h)return null;
 /* Ein Mundbild zeigen (k = 'A'…'H'/'X') oder mit null alle ausblenden; die Figur behält dann ihren eigenen Mund */
 function mundbildZeigen(mb,k){if(!mb)return;const an=!!(k&&mb.bilder[k]);
  Object.keys(mb.bilder).forEach(b=>show(mb.bilder[b],an&&b===k));if(an)mb.teile.forEach(e=>show(e,false));}
-function shrugArm(side,shirt,sk){const a1=-35*side,a2=-115*side;
- let s='<g transform="translate('+(side*SHOULDER.x)+' '+SHOULDER.y+') rotate('+a1+')">'+piece(sleevePts(SHOULDER.r,35),shirt)+piece(rr(-6,31,12,16,4.5),sk);
+function shrugArm(side,shirt,sk,sx){const a1=-35*side,a2=-115*side;
+ let s='<g transform="translate('+(side*(sx||SHOULDER.x))+' '+SHOULDER.y+') rotate('+a1+')">'+piece(sleevePts(SHOULDER.r,35),shirt)+piece(rr(-6,31,12,16,4.5),sk);
  s+='<g transform="translate(0 44) rotate('+a2+')">'+piece(sleevePts(6,24),sk)+piece(ell(0,29,8,9.5),sk,1);
  s+=flat(seg(-5,34,-6,42,3.4),sk,0.3)+flat(seg(-1.5,36,-1.5,45,3.4),sk,0.3)+flat(seg(2.5,36,3.5,44,3.4),sk,0.3)+flat(seg(6,32,9,38,3.4),sk,0.3);
  return s+'</g></g>';}
@@ -98,23 +98,23 @@ function brille(art,opt){const b=Object.assign({},typeof art==='string'?BRILLE[a
 
 /* Optionale Teile: shoe (Schuhfarbe), legExtra(side) (Muster auf dem Bein), sleeve/cuff (Jacke mit langen Ärmeln),
    armDeko(side) (Muster auf dem Ärmel), armHand(side,id) (Teil an der Hand), overTorso(id) (Jacke, Rig), collar() (Kragen), foot(side) (eigener Fuß statt Schuh, z. B. Badelatschen), funkArm(shirt,sk) (angewinkelter Arm mit Handsprecher, Pose-Feld funkarm),
-   noLogo bzw. logoY/logoSize/logoMax (logoY Grundwert −127 = Brusthöhe; der Aufdruck gehört immer auf die Brust), logoVorne (Aufdruck über overTorso, wenn Jacke oder Rig die Brust verdecken), mouth(id) (eigener Mund), keineMundformen (Mund ist verdeckt oder sitzt in einem Loch) */
-function makeChar(p){seed=p.seed;let s='';const sk=p.skin,SH=p.shoe||'#2A2624';
+   armFn(id,side,shirt,sk,extra,vorHand,q,sx) (eigene Arme statt armAt, z. B. mit Ellbogengelenk – DonVito), breite (Faktor für Rumpf, Schultern und Beine, Vorgabe 1; DonVito 0.86, Kopf bleibt gleich), noLogo bzw. logoY/logoSize/logoMax (logoY Grundwert −127 = Brusthöhe; der Aufdruck gehört immer auf die Brust), logoVorne (Aufdruck über overTorso, wenn Jacke oder Rig die Brust verdecken), mouth(id) (eigener Mund), keineMundformen (Mund ist verdeckt oder sitzt in einem Loch) */
+function makeChar(p){seed=p.seed;let s='';const sk=p.skin,SH=p.shoe||'#2A2624',K=p.breite||1,SX=SHOULDER.x*K,dB=13.5*K-13.5;
 const legX=side=>p.legExtra?p.legExtra(side):'';
 if(!p.seated){
- s+='<g id="'+p.id+'-ll">'+piece(box(-22,-72,17,66),p.pants)+legX(-1)+(p.foot?p.foot(-1):piece(shoe(-30,-10,28,11),SH))+'</g>';
- s+='<g id="'+p.id+'-lr">'+piece(box(5,-72,17,66),p.pants)+legX(1)+(p.foot?p.foot(1):piece(shoe(2,-10,28,11),SH))+'</g>';}
+ s+='<g id="'+p.id+'-ll">'+piece(box(-13.5*K-8.5*K,-72,17*K,66),p.pants)+legX(-1)+(p.foot?p.foot(-1):piece(shoe(-30-dB,-10,28,11),SH))+'</g>';
+ s+='<g id="'+p.id+'-lr">'+piece(box(13.5*K-8.5*K,-72,17*K,66),p.pants)+legX(1)+(p.foot?p.foot(1):piece(shoe(2+dB,-10,28,11),SH))+'</g>';}
 const armShirt=p.sleeve||p.shirt,armQ=side=>(p.sleeve||p.armDeko)?{aermel:p.sleeve,manschette:p.cuff,deko:p.armDeko?p.armDeko(side):''}:undefined;
-const hand=side=>p.armHand?p.armHand(side,p.id):'';
-s+=armAt(p.id+'-al',-1,armShirt,sk,'',hand(-1),armQ(-1));
-s+='<g id="'+p.id+'-sl" style="display:none">'+shrugArm(-1,armShirt,sk)+'</g>';
-s+=piece(TORSO_V2,p.shirt);
+const hand=side=>p.armHand?p.armHand(side,p.id):'',ARM=p.armFn||armAt;
+s+=ARM(p.id+'-al',-1,armShirt,sk,'',hand(-1),armQ(-1),SX);
+s+='<g id="'+p.id+'-sl" style="display:none">'+shrugArm(-1,armShirt,sk,SX)+'</g>';
+s+=piece(K===1?TORSO_V2:roundPoly([[-34*K,-155],[34*K,-155],[42*K,-66],[-42*K,-66]],[13,13,4,4]),p.shirt);
 const logo=p.noLogo?'':'<g data-logo="1" data-t="translate(0 '+(p.logoY||-127)+')" data-size="'+(p.logoSize||15)+'" data-max="'+(p.logoMax||64)+'"></g>';
 if(!p.logoVorne)s+=logo;
 if(p.overTorso)s+=p.overTorso(p.id);
 if(p.logoVorne)s+=logo;
-s+=armAt(p.id+'-ar',1,armShirt,sk,p.thumb?'<g id="'+p.id+'-th" style="display:none">'+piece(rr(-3.2,60,6.4,15,3),sk,0.4)+'</g>':'',hand(1)+handItem(p.id,p.handR),armQ(1));
-s+='<g id="'+p.id+'-sr" style="display:none">'+shrugArm(1,armShirt,sk)+'</g>';
+s+=ARM(p.id+'-ar',1,armShirt,sk,p.thumb?'<g id="'+p.id+'-th" style="display:none">'+piece(rr(-3.2,60,6.4,15,3),sk,0.4)+'</g>':'',hand(1)+handItem(p.id,p.handR),armQ(1),SX);
+s+='<g id="'+p.id+'-sr" style="display:none">'+shrugArm(1,armShirt,sk,SX)+'</g>';
 s+=piece(box(-8,-168,16,16),sk);
 if(p.collar)s+=p.collar();
 s+='<g id="'+p.id+'-h">';
@@ -131,7 +131,7 @@ s+=p.hair(p.id);
 if(p.acc)s+=p.acc(p.id);
 s+='</g>';
 /* Facepalm-Arm (Pose-Feld fp = Winkel): zweiter rechter Arm über dem Kopf, gleiches Schultergelenk. Eigener Zufall, damit sich nichts anderes verschiebt. */
-if(!p.seated){const sv=seed;seed=p.seed+91;s+='<g id="'+p.id+'-fpw" style="display:none">'+armAt(p.id+'-fp',1,armShirt,sk,'','',armQ(1))+'</g>';seed=sv;}
+if(!p.seated){const sv=seed;seed=p.seed+91;s+='<g id="'+p.id+'-fpw" style="display:none">'+armAt(p.id+'-fp',1,armShirt,sk,'','',armQ(1),SX)+'</g>';seed=sv;}
 /* Brillen-Arm (Pose-Feld brillenarm 0–1): rechter Arm angewinkelt, Zeigefinger schiebt die Brille am Steg hoch. Eigener Zufall wie beim Facepalm. */
 /* Funk-Arm (Pose-Feld funkarm 0–1): rechter Arm angewinkelt, Handsprecher am Mund (RamShadow). Eigener Zufall wie beim Facepalm. */
 if(p.funkArm){const sv=seed;seed=p.seed+7;s+='<g id="'+p.id+'-fka" style="display:none">'+p.funkArm(armShirt,sk)+'</g>';seed=sv;}
