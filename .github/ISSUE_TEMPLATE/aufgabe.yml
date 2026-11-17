@@ -1,0 +1,16 @@
+name: Aufgabe
+description: Neue Aufgabe fürs HAGNE-Board
+title: "[Studio] "
+projects: ["cyphrrr/1"]
+body:
+  - type: textarea
+    id: was
+    attributes:
+      label: Was soll gemacht werden?
+    validations:
+      required: true
+  - type: textarea
+    id: fertig
+    attributes:
+      label: Wann ist es fertig?
+      description: Woran erkennen wir, dass die Aufgabe erledigt ist?
